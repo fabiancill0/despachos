@@ -247,7 +247,7 @@
         </div>
         <!-- Modal -->
         <div class="modal fade" id="busquedaModal" tabindex="-1" aria-labelledby="busquedaModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="busquedaModalLabel">Busqueda despachos</h1>
@@ -278,13 +278,12 @@
             </div>
         </div>
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
-            <div class="modal-dialog modal-fullscreen modal-dialog-scrollable">
+            <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir pallets</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-
                     <div class="container-fluid">
                         <div class="mb-0">
                             <div class="row align-items-center">
@@ -483,13 +482,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="mb-0 table-responsive" id="deta_pallet"></div>
                     </div>
                     <div class="modal-footer">
-                        <div class="row justify-content-center">
-                            <button type="button" id="add_pallet" class="btn btn-success btn-lg col-3"><i class="fa-solid fa-square-plus"></i></button>
-                            <span class="col-1"></span>
-                            <button type="button" class="btn btn-danger btn-lg col-3" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
-                        </div>
+                        <button type="button" id="add_pallet" class="btn btn-success btn-lg"><i class="fa-solid fa-square-plus"></i></button>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
                     </div>
                 </div>
             </div>
@@ -529,8 +526,11 @@
                             document.getElementById('cajas').setAttribute('disabled', '');
                             $('#etiqueta').val(data.etiq_codigo);
                             document.getElementById('etiqueta').setAttribute('disabled', '');
+                            $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val());
+                            $("#exampleModal").modal("handleUpdate");
                         }
                     });
+
                 }
             });
         });
