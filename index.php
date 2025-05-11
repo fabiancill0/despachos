@@ -21,6 +21,26 @@
     <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css">
     <script src="https://kit.fontawesome.com/34afac4ad4.js" crossorigin="anonymous"></script>
+    <style>
+        .table-container {
+            max-height: 150px;
+            overflow-y: auto;
+            width: 100%;
+            border: 1px solid #495057;
+            border-radius: 0.25rem;
+        }
+
+        .table-container thead tr {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            line-height: 30px;
+        }
+
+        .table-container tbody tr {
+            line-height: 30px;
+        }
+    </style>
 </head>
 
 <body data-bs-theme="dark">
@@ -282,7 +302,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir pallets</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" id="add_pallet" class="btn btn-success btn-lg"><i class="fa-solid fa-square-plus"></i></button>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
                     </div>
                     <div class="container-fluid">
                         <div class="mb-0">
@@ -291,7 +312,13 @@
                                     <label class="col-form-label" for="folio">Folio</label>
                                 </div>
                                 <div class="col-8">
-                                    <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control form-control-sm" id="folio">
+                                    <div class="row">
+                                        <div class="col-8 pe-0">
+                                            <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control form-control-sm" id="folio">
+                                        </div>
+                                        <div class="col-4"> <button type="button" id="check_pallet" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-square-check"></i></button></div>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -482,11 +509,25 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="mb-0 table-responsive" id="deta_pallet"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" id="add_pallet" class="btn btn-success btn-lg"><i class="fa-solid fa-square-plus"></i></button>
-                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
+                        <div class="mb-0 table-container">
+                            <table class="table table-sm table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Embalaje</th>
+                                        <th>Variedad</th>
+                                        <th>Calibre</th>
+                                        <th>Productor</th>
+                                        <th>Packing</th>
+                                        <th style="width: 1%; white-space: nowrap;">Fecha</th>
+                                        <th>Predio</th>
+                                        <th>Cuartel</th>
+                                        <th>Cajas</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="deta_pallet">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -501,15 +542,18 @@
                     document.getElementById('termografo').setAttribute('disabled', '');
                 }
             });
-            $('#folio').on('keypress', function(e) {
-                var id = e.which;
-                if (id == '13') {
-                    $.ajax({
-                        url: 'data/getEncaPallet.php?folio=' + $('#folio').val(),
-                        dataType: 'json',
-                        type: 'GET',
-                        success: function(data) {
-                            console.log(data);
+            $('#check_pallet').on('click', function() {
+                $.ajax({
+                    url: 'data/getEncaPallet.php?folio=' + $('#folio').val(),
+                    dataType: 'json',
+                    type: 'GET',
+                    success: function(data) {
+                        console.log(data);
+                        if (data.error) {
+                            alert(data.error);
+                            $('#folio').val('');
+                            return;
+                        } else {
                             $('#tipo').val(data.paen_tipopa);
                             document.getElementById('tipo').setAttribute('disabled', '');
                             $('#variedad').val(data.vari_codigo);
@@ -527,7 +571,42 @@
                             $('#etiqueta').val(data.etiq_codigo);
                             document.getElementById('etiqueta').setAttribute('disabled', '');
                             $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val());
-                            $("#exampleModal").modal("handleUpdate");
+                        }
+                    }
+                });
+            });
+            $('#folio').on('keypress', function(e) {
+                var id = e.which;
+                if (id == '13') {
+                    $.ajax({
+                        url: 'data/getEncaPallet.php?folio=' + $('#folio').val(),
+                        dataType: 'json',
+                        type: 'GET',
+                        success: function(data) {
+                            console.log(data);
+                            if (data.error) {
+                                alert(data.error);
+                                $('#folio').val('');
+                                return;
+                            } else {
+                                $('#tipo').val(data.paen_tipopa);
+                                document.getElementById('tipo').setAttribute('disabled', '');
+                                $('#variedad').val(data.vari_codigo);
+                                document.getElementById('variedad').setAttribute('disabled', '');
+                                $('#embalaje').val(data.emba_codigo);
+                                document.getElementById('embalaje').setAttribute('disabled', '');
+                                $('#categoria').val(data.cate_codigo);
+                                document.getElementById('categoria').setAttribute('disabled', '');
+                                $('#status').val(data.stat_codigo);
+                                document.getElementById('status').setAttribute('disabled', '');
+                                $('#condicion').val(data.cond_codigo);
+                                document.getElementById('condicion').setAttribute('disabled', '');
+                                $('#cajas').val(data.paen_ccajas);
+                                document.getElementById('cajas').setAttribute('disabled', '');
+                                $('#etiqueta').val(data.etiq_codigo);
+                                document.getElementById('etiqueta').setAttribute('disabled', '');
+                                $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val());
+                            }
                         }
                     });
 
