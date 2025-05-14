@@ -21,6 +21,7 @@
     <script src="https://cdn.datatables.net/2.3.0/js/dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css">
     <script src="https://kit.fontawesome.com/34afac4ad4.js" crossorigin="anonymous"></script>
+    <script src="js/main.js?<?= md5(time()) ?>"></script>
     <style>
         .table-container {
             max-height: 150px;
@@ -40,6 +41,25 @@
         .table-container tbody tr {
             line-height: 30px;
         }
+
+        .table-container-despachos {
+            max-height: 500px;
+            overflow-y: auto;
+            width: 100%;
+            border: 1px solid #495057;
+            border-radius: 0.25rem;
+        }
+
+        .table-container-despachos thead tr {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            line-height: 30px;
+        }
+
+        .table-container-despachos tbody tr {
+            line-height: 30px;
+        }
     </style>
 </head>
 
@@ -52,6 +72,13 @@
                 </div>
                 <div class="col-9">
                     <select class="form-select form-select-sm" id="clientes">
+                        <?php
+                        include_once 'model/functions.php';
+                        include_once 'model/connections.php';
+                        $functions = new Functions();
+                        $cone = new Connections();
+                        $functions->getClientesCod($cone->connectToServ());
+                        ?>
                     </select>
                 </div>
             </div>
@@ -138,7 +165,14 @@
                             <label class="col-form-label" for="embarque">Embarque</label>
                         </div>
                         <div class="col-7">
-                            <input type="text" class="form-control form-control-sm" id="embarque">
+                            <div class="row">
+                                <div class="col-8 pe-0">
+                                    <input type="text" class="form-control form-control-sm" id="embarque">
+                                </div>
+                                <div class="col-4 ps-0">
+                                    <button type="button" id="get_embarques" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#busquedaEmbarqueModal"><i class="fa-solid fa-square-check"></i></button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -253,11 +287,33 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12">
+                    <div class="table-container">
+                        <table class="table table-sm table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>Pallet</th>
+                                    <th>Variedad</th>
+                                    <th>Embalaje</th>
+                                    <th>Etiqueta</th>
+                                    <th>Calibre</th>
+                                    <th>Cajas</th>
+                                    <th>Temperaturas</th>
+                                    <th>Tipo</th>
+                                    <th>Status</th>
+                                    <th>Termógrafo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deta_despa">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- Button trigger modal -->
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-primary btn-lg col-3" data-bs-toggle="modal" data-bs-target="#busquedaModal">
+            <button type="button" class="btn btn-primary btn-lg col-3" data-bs-toggle="modal" data-bs-target="#busquedaModal" id="get_enca_despacho">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
             <span class="col-1"></span>
@@ -270,28 +326,61 @@
             <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="busquedaModalLabel">Busqueda despachos</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5" id="busquedaModalLabel">Búsqueda despachos</h1>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
                     </div>
-                    <div class="modal-body">
-                        <table class="table table-sm">
-                            <thead>
-                                <tr>
-                                    <th>Nro</th>
-                                    <th>Fecha</th>
-                                    <th>Recibidor</th>
-                                    <th>Salida</th>
-                                    <th>Cod Puerto</th>
-                                    <th>Destino</th>
-                                    <th>Guía</th>
-                                    <th>Embarque</th>
-                                </tr>
-                            </thead>
-                        </table>
+                    <div class="container-fluid">
+                        <div class="mt-1 table-container-despachos">
+                            <table class="table table-sm table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Número Despacho</th>
+                                        <th>Fecha Despacho</th>
+                                        <th>Código Recibidor</th>
+                                        <th>Tipo Salida</th>
+                                        <th>Código Puerto</th>
+                                        <th>Planta Destino</th>
+                                        <th>Guía de Despacho</th>
+                                        <th>Nro de Embarque</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="enca_despa">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <div class="row justify-content-center">
-                            <button type="button" class="btn btn-danger btn-lg col-3" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="busquedaEmbarqueModal" tabindex="-1" aria-labelledby="busquedaEmbarqueModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="busquedaEmbarqueModal">Búsqueda embarques</h1>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="mt-1 table-container-despachos">
+                            <table class="table table-sm table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Código Embarque</th>
+                                        <th>Recibidor</th>
+                                        <th>Código Operación</th>
+                                        <th>Nave</th>
+                                        <th>Fecha Zapre</th>
+                                        <th>Embarcador</th>
+                                        <th>Puerto Origen</th>
+                                        <th>País Destino</th>
+                                        <th>Puerto Destino</th>
+                                        <th>Tipo Valorización</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="enca_embarque">
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -305,7 +394,7 @@
                         <button type="button" id="add_pallet" class="btn btn-success btn-lg"><i class="fa-solid fa-square-plus"></i></button>
                         <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
                     </div>
-                    <div class="container-fluid">
+                    <div class="container-fluid" id="detalle_pallet">
                         <div class="mb-0">
                             <div class="row align-items-center">
                                 <div class="col-4">
@@ -316,8 +405,9 @@
                                         <div class="col-8 pe-0">
                                             <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control form-control-sm" id="folio">
                                         </div>
-                                        <div class="col-4"> <button type="button" id="check_pallet" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-square-check"></i></button></div>
-
+                                        <div class="col-4">
+                                            <button type="button" id="check_pallet" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-square-check"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -485,7 +575,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-5">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" name="estiba" type="radio" id="estiba_izq" checked>
+                                                <input class="form-check-input" name="estiba" type="radio" id="estiba_izq" value="1" checked>
                                                 <label class="form-check-label" for="estiba_izq">Izq</label>
                                             </div>
                                         </div>
@@ -498,7 +588,7 @@
                                     <div class="row align-items-center">
                                         <div class="col-5">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" name="estiba" type="radio" id="estiba_der">
+                                                <input class="form-check-input" name="estiba" type="radio" value="2" id="estiba_der">
                                                 <label class="form-check-label" for="estiba_der">Der</label>
                                             </div>
                                         </div>
@@ -518,7 +608,7 @@
                                         <th>Calibre</th>
                                         <th>Productor</th>
                                         <th>Packing</th>
-                                        <th style="width: 1%; white-space: nowrap;">Fecha</th>
+                                        <th>Fecha</th>
                                         <th>Predio</th>
                                         <th>Cuartel</th>
                                         <th>Cajas</th>
@@ -533,88 +623,6 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('#if_termografo').change(function() {
-                if (this.checked) {
-                    document.getElementById('termografo').removeAttribute('disabled');
-                } else {
-                    document.getElementById('termografo').setAttribute('disabled', '');
-                }
-            });
-            $('#check_pallet').on('click', function() {
-                $.ajax({
-                    url: 'data/getEncaPallet.php?folio=' + $('#folio').val(),
-                    dataType: 'json',
-                    type: 'GET',
-                    success: function(data) {
-                        console.log(data);
-                        if (data.error) {
-                            alert(data.error);
-                            $('#folio').val('');
-                            return;
-                        } else {
-                            $('#tipo').val(data.paen_tipopa);
-                            document.getElementById('tipo').setAttribute('disabled', '');
-                            $('#variedad').val(data.vari_codigo);
-                            document.getElementById('variedad').setAttribute('disabled', '');
-                            $('#embalaje').val(data.emba_codigo);
-                            document.getElementById('embalaje').setAttribute('disabled', '');
-                            $('#categoria').val(data.cate_codigo);
-                            document.getElementById('categoria').setAttribute('disabled', '');
-                            $('#status').val(data.stat_codigo);
-                            document.getElementById('status').setAttribute('disabled', '');
-                            $('#condicion').val(data.cond_codigo);
-                            document.getElementById('condicion').setAttribute('disabled', '');
-                            $('#cajas').val(data.paen_ccajas);
-                            document.getElementById('cajas').setAttribute('disabled', '');
-                            $('#etiqueta').val(data.etiq_codigo);
-                            document.getElementById('etiqueta').setAttribute('disabled', '');
-                            $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val());
-                        }
-                    }
-                });
-            });
-            $('#folio').on('keypress', function(e) {
-                var id = e.which;
-                if (id == '13') {
-                    $.ajax({
-                        url: 'data/getEncaPallet.php?folio=' + $('#folio').val(),
-                        dataType: 'json',
-                        type: 'GET',
-                        success: function(data) {
-                            console.log(data);
-                            if (data.error) {
-                                alert(data.error);
-                                $('#folio').val('');
-                                return;
-                            } else {
-                                $('#tipo').val(data.paen_tipopa);
-                                document.getElementById('tipo').setAttribute('disabled', '');
-                                $('#variedad').val(data.vari_codigo);
-                                document.getElementById('variedad').setAttribute('disabled', '');
-                                $('#embalaje').val(data.emba_codigo);
-                                document.getElementById('embalaje').setAttribute('disabled', '');
-                                $('#categoria').val(data.cate_codigo);
-                                document.getElementById('categoria').setAttribute('disabled', '');
-                                $('#status').val(data.stat_codigo);
-                                document.getElementById('status').setAttribute('disabled', '');
-                                $('#condicion').val(data.cond_codigo);
-                                document.getElementById('condicion').setAttribute('disabled', '');
-                                $('#cajas').val(data.paen_ccajas);
-                                document.getElementById('cajas').setAttribute('disabled', '');
-                                $('#etiqueta').val(data.etiq_codigo);
-                                document.getElementById('etiqueta').setAttribute('disabled', '');
-                                $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val());
-                            }
-                        }
-                    });
-
-                }
-            });
-        });
-    </script>
-
     <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"

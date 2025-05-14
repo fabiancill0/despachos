@@ -1,6 +1,20 @@
 <?php
 class Functions
 {
+  public function getClientesCod($conn)
+  {
+    $query = "SELECT clie_codigo, clie_nombre FROM dba.clientesprod ORDER BY clie_codigo";
+    $result = odbc_exec($conn, $query);
+    while ($row = odbc_fetch_array($result)) {
+      $row = array_map("utf8_encode", $row);
+      if ($row['clie_codigo'] == 15) {
+      } else {
+?>
+        <option value="<?= $row['clie_codigo'] ?>"><?= $row['clie_codigo'] . ' - ' . $row['clie_nombre'] ?></option>
+      <?php
+      }
+    }
+  }
   function getNombreProductor($conex, $codigo)
   {
     $query = "SELECT prod_nombre FROM DBA.productores WHERE prod_codigo = $codigo";
@@ -85,6 +99,11 @@ class Functions
     $query = "SELECT embq_bookin, embq_codigo, clie_codigo, reci_codigo, embq_fitosa, embq_nomnav, embq_ptoori, embq_descar, embc_codigo FROM DBA.embarqueprod WHERE clie_codigo = $cliente";
     return $query;
   }
+  function getEncaEmbarqueByCliente($cliente)
+  {
+    $query = "SELECT embq_codigo, reci_codigo, oper_codigo, embq_nomnav, embq_fzarpe, embc_codigo, embq_ptoori, dest_codigo, embq_descar, embq_tipova FROM DBA.embarqueprod WHERE clie_codigo = $cliente";
+    return $query;
+  }
   function getEncaDespachoAux($instructivo)
   {
     $query = "SELECT embq_codigo, defe_guides FROM DBA.despafrigoen WHERE embq_codigo = '$instructivo'";
@@ -93,6 +112,12 @@ class Functions
   function getEncaDespacho($instructivo, $guia)
   {
     $query = "SELECT defe_fecdes, defe_cantar, defe_numero, plde_codigo, defe_especi, defe_nrcont, defe_guides, defe_cancaj, defe_patent, defe_pataco, defe_chofer, defe_nrosps, defe_chfrut, defe_celcho, defe_setpoi, defe_ventil, YEAR(defe_fecfab) AS defe_fecfab, defe_selcon, defe_taraco, defe_traser, tica_codigo, defe_tiposa, defe_plasag FROM DBA.despafrigoen WHERE embq_codigo = '$instructivo' AND defe_guides = $guia";
+    return $query;
+  }
+  function getEncaDespachoByCliente($cliente)
+  {
+    $query = "SELECT enca.defe_numero, enca.defe_fecdes, emba.reci_codigo, enca.defe_tiposa, enca.puer_codigo, enca.defe_plades, enca.defe_guides, enca.embq_codigo
+FROM DBA.despafrigoen as enca JOIN dba.embarqueprod as emba on enca.embq_codigo = emba.embq_codigo WHERE enca.clie_codigo = $cliente ORDER BY defe_numero DESC";
     return $query;
   }
   function getDetaDespacho($id)
@@ -171,7 +196,7 @@ class Functions
     $query = "SELECT DISTINCT dest_nombre FROM DBA.destinos WHERE dest_nombre NOT IN('   ','OTRO') ORDER BY dest_nombre ASC";
     $resultQuery = odbc_exec($conex, $query);
     while ($row = odbc_fetch_array($resultQuery)) {
-?>
+      ?>
       <option value="<?= $row['dest_nombre'] ?>"><?= $row['dest_nombre'] ?></option>
 <?php
     }

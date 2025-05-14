@@ -15,7 +15,8 @@ emba_codigo,
 cond_codigo,
 paen_ccajas,
 etiq_codigo,
-espe_codigo
+espe_codigo,
+paen_estado
 FROM dba.palletencab WHERE paen_numero = $folio";
 $result = odbc_exec($conexion, $queryEnca);
 $row = odbc_fetch_array($result);
@@ -31,6 +32,7 @@ if ($row === false) {
         'paen_ccajas' => $row['paen_ccajas'],
         'etiq_codigo' => $functions->getNombreEtiqueta($conexion, $row['etiq_codigo']),
         'paen_tipopa' => $row['paen_tipopa'] == 1 ? 'COMPLETO' : 'PUCHO',
+        'paen_estado' => $row['paen_estado']
     ];
     echo json_encode($row_edit);
 }
