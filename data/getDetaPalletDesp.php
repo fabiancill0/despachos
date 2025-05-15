@@ -4,27 +4,8 @@ include '../model/functions.php';
 
 $functions = new Functions();
 $conn = new Connections();
-$folio = $_GET['folio'];
 $conexion = $conn->connectToServ();
-$queryEnca = "SELECT enca.paen_numero,
-deta.pafr_varrot,
-enca.emba_codigo,
-enca.etiq_codigo,
-deta.pafr_calrot,
-enca.paen_ccajas,
-enca.paen_tipopa,
-enca.stat_codigo,
-enca.espe_codigo
-FROM dba.palletencab AS enca join DBA.palletfruta as deta on enca.paen_numero = deta.paen_numero where enca.paen_numero = $folio
-group by enca.paen_numero,
-deta.pafr_varrot,
-deta.pafr_calrot,
-enca.paen_tipopa,
-enca.stat_codigo,
-enca.emba_codigo,
-enca.paen_ccajas,
-enca.etiq_codigo,
-enca.espe_codigo";
+$queryEnca = $functions->getDetaPalletDespacho($_GET['folio']);
 $result = odbc_exec($conexion, $queryEnca);
 $row_edit = [];
 $row = odbc_fetch_array($result);

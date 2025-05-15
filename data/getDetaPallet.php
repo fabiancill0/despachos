@@ -4,30 +4,8 @@ include '../model/functions.php';
 
 $functions = new Functions();
 $conn = new Connections();
-$folio = $_GET['folio'];
 $conexion = $conn->connectToServ();
-$queryEnca = "SELECT emba_codigo,
-vari_codigo,
-pafr_varrot,
-pafr_calibr,
-pafr_calrot,
-prod_codigo,
-pafr_prdrot,
-pafr_copack,
-pafr_fecemb,
-PAFR_HUERT1,
-PAFR_CUART1,
-sum(pafr_ccajas) as pafr_ccajas FROM DBA.palletfruta WHERE paen_numero = $folio group by emba_codigo,
-vari_codigo,
-pafr_varrot,
-pafr_calibr,
-pafr_calrot,
-prod_codigo,
-pafr_prdrot,
-pafr_copack,
-pafr_fecemb,
-PAFR_HUERT1,
-PAFR_CUART1";
+$queryEnca = $functions->getDetaPallet($_GET['folio']);
 $result = odbc_exec($conexion, $queryEnca);
 $row_edit = [];
 while ($row = odbc_fetch_array($result)) {

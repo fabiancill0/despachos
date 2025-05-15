@@ -4,20 +4,8 @@ include '../model/functions.php';
 
 $functions = new Functions();
 $conn = new Connections();
-$folio = $_GET['folio'];
 $conexion = $conn->connectToServ();
-$queryEnca = "SELECT clie_codigo,
-paen_tipopa,
-vari_codigo,
-cate_codigo,
-stat_codigo,
-emba_codigo,
-cond_codigo,
-paen_ccajas,
-etiq_codigo,
-espe_codigo,
-paen_estado
-FROM dba.palletencab WHERE paen_numero = $folio";
+$queryEnca = $functions->getEncaPallet($_GET['folio']);
 $result = odbc_exec($conexion, $queryEnca);
 $row = odbc_fetch_array($result);
 if ($row === false) {

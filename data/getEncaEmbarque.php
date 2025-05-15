@@ -11,9 +11,9 @@ while ($row = odbc_fetch_array($data)) {
     $row = array_map('utf8_decode', $row);
 ?>
     <tr>
-        <td><input class="form-check-input" name="despachos_search" type="radio"></td>
+        <td><input class="form-check-input" name="embarques_search" type="radio"></td>
         <td><?= $row['embq_codigo']; ?></td>
-        <td><?= $row['reci_codigo'] . ' - ' . $functions->getNombreRecibidor($connection, $row['reci_codigo']); ?></td>
+        <td><?= $row['reci_codigo']; ?></td>
         <td><?= $row['oper_codigo']; ?></td>
         <td><?= $row['embq_nomnav']; ?></td>
         <td><?= date("d/m/Y", strtotime($row['embq_fzarpe'])); ?></td>

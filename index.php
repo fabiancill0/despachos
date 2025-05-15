@@ -292,6 +292,8 @@
                         <table class="table table-sm table-striped text-center">
                             <thead>
                                 <tr>
+                                    <th></th>
+                                    <th></th>
                                     <th>Pallet</th>
                                     <th>Variedad</th>
                                     <th>Embalaje</th>
@@ -386,12 +388,13 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header" id="header_pallet">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir pallets</h1>
                         <button type="button" id="add_pallet" class="btn btn-success btn-lg"><i class="fa-solid fa-square-plus"></i></button>
+                        <button type="button" id="edit_pallet" class="btn btn-warning btn-lg" disabled><i class="fa-solid fa-pen-to-square"></i></button>
                         <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
                     </div>
                     <div class="container-fluid" id="detalle_pallet">
