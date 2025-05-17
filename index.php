@@ -329,7 +329,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="busquedaModalLabel">Búsqueda despachos</h1>
-                        <button type="button" class="btn btn-danger btn-lg" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
                     </div>
                     <div class="container-fluid">
                         <div class="mt-1 table-container-despachos">
@@ -355,12 +355,12 @@
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="busquedaEmbarqueModal" tabindex="-1" aria-labelledby="busquedaEmbarqueModal" aria-hidden="true">
+        <div class="modal fade" id="busquedaEmbarqueModal" tabindex="-1" aria-labelledby="busquedaEmbarqueModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-scrollable modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="busquedaEmbarqueModal">Búsqueda embarques</h1>
-                        <button type="button" class="btn btn-danger btn-lg" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
+                        <h1 class="modal-title fs-5" id="busquedaEmbarqueModalLabel">Búsqueda embarques</h1>
+                        <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
                     </div>
                     <div class="container-fluid">
                         <div class="mt-1 table-container-despachos">

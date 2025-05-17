@@ -202,3 +202,22 @@ function editarPallet(id) {
         }
     })
 }
+function loadEmbarque(id) {
+    $.ajax({
+        url: 'data/getEncaEmbarque.php?data=' + id + ';' + $('#clientes').val(),
+        dataType: 'json',
+        type: 'GET',
+        success: function (data) {
+            $('#embarque').val(data.embq_codigo);
+            document.getElementById('embarque').setAttribute('disabled', '');
+            $('#nave').val(data.embq_nomnav);
+            document.getElementById('nave').setAttribute('disabled', '');
+            $('#consig').html('<option value="' + data.reci_codigo + '">' + data.reci_codigo + '</option>');
+            document.getElementById('consig').setAttribute('disabled', '');
+            $('#pto_destino').val(data.embq_descar);
+            document.getElementById('pto_destino').setAttribute('disabled', '');
+            $('#dus').val(data.embq_numdus);
+            document.getElementById('dus').setAttribute('disabled', '');
+        }
+    })
+}

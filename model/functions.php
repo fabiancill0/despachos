@@ -94,9 +94,19 @@ class Functions
     $query = "SELECT embq_codigo FROM DBA.embarqueprod WHERE clie_codigo = $cliente ORDER BY embq_fzarpe DESC";
     return $query;
   }
+  function getUltimoDespacho($cliente)
+  {
+    $query = "SELECT TOP 1 defe_numero FROM DBA.despafrigoen WHERE clie_codigo = $cliente ORDER BY defe_numero DESC";
+    return $query;
+  }
   function getEncaEmbarque($cliente)
   {
     $query = "SELECT embq_bookin, embq_codigo, clie_codigo, reci_codigo, embq_fitosa, embq_nomnav, embq_ptoori, embq_descar, embc_codigo FROM DBA.embarqueprod WHERE clie_codigo = $cliente";
+    return $query;
+  }
+  function getEncaEmbarqueByCod($embarque, $cliente)
+  {
+    $query = "SELECT embq_codigo, reci_codigo, embq_nomnav, embq_descar, embq_numdus FROM DBA.embarqueprod WHERE clie_codigo = $cliente AND embq_codigo = '$embarque'";
     return $query;
   }
   function getDetaPalletDespacho($folio)

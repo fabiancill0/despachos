@@ -2,15 +2,15 @@
 
 class Connections
 {
-  private $dbServ = "ProdServFtgo_2024";
+  private $dbServ = "ProdServFtgo_2024_test";
   private $dbRK = "ProdFrutango_2024";
   private $dbEst = "EstFrutango";
   private $dbAppBase = "AppBase";
   private $dbCasino = "ConexionCasino";
   private $dbVal = "frt_validacion_sis";
   private $dbQC = "frt_qc";
-  private $username = "lmendez";
-  private $pass = "ADAMARCELA";
+  private $username = "fcarrasco";
+  private $pass = "jygtsygp";
 
   public function __construct() {}
 
