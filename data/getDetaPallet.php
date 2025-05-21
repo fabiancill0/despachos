@@ -4,8 +4,12 @@ include '../model/functions.php';
 
 $functions = new Functions();
 $conn = new Connections();
+$data = $_GET['folio'];
+$deta = explode(';', $data);
+$folio = $deta[0];
+$cliente = $deta[1];
 $conexion = $conn->connectToServ();
-$queryEnca = $functions->getDetaPallet($_GET['folio']);
+$queryEnca = $functions->getDetaPallet($folio, $cliente);
 $result = odbc_exec($conexion, $queryEnca);
 $row_edit = [];
 while ($row = odbc_fetch_array($result)) {

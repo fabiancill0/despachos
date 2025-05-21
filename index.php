@@ -1,3 +1,9 @@
+<?php
+include_once 'model/functions.php';
+include_once 'model/connections.php';
+$functions = new Functions();
+$cone = new Connections();
+?>
 <!doctype html>
 <html lang="es">
 
@@ -65,250 +71,251 @@
 
 <body data-bs-theme="dark">
     <div class="container-fluid">
-        <div class="mb-0">
-            <div class="row align-items-center">
-                <div class="col-3">
-                    <label class="col-form-label" for="clientes">Cliente</label>
-                </div>
-                <div class="col-9">
-                    <select class="form-select form-select-sm" id="clientes">
-                        <?php
-                        include_once 'model/functions.php';
-                        include_once 'model/connections.php';
-                        $functions = new Functions();
-                        $cone = new Connections();
-                        $functions->getClientesCod($cone->connectToServ());
-                        ?>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="mb-0">
-            <div class="row align-items-center">
-                <div class="col-3">
-                    <label class="col-form-label" for="planta">Planta</label>
-                </div>
-                <div class="col-9">
-                    <select class="form-select form-select-sm" id="planta">
-                        <option value="">Chada</option>
-                        <option value="">Frutango</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="mb-0">
-            <div class="row">
-                <div class="col-6">
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <label class="col-form-label" for="nro_despacho">Nro.Des.</label>
-                        </div>
-                        <div class="col-8">
-                            <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="8" class="form-control form-control-sm" id="nro_despacho">
-                        </div>
+        <div id="encabezado_despacho">
+            <div class="mb-0">
+                <div class="row align-items-center">
+                    <div class="col-3">
+                        <label class="col-form-label" for="clientes">Cliente</label>
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <label class="col-form-label" for="patente">Patente</label>
-                        </div>
-                        <div class="col-8">
-                            <input type="text" class="form-control form-control-sm" id="patente">
-                        </div>
+                    <div class="col-9">
+                        <select class="form-select form-select-sm" id="clientes">
+                            <?php
+                            $functions->getClientesCod($cone->connectToServ());
+                            ?>
+                        </select>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mb-0">
-            <div class="row">
-                <div class="col-6">
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <label class="col-form-label" for="fecha_des">Fecha</label>
-                        </div>
-                        <div class="col-8">
-                            <input type="date" value="<?= date('Y-m-d') ?>" class="form-control form-control-sm" id="fecha_des">
-                        </div>
+            <div class="mb-0">
+                <div class="row align-items-center">
+                    <div class="col-3">
+                        <label class="col-form-label" for="planta">Planta</label>
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <label class="col-form-label" for="hora_des">Hora</label>
-                        </div>
-                        <div class="col-8">
-                            <input type="time" value="<?= date('H:i') ?>" class="form-control form-control-sm" id="hora_des">
-                        </div>
+                    <div class="col-9">
+                        <select class="form-select form-select-sm" id="planta">
+                            <?php
+                            $functions->getPlantaDesp($cone->connectToServ());
+                            ?>
+                        </select>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mb-0">
-            <div class="row align-items-center">
-                <div class="col-3">
-                    <label class="col-form-label" for="tipo_mov">Tipo Mov</label>
-                </div>
-                <div class="col-9">
-                    <select class="form-select form-select-sm" id="tipo_mov">
-                        <option value="">Embarque Marítimo</option>
-                        <option value="">Embarque Terrestre</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <div class="mb-0">
-            <div class="row">
-                <div class="col-6">
-                    <div class="row align-items-center">
-                        <div class="col-5">
-                            <label class="col-form-label" for="embarque">Embarque</label>
+            <div class="mb-0">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <label class="col-form-label" for="nro_despacho">Nro.Des.</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="8" class="form-control form-control-sm" id="nro_despacho">
+                            </div>
                         </div>
-                        <div class="col-7">
-                            <div class="row">
-                                <div class="col-8 pe-0">
-                                    <input type="text" class="form-control form-control-sm" id="embarque">
-                                </div>
-                                <div class="col-4 ps-0">
-                                    <button type="button" id="get_embarques" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#busquedaEmbarqueModal"><i class="fa-solid fa-square-check"></i></button>
-                                </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <label class="col-form-label" for="patente">Patente</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="text" class="form-control form-control-sm" id="patente">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <div class="row align-items-center">
-                        <div class="col-5">
-                            <label class="col-form-label" for="nave">Nave</label>
+            </div>
+            <div class="mb-0">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <label class="col-form-label" for="fecha_des">Fecha</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="date" value="<?= date('Y-m-d') ?>" class="form-control form-control-sm" id="fecha_des">
+                            </div>
                         </div>
-                        <div class="col-7">
-                            <input type="text" class="form-control form-control-sm" id="nave">
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <label class="col-form-label" for="hora_des">Hora</label>
+                            </div>
+                            <div class="col-8">
+                                <input type="time" value="<?= date('H:i') ?>" class="form-control form-control-sm" id="hora_des">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mb-0">
-            <div class="row align-items-center">
-                <div class="col-8">
-                    <div class="row align-items-center">
-                        <div class="col-4">
-                            <label class="col-form-label" for="consig">Consig.</label>
-                        </div>
-                        <div class="col-8">
-                            <select class="form-select form-select-sm" id="consig">
-                                <option value="">Rio King</option>
-                                <option value="">Frutango</option>
-                            </select>
-                        </div>
+            <div class="mb-0">
+                <div class="row align-items-center">
+                    <div class="col-3">
+                        <label class="col-form-label" for="tipo_mov">Tipo Mov</label>
+                    </div>
+                    <div class="col-9">
+                        <select class="form-select form-select-sm" id="tipo_mov">
+                            <?php
+                            $functions->getTipoMov($cone->connectToServ());
+                            ?>
+                        </select>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="row">
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="if_termografo">
-                            <label class="form-check-label" for="if_termografo">Termógrafo</label>
+            </div>
+            <div class="mb-0">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row align-items-center">
+                            <div class="col-5">
+                                <label class="col-form-label" for="embarque">Embarque</label>
+                            </div>
+                            <div class="col-7">
+                                <div class="row">
+                                    <div class="col-8 pe-0">
+                                        <input type="text" class="form-control form-control-sm" id="embarque">
+                                    </div>
+                                    <div class="col-4 ps-0">
+                                        <button type="button" id="get_embarques" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#busquedaEmbarqueModal"><i class="fa-solid fa-square-check"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center">
+                            <div class="col-5">
+                                <label class="col-form-label" for="nave">Nave</label>
+                            </div>
+                            <div class="col-7">
+                                <input type="text" class="form-control form-control-sm" id="nave">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mb-0">
-            <div class="row align-items-center">
-                <div class="col-3">
-                    <label class="col-form-label" for="pto_destino">Pto Destino</label>
-                </div>
-                <div class="col-9">
-                    <input type="text" class="form-control form-control-sm" id="pto_destino">
-                </div>
-            </div>
-        </div>
-        <div class="mb-0">
-            <div class="row">
-                <div class="col-6">
-                    <div class="row align-items-center">
-                        <div class="col-5">
-                            <label class="col-form-label" for="guia">Guía</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="text" class="form-control form-control-sm" id="guia">
+            <div class="mb-0">
+                <div class="row align-items-center">
+                    <div class="col-8">
+                        <div class="row align-items-center">
+                            <div class="col-4">
+                                <label class="col-form-label" for="consig">Consig.</label>
+                            </div>
+                            <div class="col-8">
+                                <select class="form-select form-select-sm" id="consig">
+                                    <?php
+                                    $functions->getConsignatarios($cone->connectToServ());
+                                    ?>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="row align-items-center">
-                        <div class="col-5">
-                            <label class="col-form-label" for="tot_cajas">Cajas</label>
-                        </div>
-                        <div class="col-7">
-                            <input type="number" class="form-control form-control-sm" id="tot_cajas">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="if_termografo" checked>
+                                <label class="form-check-label" for="if_termografo">Termógrafo</label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mb-0">
-            <div class="row">
-                <div class="col-5">
-                    <div class="row align-items-center" style="display:none">
-                        <div class="col-5">
-                            <label class="col-form-label" for="reserva">Reserva</label>
+            <div class="mb-0">
+                <div class="row align-items-center">
+                    <div class="col-3">
+                        <label class="col-form-label" for="pto_destino">Pto Destino</label>
+                    </div>
+                    <div class="col-9">
+                        <input type="text" class="form-control form-control-sm" id="pto_destino">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-0">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="row align-items-center">
+                            <div class="col-5">
+                                <label class="col-form-label" for="guia">Guía</label>
+                            </div>
+                            <div class="col-7">
+                                <input type="text" class="form-control form-control-sm" id="guia">
+                            </div>
                         </div>
-                        <div class="col-7">
-                            <select class="form-select form-select-sm" id="reserva">
-                                <option value="">R1</option>
-                                <option value="">R2</option>
-                            </select>
+                    </div>
+                    <div class="col-6">
+                        <div class="row align-items-center">
+                            <div class="col-5">
+                                <label class="col-form-label" for="tot_cajas">Cajas</label>
+                            </div>
+                            <div class="col-7">
+                                <input type="number" class="form-control form-control-sm" id="tot_cajas">
+                            </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-0">
+                <div class="row">
+                    <div class="col-5">
+                        <div class="row align-items-center" style="display:none">
+                            <div class="col-5">
+                                <label class="col-form-label" for="reserva">Reserva</label>
+                            </div>
+                            <div class="col-7">
+                                <select class="form-select form-select-sm" id="reserva">
+                                    <option value="">R1</option>
+                                    <option value="">R2</option>
+                                </select>
+                            </div>
 
+                        </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="row align-items-center">
-                                <div class="col-5">
-                                    <label class="col-form-label" for="dus">DUS</label>
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row align-items-center">
+                                    <div class="col-5">
+                                        <label class="col-form-label" for="dus">DUS</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="number" class="form-control form-control-sm" id="dus">
+                                    </div>
                                 </div>
-                                <div class="col-7">
-                                    <input type="number" class="form-control form-control-sm" id="dus">
+                            </div>
+                            <div class="col-6">
+                                <div class="row align-items-center">
+                                    <div class="col-5">
+                                        <label class="col-form-label" for="sps">SPS</label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input type="number" class="form-control form-control-sm" id="sps">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="row align-items-center">
-                                <div class="col-5">
-                                    <label class="col-form-label" for="sps">SPS</label>
-                                </div>
-                                <div class="col-7">
-                                    <input type="number" class="form-control form-control-sm" id="sps">
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                </div>
-                <div class="col-12">
-                    <div class="table-container">
-                        <table class="table table-sm table-striped text-center">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th>Pallet</th>
-                                    <th>Variedad</th>
-                                    <th>Embalaje</th>
-                                    <th>Etiqueta</th>
-                                    <th>Calibre</th>
-                                    <th>Cajas</th>
-                                    <th>Temperaturas</th>
-                                    <th>Tipo</th>
-                                    <th>Status</th>
-                                    <th>Termógrafo</th>
-                                </tr>
-                            </thead>
-                            <tbody id="deta_despa">
-                            </tbody>
-                        </table>
+                    <div class="col-12">
+                        <div class="table-container">
+                            <table class="table table-sm table-striped text-center">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Pallet</th>
+                                        <th>Variedad</th>
+                                        <th>Embalaje</th>
+                                        <th>Etiqueta</th>
+                                        <th>Calibre</th>
+                                        <th>Cajas</th>
+                                        <th>Temperaturas</th>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                        <th>Termógrafo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="deta_despa">
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -321,6 +328,10 @@
             <span class="col-1"></span>
             <button type="button" class="btn btn-success btn-lg col-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 <i class="fa-solid fa-square-plus"></i>
+            </button>
+            <span class="col-1"></span>
+            <button type="button" class="btn btn-success btn-lg col-3" id="save_despacho">
+                <i class="fa-solid fa-floppy-disk"></i>
             </button>
         </div>
         <!-- Modal -->

@@ -4,12 +4,16 @@ include '../model/functions.php';
 
 $functions = new Functions();
 $conn = new Connections();
+$data = $_GET['folio'];
+$deta = explode(';', $data);
+$folio = $deta[0];
+$cliente = $deta[1];
 $conexion = $conn->connectToServ();
-$queryEnca = $functions->getEncaPallet($_GET['folio']);
+$queryEnca = $functions->getEncaPallet($folio, $cliente);
 $result = odbc_exec($conexion, $queryEnca);
 $row = odbc_fetch_array($result);
 if ($row === false) {
-    echo json_encode(['error' => 'Pallet no existe!']);
+    echo json_encode(['error' => 'Pallet no existe o el cliente es incorrecto!']);
 } else {
     $row_edit = [
         'vari_codigo' => $functions->getNombreVariedad($conexion, $row['vari_codigo'], $row['espe_codigo']),
