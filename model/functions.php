@@ -23,6 +23,18 @@ class Functions
       $row = array_map("utf8_encode", $row);
       ?>
       <option value="<?= $row['tisa_codigo'] ?>"><?= $row['tisa_codigo'] . ' - ' . $row['tisa_descri'] ?></option>
+    <?php
+
+    }
+  }
+  public function getTermografo($conn)
+  {
+    $query = "SELECT tema_codigo, tema_descri FROM dba.Termografo_marcas ORDER BY tema_codigo";
+    $result = odbc_exec($conn, $query);
+    while ($row = odbc_fetch_array($result)) {
+      $row = array_map("utf8_encode", $row);
+    ?>
+      <option value="<?= $row['tema_codigo'] ?>"><?= $row['tema_descri'] ?></option>
       <?php
 
     }
@@ -165,7 +177,7 @@ class Functions
   function getDetaPallet($folio, $cliente)
   {
     $query = "SELECT emba_codigo,vari_codigo,pafr_varrot,pafr_calibr,pafr_calrot,prod_codigo,pafr_prdrot,pafr_copack,pafr_fecemb,PAFR_HUERT1,PAFR_CUART1,sum(pafr_ccajas) as pafr_ccajas 
-    FROM DBA.palletfruta WHERE paen_numero = $folio AND clie_codigo = $cliente group by emba_codigo,vari_codigo,pafr_varrot,pafr_calibr,pafr_calrot,prod_codigo,pafr_prdrot,pafr_copack,pafr_fecemb,PAFR_HUERT1,PAFR_CUART1";
+    FROM DBA.palletfruta WHERE paen_numero = $folio AND clie_codigo = '$cliente' group by emba_codigo,vari_codigo,pafr_varrot,pafr_calibr,pafr_calrot,prod_codigo,pafr_prdrot,pafr_copack,pafr_fecemb,PAFR_HUERT1,PAFR_CUART1";
     return $query;
   }
   function getEncaPallet($folio, $cliente)

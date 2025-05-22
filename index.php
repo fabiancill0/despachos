@@ -551,9 +551,10 @@ $cone = new Connections();
                                 </div>
                                 <div class="col-8">
                                     <select class="form-select form-select-sm" id="marca_termografo">
-                                        <option value="N/A" selected>N/A</option>
-                                        <option value="">M1</option>
-                                        <option value="">M2</option>
+                                        <option value="" selected>N/A</option>
+                                        <?php
+                                        $functions->getTermografo($cone->connectToServ());
+                                        ?>
                                     </select>
                                 </div>
 
@@ -589,7 +590,7 @@ $cone = new Connections();
                                     <div class="row align-items-center">
                                         <div class="col-5">
                                             <div class="form-check form-check-inline">
-                                                <input class="form-check-input" name="estiba" type="radio" id="estiba_izq" value="1" checked>
+                                                <input class="form-check-input" name="estiba" type="radio" id="estiba_izq" value="1">
                                                 <label class="form-check-label" for="estiba_izq">Izq</label>
                                             </div>
                                         </div>

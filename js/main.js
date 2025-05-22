@@ -1,10 +1,27 @@
 $(document).ready(function () {
+    var globalControl = 1;
+    var estib_izq = true;
+    if (estib_izq) {
+        $('#estiba_izq').attr('checked', true);
+        $('#posicion_izq').val(globalControl);
+    } else {
+        $('#estiba_der').attr('checked', true);
+        $('#posicion_der').val(globalControl);
+    }
     $('#if_termografo').change(function () {
         if (this.checked) {
             document.getElementById('termografo').removeAttribute('disabled');
         } else {
             document.getElementById('termografo').setAttribute('disabled', '');
         }
+    });
+    $('#estiba_izq').change(function () {
+        $('#posicion_izq').val(globalControl);
+        $('#posicion_der').val('');
+    });
+    $('#estiba_der').change(function () {
+        $('#posicion_der').val(globalControl);
+        $('#posicion_izq').val('');
     });
     $('#add_pallet').on('click', function () {
         if ($('#' + $('#folio').val()).length) {
@@ -49,6 +66,18 @@ $(document).ready(function () {
                 inputs[i].value = '';
             }
             $('#deta_pallet').html('');
+            globalControl++;
+            if (globalControl % 2 == 0) {
+                estib_izq = false;
+                $('#estiba_der').attr('checked', true);
+                $('#posicion_der').val(globalControl);
+                $('#posicion_izq').val('');
+            } else {
+                estib_izq = true;
+                $('#estiba_izq').attr('checked', true);
+                $('#posicion_izq').val(globalControl);
+                $('#posicion_der').val('');
+            }
             alert('Pallet agregado a despacho!');
         }
     });
@@ -96,7 +125,9 @@ $(document).ready(function () {
                     document.getElementById('cajas').setAttribute('disabled', '');
                     $('#etiqueta').val(data.etiq_codigo);
                     document.getElementById('etiqueta').setAttribute('disabled', '');
-                    $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val());
+                    $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val() + ';' + $('#clientes').val());
+                    $('#posicion_izq').val(globalControl);
+                    $('#posicion_der').val('');
                 }
             }
         });
@@ -154,7 +185,7 @@ $(document).ready(function () {
                         document.getElementById('cajas').setAttribute('disabled', '');
                         $('#etiqueta').val(data.etiq_codigo);
                         document.getElementById('etiqueta').setAttribute('disabled', '');
-                        $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val());
+                        $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val() + ';' + $('#clientes').val());
                     }
                 }
             });
