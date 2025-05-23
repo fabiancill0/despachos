@@ -14,6 +14,8 @@ $result = odbc_exec($conexion, $queryEnca);
 $row = odbc_fetch_array($result);
 if ($row === false) {
     echo json_encode(['error' => 'Pallet no existe o el cliente es incorrecto!']);
+} else if ($row['paen_estado'] != 1) {
+    echo json_encode(['error' => 'Pallet ya despachado!!']);
 } else {
     $row_edit = [
         'vari_codigo' => $functions->getNombreVariedad($conexion, $row['vari_codigo'], $row['espe_codigo']),

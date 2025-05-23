@@ -104,10 +104,6 @@ $(document).ready(function () {
                     alert(data.error);
                     $('#folio').val('');
                     return;
-                } else if (data.paen_estado != 1) {
-                    alert('Pallet ya despachado!');
-                    $('#folio').val('');
-                    return;
                 } else {
                     $('#tipo').val(data.paen_tipopa);
                     document.getElementById('tipo').setAttribute('disabled', '');
@@ -195,19 +191,34 @@ $(document).ready(function () {
     $('#save_despacho').on('click', function () {
         const encabezado = document.querySelector('#encabezado_despacho');
         var inputs = encabezado.getElementsByTagName('input');
-        var pallets = encabezado.getElementsByTagName('tr');
-        console.log(inputs)
-        for (var i = 0; i < inputs.length; i++) {
-            if (inputs[i].checked) {
-                console.log(inputs[i].id + '-' + inputs[i].checked)
-            }
-            else {
-                console.log(inputs[i].id + '-' + inputs[i].value);
-            }
+        var pallet = encabezado.getElementsByTagName('tr');
+        var palletList = [];
+        for (var i = 1; i < pallet.length; i++) {
+            palletList.push(pallet[i].id);
         }
-        for (var i = 1; i < pallets.length; i++) {
-            console.log(pallets[i].id + '-' + i);
-        }
+        $.ajax({
+            url: 'model/save.php',
+            type: 'POST',
+            data: {
+                cliente: $('#clientes').val(),
+                planta: $('#planta').val(),
+                embarque: $('#embarque').val(),
+                nave: $('#nave').val(),
+                consignatario: $('#consig').val(),
+                pto_destino: $('#pto_destino').val(),
+                guia: $('#guia').val(),
+                sps: $('#sps').val(),
+                tot_cajas: $('#tot_cajas').val(),
+                fecha_des: $('#fecha_des').val(),
+                hora_des: $('#hora_des').val(),
+                patente: $('#patente').val(),
+                tipo_mov: $('#tipo_mov').val(),
+                palletList: palletList
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        });
     });
 });
 function eliminarPallet(id) {
