@@ -36,6 +36,7 @@ $(document).ready(function () {
         } else {
             var temp = $('#t1_pallet').val() + '/' + $('#t2_pallet').val();
             var termo = $('#termografo').val();
+            var termoMarca = $('#marca_termografo').val();
             $.ajax({
                 url: 'data/getDetaPalletDesp.php?folio=' + $('#folio').val() + ';' + $('#clientes').val(),
                 dataType: 'json',
@@ -55,6 +56,7 @@ $(document).ready(function () {
                             '</td><td>' + valueOfElement.paen_tipopa +
                             '</td><td>' + valueOfElement.stat_codigo +
                             '</td><td id="termo' + valueOfElement.paen_numero + '">' + termo +
+                            '</td><td style="display:none" id="termoMarca' + valueOfElement.paen_numero + '">' + termoMarca +
                             '</td></tr>');
                     });
 
@@ -194,25 +196,15 @@ $(document).ready(function () {
         var pallet = encabezado.getElementsByTagName('tr');
         var palletList = [];
         for (var i = 1; i < pallet.length; i++) {
-            palletList.push(pallet[i].id);
+            palletList.push(pallet[i].id + ';' + $('#temp' + pallet[i].id).html() + ';' + $('#termo' + pallet[i].id).html() + ';' + $('#termoMarca' + pallet[i].id).html());
         }
+        console.log(palletList);
         $.ajax({
             url: 'model/save.php',
             type: 'POST',
             data: {
                 cliente: $('#clientes').val(),
                 planta: $('#planta').val(),
-                embarque: $('#embarque').val(),
-                nave: $('#nave').val(),
-                consignatario: $('#consig').val(),
-                pto_destino: $('#pto_destino').val(),
-                guia: $('#guia').val(),
-                sps: $('#sps').val(),
-                tot_cajas: $('#tot_cajas').val(),
-                fecha_des: $('#fecha_des').val(),
-                hora_des: $('#hora_des').val(),
-                patente: $('#patente').val(),
-                tipo_mov: $('#tipo_mov').val(),
                 palletList: palletList
             },
             success: function (data) {
@@ -223,6 +215,7 @@ $(document).ready(function () {
 });
 function eliminarPallet(id) {
     $('#' + id).remove();
+    globalControl--;
     alert('Pallet eliminado!');
 }
 function editarPallet(id) {

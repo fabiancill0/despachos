@@ -540,7 +540,7 @@ $cone = new Connections();
                                     <label class="col-form-label" for="termografo">Termógrafo</label>
                                 </div>
                                 <div class="col-8">
-                                    <input type="text" class="form-control form-control-sm" id="termografo" disabled>
+                                    <input type="text" class="form-control form-control-sm" id="termografo">
                                 </div>
                             </div>
                         </div>
@@ -551,7 +551,7 @@ $cone = new Connections();
                                 </div>
                                 <div class="col-8">
                                     <select class="form-select form-select-sm" id="marca_termografo">
-                                        <option value="" selected>N/A</option>
+                                        <option value="0" selected>N/A</option>
                                         <?php
                                         $functions->getTermografo($cone->connectToServ());
                                         ?>
