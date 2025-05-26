@@ -6,28 +6,53 @@ include 'encdec.php';
 $functions = new Functions();
 $conn = new Connections();
 
-$query_enca = "INSERT INTO despafrigoen
-(plde_codigo, defe_numero, clie_codigo, defe_fecdes, defe_cantar, defe_tiposa, puer_codigo, defe_guides, defe_cantaj,
+$connnect = $conn->connectToServ();
+$data = $_POST['data_enca'];
+$ultimo = odbc_fetch_array(odbc_exec($connnect, $functions->getUltimoDespacho()));
+
+$query_enca = "INSERT INTO dba.despafrigoen
+(plde_codigo, defe_numero, clie_codigo, defe_fecdes, defe_cantar, defe_tiposa, puer_codigo, defe_guides, defe_cancaj,
 defe_horade, defe_canpal, tran_codigo, tica_codigo, embq_codigo, defe_patent, defe_pataco, defe_chofer, defe_plasag,
 defe_fecact, defe_horact, defe_tpcont, defe_nrcont, tran_fechat, defe_espmul, defe_especi, defe_chfrut, defe_celcho,
 defe_nrosps, defe_ctlter, defe_fecdig) VALUES 
-()";
+(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-$query_deta = "INSERT INTO dba.despafrigode
+$query_enca_tran = "INSERT INTO dba.despafrigoen
+(defe_numero, defe_fecdes, defe_horade, defe_tiposa, puer_codigo, defe_guides, plde_codigo, clie_codigo, 
+ embq_codigo, tran_fechat, defe_nrosps, defe_ctlter, defe_fecdig) VALUES 
+(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+$stmt_enca = odbc_prepare($connnect, $query_enca_tran);
+
+$result = odbc_execute($stmt_enca, [
+    $ultimo['defe_numero'] + 1,
+    $data['fecha_des'],
+    $data['hora_des'],
+    $data['tipo_mov'],
+    $data['pto_destino_cod'],
+    $data['guia'],
+    $data['planta'],
+    $data['clientes'],
+    $data['embarque'],
+    date('Y-m-d H:i:s'),
+    $data['sps'],
+    $data['if_termografo'],
+    date('Y-m-d H:i:s')
+]);
+
+echo $result;
+//echo json_encode(['defe_numero' => $ultimo['defe_numero']]);
+
+/*$query_deta = "INSERT INTO dba.despafrigode
 (plde_codigo, defe_numero, clie_codigo, paen_numero, defe_termog, defe_tempe1, defe_tempe2, defe_ladoes, defe_filaes,tran_fechat, tema_codigo)
  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-$connnect = $conn->connectToServ();
-$ultimo = odbc_fetch_array(odbc_exec($connnect, $functions->getUltimoDespacho($_POST['cliente'])));
-
-$stmt = odbc_prepare($connnect, $query_deta);
-foreach ($_POST['palletList'] as $value) {
-    $data = explode(';', $value);
-    $pallet = $data[0];
-    $temp = explode('/', $data[1]);
+$stmt_deta = odbc_prepare($connnect, $query_deta);
+foreach ($_POST['palletList'] as $folio => $value) {
+    $temp = explode('/', $data[0]);
     $temp1 = $temp[0] == '' ? null : $temp[0];
     $temp2 = $temp[1] == '' ? null : $temp[1];
-    $termo = $data[2] == '' ? null : $data[2];
-    $termoMarca = $data[3] == 0 ? null : $data[3];
-    $éxito = odbc_execute($stmt, [$_POST['planta'], $ultimo['defe_numero'], $_POST['cliente'], $pallet, $termo, $temp1, $temp2, '', '', date('Y-m-d H:i:s'), $termoMarca]);
-}
+    $termo = $data[2] == '' ? null : $data[1];
+    $termoMarca = $data[3] == 0 ? null : $data[2];
+    odbc_execute($stmt_deta, [$_POST['planta'], $ultimo['defe_numero'], $_POST['cliente'], $folio, $termo, $temp1, $temp2, '', '', date('Y-m-d H:i:s'), $termoMarca]);
+}*/

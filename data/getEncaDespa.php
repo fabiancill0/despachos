@@ -34,6 +34,7 @@ if (isset($_GET['cliente'])) {
     $row = odbc_fetch_array($data_despacho);
     $row_edit = [
         'defe_numero' => $row['defe_numero'],
+        'nave_codigo' => $row['nave_codigo'],
         'embq_nomnav' => $row['embq_nomnav'],
         'clie_codigo' => $row['clie_codigo'],
         'defe_cancaj' => $row['defe_cancaj'],
@@ -42,9 +43,11 @@ if (isset($_GET['cliente'])) {
         'plde_codigo' => $row['plde_codigo'],
         'defe_fecdes' => $row['defe_fecdes'],
         'defe_horade' => $row['defe_horade'],
-        'reci_codigo' => $functions->getNombreRecibidor($connection, $row['reci_codigo']),
+        'reci_codigo' => $row['reci_codigo'],
+        'reci_nombre' => $functions->getNombreRecibidor($connection, $row['reci_codigo']),
         'defe_tiposa' => $row['defe_tiposa'],
-        'puer_codigo' => $functions->getNombrePuertos($connection, $row['puer_codigo']),
+        'nomb_puerto' => $functions->getNombrePuertos($connection, $row['puer_codigo']),
+        'puer_codigo' => $row['puer_codigo'],
         'defe_ctlter' => $row['defe_ctlter'],
         'defe_guides' => is_null($row['defe_guides']) ? '' : $row['defe_guides'],
         'embq_codigo' => $row['embq_codigo']

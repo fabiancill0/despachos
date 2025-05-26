@@ -188,6 +188,7 @@ $cone = new Connections();
                             </div>
                             <div class="col-7">
                                 <input type="text" class="form-control form-control-sm" id="nave">
+                                <input type="number" style="display: none" id="nave_cod">
                             </div>
                         </div>
                     </div>
@@ -226,6 +227,7 @@ $cone = new Connections();
                     </div>
                     <div class="col-9">
                         <input type="text" class="form-control form-control-sm" id="pto_destino">
+                        <input type="number" style="display: none" id="pto_destino_cod">
                     </div>
                 </div>
             </div>
@@ -326,7 +328,7 @@ $cone = new Connections();
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
             <span class="col-1"></span>
-            <button type="button" class="btn btn-success btn-lg col-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button type="button" class="btn btn-success btn-lg col-3" data-bs-toggle="modal" data-bs-target="#exampleModal" id="save_enca_despacho">
                 <i class="fa-solid fa-square-plus"></i>
             </button>
             <span class="col-1"></span>

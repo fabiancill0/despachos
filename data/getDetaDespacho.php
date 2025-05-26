@@ -18,6 +18,7 @@ while ($row = odbc_fetch_array($data_despacho)) {
         'defe_tempe2' => is_null($row['defe_tempe2']) ? '' : $row['defe_tempe2'],
         'defe_ladoes' => $row['defe_ladoes'],
         'defe_termog' => is_null($row['defe_termog']) ? '' : $row['defe_termog'],
+        'tema_codigo' => is_null($row['tema_codigo']) ? 0 : $row['tema_codigo'],
         'pafr_varrot' => '',
         'emba_codigo' => '',
         'etiq_codigo' => '',

@@ -35,9 +35,12 @@ if (isset($_GET['cliente'])) {
     $row = odbc_fetch_array($data_embarque);
     $row_edit = [
         'embq_codigo' => $row['embq_codigo'],
-        'reci_codigo' => $functions->getNombreRecibidor($connection, $row['reci_codigo']),
+        'reci_codigo' => $row['reci_codigo'],
+        'reci_nombre' => $functions->getNombreRecibidor($connection, $row['reci_codigo']),
+        'nave_codigo' => $row['nave_codigo'],
         'embq_nomnav' => $row['embq_nomnav'],
-        'embq_descar' => $functions->getNombrePuertos($connection, $row['embq_descar']),
+        'embq_descar' => $row['embq_descar'],
+        'nomb_puerto' => $functions->getNombrePuertos($connection, $row['embq_descar']),
         'embq_numdus' => is_null($row['embq_numdus']) ? '0' : $row['embq_numdus']
     ];
     echo json_encode($row_edit);

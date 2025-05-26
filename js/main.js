@@ -192,11 +192,10 @@ $(document).ready(function () {
     });
     $('#save_despacho').on('click', function () {
         const encabezado = document.querySelector('#encabezado_despacho');
-        var inputs = encabezado.getElementsByTagName('input');
         var pallet = encabezado.getElementsByTagName('tr');
-        var palletList = [];
+        var palletList = {};
         for (var i = 1; i < pallet.length; i++) {
-            palletList.push(pallet[i].id + ';' + $('#temp' + pallet[i].id).html() + ';' + $('#termo' + pallet[i].id).html() + ';' + $('#termoMarca' + pallet[i].id).html());
+            palletList[pallet[i].id] = $('#temp' + pallet[i].id).html() + ';' + $('#termo' + pallet[i].id).html() + ';' + $('#termoMarca' + pallet[i].id).html();
         }
         console.log(palletList);
         $.ajax({
@@ -206,6 +205,34 @@ $(document).ready(function () {
                 cliente: $('#clientes').val(),
                 planta: $('#planta').val(),
                 palletList: palletList
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    });
+    $('#save_enca_despacho').on('click', function () {
+        const encabezado = document.querySelector('#encabezado_despacho');
+        var inputs = encabezado.getElementsByTagName('input');
+        var selects = encabezado.getElementsByTagName('select');
+        console.log(inputs);
+        console.log(selects);
+        var datos = {}
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type == 'checkbox') {
+                datos[inputs[i].id] = inputs[i].checked ? 1 : 0;
+            } else {
+                datos[inputs[i].id] = inputs[i].value;
+            }
+        }
+        for (var i = 0; i < selects.length; i++) {
+            datos[selects[i].id] = selects[i].value;
+        }
+        $.ajax({
+            url: 'model/save.php',
+            type: 'POST',
+            data: {
+                data_enca: datos,
             },
             success: function (data) {
                 console.log(data);
@@ -263,10 +290,12 @@ function loadEmbarque(id) {
             $('#embarque').val(data.embq_codigo);
             document.getElementById('embarque').setAttribute('disabled', '');
             $('#nave').val(data.embq_nomnav);
+            $('#nave_cod').val(data.nave_codigo);
             document.getElementById('nave').setAttribute('disabled', '');
-            $('#consig').html('<option value="' + data.reci_codigo + '">' + data.reci_codigo + '</option>');
+            $('#consig').html('<option value="' + data.reci_codigo + '">' + data.reci_nombre + '</option>');
             document.getElementById('consig').setAttribute('disabled', '');
-            $('#pto_destino').val(data.embq_descar);
+            $('#pto_destino').val(data.nomb_puerto);
+            $('#pto_destino_cod').val(data.embq_descar);
             document.getElementById('pto_destino').setAttribute('disabled', '');
             $('#dus').val(data.embq_numdus);
             document.getElementById('dus').setAttribute('disabled', '');
@@ -294,6 +323,7 @@ function loadDespacho(id) {
                     '</td><td>' + valueOfElement.paen_tipopa +
                     '</td><td>' + valueOfElement.stat_codigo +
                     '</td><td id="termo' + indexInArray + '">' + valueOfElement.defe_termog +
+                    '</td><td style="display:none" id="termoMarca' + indexInArray + '">' + valueOfElement.tema_codigo +
                     '</td></tr>');
             });
         }
@@ -318,8 +348,9 @@ function loadDespacho(id) {
             $('#embarque').val(data.embq_codigo);
             document.getElementById('embarque').setAttribute('disabled', '');
             $('#nave').val(data.embq_nomnav);
+            $('#nave_cod').val(data.nave_codigo);
             document.getElementById('nave').setAttribute('disabled', '');
-            $('#consig').html('<option value="' + data.reci_codigo + '">' + data.reci_codigo + '</option>');
+            $('#consig').html('<option value="' + data.reci_codigo + '">' + data.reci_nombre + '</option>');
             document.getElementById('consig').setAttribute('disabled', '');
             if (data.defe_ctlter == 1) {
                 document.getElementById('if_termografo').setAttribute('checked', '');
@@ -328,7 +359,8 @@ function loadDespacho(id) {
                 document.getElementById('if_termografo').removeAttribute('checked');
                 document.getElementById('if_termografo').removeAttribute('disabled');
             }
-            $('#pto_destino').val(data.puer_codigo);
+            $('#pto_destino').val(data.nomb_puerto);
+            $('#pto_destino_cod').val(data.puer_codigo);
             document.getElementById('pto_destino').setAttribute('disabled', '');
             $('#guia').val(data.defe_guides);
             document.getElementById('guia').setAttribute('disabled', '');

@@ -152,19 +152,19 @@ class Functions
     $query = "SELECT embq_codigo FROM DBA.embarqueprod WHERE clie_codigo = $cliente ORDER BY embq_fzarpe DESC";
     return $query;
   }
-  function getUltimoDespacho($cliente)
+  function getUltimoDespacho()
   {
-    $query = "SELECT TOP 1 defe_numero FROM DBA.despafrigoen WHERE clie_codigo = $cliente ORDER BY defe_numero DESC";
+    $query = "SELECT TOP 1 defe_numero FROM DBA.despafrigoen ORDER BY defe_numero DESC";
     return $query;
   }
   function getEncaEmbarque($cliente)
   {
-    $query = "SELECT embq_bookin, embq_codigo, clie_codigo, reci_codigo, embq_fitosa, embq_nomnav, embq_ptoori, embq_descar, embc_codigo FROM DBA.embarqueprod WHERE clie_codigo = $cliente";
+    $query = "SELECT embq_bookin, embq_codigo, clie_codigo, reci_codigo, embq_fitosa, embq_nomnav, embq_ptoori, embq_descar, embc_codigo, nave_codigo FROM DBA.embarqueprod WHERE clie_codigo = $cliente";
     return $query;
   }
   function getEncaEmbarqueByCod($embarque, $cliente)
   {
-    $query = "SELECT embq_codigo, reci_codigo, embq_nomnav, embq_descar, embq_numdus FROM DBA.embarqueprod WHERE clie_codigo = $cliente AND embq_codigo = '$embarque'";
+    $query = "SELECT embq_codigo, nave_codigo, reci_codigo, embq_nomnav, embq_descar, embq_numdus FROM DBA.embarqueprod WHERE clie_codigo = $cliente AND embq_codigo = '$embarque'";
     return $query;
   }
   function getDetaPalletDespacho($folio, $cliente)
@@ -209,7 +209,7 @@ FROM DBA.despafrigoen as enca JOIN dba.embarqueprod as emba on enca.embq_codigo 
   }
   function getEncaDespachoByNumero($cliente, $despacho)
   {
-    $query = "SELECT enca.defe_ctlter, emba.embq_nomnav, enca.plde_codigo, enca.defe_nrosps,enca.defe_patent, enca.defe_cancaj,
+    $query = "SELECT enca.defe_ctlter, emba.nave_codigo, emba.embq_nomnav, enca.plde_codigo, enca.defe_nrosps,enca.defe_patent, enca.defe_cancaj,
     enca.clie_codigo,enca.defe_numero, enca.defe_fecdes, enca.defe_horade, emba.reci_codigo, enca.defe_tiposa, enca.puer_codigo,
     enca.defe_guides, enca.embq_codigo
 FROM DBA.despafrigoen as enca JOIN dba.embarqueprod as emba on enca.embq_codigo = emba.embq_codigo WHERE enca.clie_codigo = $cliente AND enca.defe_numero = $despacho";
@@ -217,7 +217,7 @@ FROM DBA.despafrigoen as enca JOIN dba.embarqueprod as emba on enca.embq_codigo 
   }
   function getDetaDespacho($id)
   {
-    $query = "SELECT paen_numero, defe_tempe1, defe_tempe2, defe_ladoes, defe_termog FROM DBA.despafrigode WHERE defe_numero = $id ORDER BY defe_ladoes, defe_filaes";
+    $query = "SELECT paen_numero, defe_tempe1, defe_tempe2, defe_ladoes, defe_termog, tema_codigo FROM DBA.despafrigode WHERE defe_numero = $id ORDER BY defe_ladoes, defe_filaes";
     return $query;
   }
   function getNombrePlanta($conex, $codigo)
