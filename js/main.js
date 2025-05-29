@@ -1,27 +1,12 @@
 $(document).ready(function () {
     var globalControl = 1;
-    var estib_izq = true;
-    if (estib_izq) {
-        $('#estiba_izq').attr('checked', true);
-        $('#posicion_izq').val(globalControl);
-    } else {
-        $('#estiba_der').attr('checked', true);
-        $('#posicion_der').val(globalControl);
-    }
+    var tot_cajas = 0;
     $('#if_termografo').change(function () {
         if (this.checked) {
             document.getElementById('termografo').removeAttribute('disabled');
         } else {
             document.getElementById('termografo').setAttribute('disabled', '');
         }
-    });
-    $('#estiba_izq').change(function () {
-        $('#posicion_izq').val(globalControl);
-        $('#posicion_der').val('');
-    });
-    $('#estiba_der').change(function () {
-        $('#posicion_der').val(globalControl);
-        $('#posicion_izq').val('');
     });
     $('#add_pallet').on('click', function () {
         if ($('#' + $('#folio').val()).length) {
@@ -51,13 +36,14 @@ $(document).ready(function () {
                             '</td><td>' + valueOfElement.emba_codigo +
                             '</td><td>' + valueOfElement.etiq_codigo +
                             '</td><td>' + valueOfElement.pafr_calrot +
-                            '</td><td>' + valueOfElement.paen_ccajas +
+                            '</td><td id="cajas' + valueOfElement.paen_numero + '">' + valueOfElement.paen_ccajas +
                             '</td><td id="temp' + valueOfElement.paen_numero + '">' + temp +
                             '</td><td>' + valueOfElement.paen_tipopa +
                             '</td><td>' + valueOfElement.stat_codigo +
                             '</td><td id="termo' + valueOfElement.paen_numero + '">' + termo +
                             '</td><td style="display:none" id="termoMarca' + valueOfElement.paen_numero + '">' + termoMarca +
                             '</td></tr>');
+                        tot_cajas += parseInt(valueOfElement.paen_ccajas);
                     });
 
                 }
@@ -69,17 +55,6 @@ $(document).ready(function () {
             }
             $('#deta_pallet').html('');
             globalControl++;
-            if (globalControl % 2 == 0) {
-                estib_izq = false;
-                $('#estiba_der').attr('checked', true);
-                $('#posicion_der').val(globalControl);
-                $('#posicion_izq').val('');
-            } else {
-                estib_izq = true;
-                $('#estiba_izq').attr('checked', true);
-                $('#posicion_izq').val(globalControl);
-                $('#posicion_der').val('');
-            }
             alert('Pallet agregado a despacho!');
         }
     });
@@ -241,6 +216,7 @@ $(document).ready(function () {
     });
 });
 function eliminarPallet(id) {
+    tot_cajas -= $('#cajas' + id);
     $('#' + id).remove();
     globalControl--;
     alert('Pallet eliminado!');
