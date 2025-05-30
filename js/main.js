@@ -44,6 +44,19 @@ $(document).ready(function () {
                             '</td><td style="display:none" id="termoMarca' + valueOfElement.paen_numero + '">' + termoMarca +
                             '</td></tr>');
                         tot_cajas += parseInt(valueOfElement.paen_ccajas);
+                        globalControl++;
+                        $('#tot_cajas').val(tot_cajas);
+                        console.log(tot_cajas)
+                        console.log(globalControl)
+                        /*$.ajax({
+                            url: 'model/save.php?type=pallet',
+                            type: 'POST',
+                            data: {
+                                cliente: $('#clientes').val(),
+                                planta: $('#planta').val(),
+                                palletList: valueOfElement.paen_numero + ';' + temp + ';' + termo + ';' + termoMarca
+                            }
+                        });*/
                     });
 
                 }
@@ -54,7 +67,6 @@ $(document).ready(function () {
                 inputs[i].value = '';
             }
             $('#deta_pallet').html('');
-            globalControl++;
             alert('Pallet agregado a despacho!');
         }
     });
@@ -99,8 +111,6 @@ $(document).ready(function () {
                     $('#etiqueta').val(data.etiq_codigo);
                     document.getElementById('etiqueta').setAttribute('disabled', '');
                     $('#deta_pallet').load('data/getDetaPallet.php?folio=' + $('#folio').val() + ';' + $('#clientes').val());
-                    $('#posicion_izq').val(globalControl);
-                    $('#posicion_der').val('');
                 }
             }
         });
@@ -165,28 +175,28 @@ $(document).ready(function () {
 
         }
     });
-    $('#save_despacho').on('click', function () {
+    $('#clear').on('click', function () {
         const encabezado = document.querySelector('#encabezado_despacho');
-        var pallet = encabezado.getElementsByTagName('tr');
-        var palletList = {};
-        for (var i = 1; i < pallet.length; i++) {
-            palletList[pallet[i].id] = $('#temp' + pallet[i].id).html() + ';' + $('#termo' + pallet[i].id).html() + ';' + $('#termoMarca' + pallet[i].id).html();
-        }
-        console.log(palletList);
-        $.ajax({
-            url: 'model/save.php',
-            type: 'POST',
-            data: {
-                cliente: $('#clientes').val(),
-                planta: $('#planta').val(),
-                palletList: palletList
-            },
-            success: function (data) {
-                console.log(data);
+        var inputs = encabezado.getElementsByTagName('input');
+        var selects = encabezado.getElementsByTagName('select');
+        for (var i = 0; i < inputs.length; i++) {
+            if (inputs[i].type == 'date' || inputs[i].type == 'time') {
+            } else {
+                inputs[i].value = '';
+                inputs[i].removeAttribute('disabled');
             }
-        });
+
+        }
+        for (var i = 0; i < selects.length; i++) {
+            selects[i].innerHTML = '';
+            selects[i].removeAttribute('disabled');
+        }
+        globalControl = 1;
+        tot_cajas = 0;
     });
     $('#save_enca_despacho').on('click', function () {
+        document.getElementById('add_pallet_deta').removeAttribute('disabled');
+        document.getElementById('nro_despacho').setAttribute('disabled', '');
         const encabezado = document.querySelector('#encabezado_despacho');
         var inputs = encabezado.getElementsByTagName('input');
         var selects = encabezado.getElementsByTagName('select');
@@ -204,21 +214,25 @@ $(document).ready(function () {
             datos[selects[i].id] = selects[i].value;
         }
         $.ajax({
-            url: 'model/save.php',
+            url: 'model/save.php?type=enca',
             type: 'POST',
             data: {
                 data_enca: datos,
             },
             success: function (data) {
+                $('#nro_despacho').val(parseInt(data));
                 console.log(data);
             }
         });
     });
 });
 function eliminarPallet(id) {
-    tot_cajas -= $('#cajas' + id);
+    tot_cajas -= parseInt($('#cajas' + id).html());
+    $('#tot_cajas').val(tot_cajas);
     $('#' + id).remove();
     globalControl--;
+    console.log(globalControl);
+    console.log(tot_cajas);
     alert('Pallet eliminado!');
 }
 function editarPallet(id) {

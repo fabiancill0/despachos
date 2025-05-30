@@ -324,15 +324,19 @@ $cone = new Connections();
         </div>
         <!-- Button trigger modal -->
         <div class="row justify-content-center">
-            <button type="button" class="btn btn-primary btn-lg col-3" data-bs-toggle="modal" data-bs-target="#busquedaModal" id="get_enca_despacho">
+            <button type="button" class="btn btn-primary btn-lg col-2" data-bs-toggle="modal" data-bs-target="#busquedaModal" id="get_enca_despacho">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
             <span class="col-1"></span>
-            <button type="button" class="btn btn-success btn-lg col-3" data-bs-toggle="modal" data-bs-target="#exampleModal" id="save_enca_despacho">
+            <button type="button" class="btn btn-primary btn-lg col-2" id="clear">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <span class="col-1"></span>
+            <button type="button" class="btn btn-success btn-lg col-2" data-bs-toggle="modal" data-bs-target="#exampleModal" disabled id="add_pallet_deta">
                 <i class="fa-solid fa-square-plus"></i>
             </button>
             <span class="col-1"></span>
-            <button type="button" class="btn btn-success btn-lg col-3" id="save_despacho">
+            <button type="button" class="btn btn-success btn-lg col-2" id="save_enca_despacho">
                 <i class="fa-solid fa-floppy-disk"></i>
             </button>
         </div>
