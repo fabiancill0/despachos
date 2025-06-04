@@ -24,12 +24,10 @@ if (isset($_GET['cliente'])) {
         </tr>
 <?php
     }
-} else if (isset($_GET['data'])) {
-    $data = explode(';', $_GET['data']);
-    $despacho = $data[0];
-    $cliente = $data[1];
+} else if (isset($_GET['nro_desp'])) {
+    $despacho = $_GET['nro_desp'];
     $connection = $conection->connectToServ();
-    $enca_despacho = $functions->getEncaDespachoByNumero($cliente, $despacho);
+    $enca_despacho = $functions->getEncaDespachoByNumero($despacho);
     $data_despacho = odbc_exec($connection, $enca_despacho);
     $row = odbc_fetch_array($data_despacho);
     $row_edit = [
@@ -50,7 +48,9 @@ if (isset($_GET['cliente'])) {
         'puer_codigo' => $row['puer_codigo'],
         'defe_ctlter' => $row['defe_ctlter'],
         'defe_guides' => is_null($row['defe_guides']) ? '' : $row['defe_guides'],
-        'embq_codigo' => $row['embq_codigo']
+        'embq_codigo' => $row['embq_codigo'],
+        'defe_cantar' => $row['defe_cantar'],
+        'defe_numdus' => $row['defe_numdus'],
     ];
     echo json_encode($row_edit);
 }

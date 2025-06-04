@@ -71,6 +71,8 @@ $cone = new Connections();
 
 <body data-bs-theme="dark">
     <div class="container-fluid">
+        <input type="number" style="display:none" id="globalCounter" value="0">
+        <input type="number" style="display:none" id="totCajas" value="0">
         <div id="encabezado_despacho">
             <div class="mb-0">
                 <div class="row align-items-center">
@@ -104,14 +106,22 @@ $cone = new Connections();
                 <div class="row">
                     <div class="col-6">
                         <div class="row align-items-center">
-                            <div class="col-4">
+                            <div class="col-5">
                                 <label class="col-form-label" for="nro_despacho">Nro.Des.</label>
                             </div>
-                            <div class="col-8">
-                                <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="8" class="form-control form-control-sm" id="nro_despacho">
+                            <div class="col-7">
+                                <div class="row">
+                                    <div class="col-8 pe-0">
+                                        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="8" class="form-control form-control-sm" id="nro_despacho">
+                                    </div>
+                                    <div class="col-4 ps-0">
+                                        <button type="button" id="get_despacho" class="btn btn-success btn-sm"><i class="fa-solid fa-square-check"></i></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                     <div class="col-6">
                         <div class="row align-items-center">
                             <div class="col-4">
@@ -249,7 +259,7 @@ $cone = new Connections();
                                 <label class="col-form-label" for="tot_cajas">Cajas</label>
                             </div>
                             <div class="col-7">
-                                <input type="number" class="form-control form-control-sm" id="tot_cajas">
+                                <input type="number" class="form-control form-control-sm" id="tot_cajas" value="0">
                             </div>
                         </div>
                     </div>
@@ -328,8 +338,8 @@ $cone = new Connections();
                 <i class="fa-solid fa-magnifying-glass"></i>
             </button>
             <span class="col-1"></span>
-            <button type="button" class="btn btn-primary btn-lg col-2" id="clear">
-                <i class="fa-solid fa-magnifying-glass"></i>
+            <button type="button" class="btn btn-light btn-lg col-2" id="clear">
+                <i class="fa-solid fa-file"></i>
             </button>
             <span class="col-1"></span>
             <button type="button" class="btn btn-success btn-lg col-2" data-bs-toggle="modal" data-bs-target="#exampleModal" disabled id="add_pallet_deta">
@@ -338,6 +348,9 @@ $cone = new Connections();
             <span class="col-1"></span>
             <button type="button" class="btn btn-success btn-lg col-2" id="save_enca_despacho">
                 <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+            <button type="button" class="btn btn-warning btn-lg col-2" style="display:none" id="update_enca_despacho">
+                <i class="fa-solid fa-pen-to-square"></i>
             </button>
         </div>
         <!-- Modal -->
@@ -411,7 +424,7 @@ $cone = new Connections();
                     <div class="modal-header" id="header_pallet">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Añadir pallets</h1>
                         <button type="button" id="add_pallet" class="btn btn-success btn-lg"><i class="fa-solid fa-square-plus"></i></button>
-                        <button type="button" id="edit_pallet" class="btn btn-warning btn-lg" disabled><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button type="button" id="edit_pallet" class="btn btn-warning btn-lg" disabled data-bs-dismiss="modal"><i class="fa-solid fa-pen-to-square"></i></button>
                         <button type="button" class="btn btn-danger btn-lg" data-bs-dismiss="modal"><i class="fa-solid fa-right-from-bracket fa-flip-horizontal"></i></button>
                     </div>
                     <div class="container-fluid" id="detalle_pallet">

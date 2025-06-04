@@ -4,16 +4,14 @@ include '../model/functions.php';
 
 $conection = new Connections();
 $functions = new Functions();
-$data = $_GET['data'];
-$deta = explode(';', $data);
-$despacho = $deta[0];
-$cliente = $deta[1];
+$despacho = $_GET['nro_desp'];
 $connection = $conection->connectToServ();
 $query_despacho = $functions->getDetaDespacho($despacho);
 $data_despacho = odbc_exec($connection, $query_despacho);
 $row_edit = [];
 while ($row = odbc_fetch_array($data_despacho)) {
     $row_edit[$row['paen_numero']] = [
+        'clie_codigo' => $row['clie_codigo'],
         'defe_tempe1' => is_null($row['defe_tempe1']) ? '' : $row['defe_tempe1'],
         'defe_tempe2' => is_null($row['defe_tempe2']) ? '' : $row['defe_tempe2'],
         'defe_ladoes' => $row['defe_ladoes'],
@@ -29,7 +27,7 @@ while ($row = odbc_fetch_array($data_despacho)) {
     ];
 }
 foreach ($row_edit as $key => $value) {
-    $deta_pallet = odbc_fetch_array(odbc_exec($connection, $functions->getDetaPalletDespacho($key, $cliente)));
+    $deta_pallet = odbc_fetch_array(odbc_exec($connection, $functions->getDetaPalletDespacho($key, $row_edit[$key]['clie_codigo'])));
     $row_edit[$key]['pafr_varrot'] = $functions->getNombreVariedad($connection, $deta_pallet['pafr_varrot'], $deta_pallet['espe_codigo']);
     $row_edit[$key]['emba_codigo'] = $deta_pallet['emba_codigo'];
     $row_edit[$key]['etiq_codigo'] = $functions->getNombreEtiqueta($connection, $deta_pallet['etiq_codigo']);
