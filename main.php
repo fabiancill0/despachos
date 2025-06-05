@@ -74,9 +74,9 @@ if ($_SESSION['login_type'] != 0 && $_SESSION['login_active'] != 0) {
     </head>
 
     <body data-bs-theme="dark">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <span class="navbar-brand mb-0 h1">Navbar</span>
+                <span class="navbar-brand mb-0 h1">Despachos</span>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <span class="navbar-nav me-auto mb-2 mb-lg-0">
                     </span>

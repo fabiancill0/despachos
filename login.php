@@ -15,10 +15,34 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
         crossorigin="anonymous" />
     <script src="https://kit.fontawesome.com/34afac4ad4.js" crossorigin="anonymous"></script>
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+    </style>
 </head>
 
-<body data-bs-theme="dark">
-    <div class="container">
+<body data-bs-theme="dark" class="text-center">
+    <main class="form-signin">
         <?php
         session_start();
         if (isset($_SESSION['statusLogin'])) {
@@ -47,41 +71,29 @@
         }
         unset($_SESSION['statusLogin']);
         ?>
-        <div class="card">
-            <div class="card-header">
-                <h1 class="text-center">Sistema de Despachos</h1>
+        <form action="model/validate.php" method="post">
+            <h1 class="h3 mb-3 fw-normal">Sistema de Despachos</h1>
+            <div class="form-floating mb-3">
+                <input
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    name="username"
+                    required />
+                <label for="username">Usuario</label>
             </div>
-            <div class="card-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <form action="model/validate.php" method="post">
-                                <div class="mb-3">
-                                    <label for="username" class="form-label">Usuario</label>
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="username"
-                                        name="username"
-                                        required />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="password" class="form-label">Contraseña</label>
-                                    <input
-                                        type="password"
-                                        class="form-control"
-                                        id="password"
-                                        name="password"
-                                        required />
-                                </div>
-                                <button type="submit" class="btn btn-primary">Ingresar</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-floating mb-3">
+                <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required />
+                <label for="password">Contraseña</label>
             </div>
-        </div>
-    </div>
+            <button type="submit" class="w-100 btn btn-lg btn-primary">Ingresar</button>
+        </form>
+    </main>
     <script
         src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
