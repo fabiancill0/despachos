@@ -4,16 +4,19 @@ if ($_SESSION['login_active'] == 1) {
     $usuario = $_SESSION['user'];
 ?>
     <!doctype html>
-    <html lang="es">
+    <html lang="es" data-bs-theme="dark">
 
     <head>
         <title>Bienvenido(a)</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
+
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <!-- Bootstrap CSS v5.2.1 -->
+        <link rel="icon" href="./img/web/favicon.ico" sizes="32x32">
+        <link rel="apple-touch-icon" href="./img/web/apple-touch-icon.png" type="image/png">
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
@@ -26,7 +29,7 @@ if ($_SESSION['login_active'] == 1) {
         <script src="https://kit.fontawesome.com/34afac4ad4.js" crossorigin="anonymous"></script>
     </head>
 
-    <body data-bs-theme="dark">
+    <body>
         <nav class="navbar navbar-expand-sm">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">Hola, <?= $usuario ?></span>

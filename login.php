@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 
 <head>
-    <title>Login</title>
+    <title>Iniciar Sesión</title>
+
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <!-- Bootstrap CSS v5.2.1 -->
+    <link rel="icon" href="./img/web/favicon.ico" sizes="32x32">
+    <link rel="apple-touch-icon" href="./img/web/apple-touch-icon.png" type="image/png">
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -41,7 +44,7 @@
     </style>
 </head>
 
-<body data-bs-theme="dark" class="text-center">
+<body class="text-center">
     <main class="form-signin">
         <?php
         session_start();
@@ -72,6 +75,7 @@
         unset($_SESSION['statusLogin']);
         ?>
         <form action="model/validate.php" method="post">
+            <img src="./img/logo_usr.png" class="rounded mx-auto d-block" alt height="200">
             <h1 class="h3 mb-3 fw-normal">Iniciar Sesión</h1>
             <div class="form-floating mb-3">
                 <input
@@ -92,6 +96,7 @@
                 <label for="password">Contraseña</label>
             </div>
             <button type="submit" class="w-100 btn btn-lg btn-primary">Ingresar</button>
+            <p class="mt-5 mb-3 text-muted"><img src="./img/logo_dev.png" class="rounded" alt height="60"> © 2025</p>
         </form>
     </main>
     <script
