@@ -29,7 +29,7 @@ $(document).ready(function () {
             var termo = $('#termografo').val();
             var termoMarca = $('#marca_termografo').val();
             $.ajax({
-                url: 'data/getDetaPalletDesp.php?folio=' + folio + ';' + cliente,
+                url: '../data/getDetaPalletDesp.php?folio=' + folio + ';' + cliente,
                 dataType: 'json',
                 type: 'GET',
                 success: function (data) {
@@ -57,7 +57,7 @@ $(document).ready(function () {
             $('#globalCounter').val(parseInt($('#globalCounter').val()) + 1);
             $('#tot_cajas').val($('#totCajas').val());
             $.ajax({
-                url: 'model/save.php?type=pallet',
+                url: '../model/save.php?type=pallet',
                 type: 'POST',
                 data: {
                     cliente: cliente,
@@ -85,7 +85,7 @@ $(document).ready(function () {
         var termo = $('#termografo').val();
         var marca_termo = $('#marca_termografo').val();
         $.ajax({
-            url: 'model/save.php?type=edit_pallet',
+            url: '../model/save.php?type=edit_pallet',
             type: 'POST',
             data: {
                 cliente: $('#clientes').val(),
@@ -98,7 +98,7 @@ $(document).ready(function () {
             },
             success: function () {
                 $.ajax({
-                    url: 'data/getDetaDespacho.php?nro_desp=' + $('#nro_despacho').val(),
+                    url: '../data/getDetaDespacho.php?nro_desp=' + $('#nro_despacho').val(),
                     dataType: 'json',
                     type: 'GET',
                     success: function (data) {
@@ -137,7 +137,7 @@ $(document).ready(function () {
         var cliente = parseInt($('#folio').val().substring(0, 3));
         var folio = parseInt($('#folio').val().substring(3));
         $.ajax({
-            url: 'data/getEncaPallet.php?folio=' + folio + ';' + cliente,
+            url: '../data/getEncaPallet.php?folio=' + folio + ';' + cliente,
             dataType: 'json',
             type: 'GET',
             success: function (data) {
@@ -162,7 +162,7 @@ $(document).ready(function () {
                     document.getElementById('cajas').setAttribute('disabled', '');
                     $('#etiqueta').val(data.etiq_codigo);
                     document.getElementById('etiqueta').setAttribute('disabled', '');
-                    $('#deta_pallet').load('data/getDetaPallet.php?folio=' + folio + ';' + cliente);
+                    $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + folio + ';' + cliente);
                 }
             }
         });
@@ -173,7 +173,7 @@ $(document).ready(function () {
                 $('#enca_despa').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
             },
             success: function () {
-                $('#enca_despa').load('data/getEncaDespa.php?cliente=' + $('#clientes').val());
+                $('#enca_despa').load('../data/getEncaDespa.php?cliente=' + $('#clientes').val());
                 //$('#save_enca_despacho').hide();
                 //$('#update_enca_despacho').show();
                 document.getElementById('add_pallet_deta').removeAttribute('disabled');
@@ -187,7 +187,7 @@ $(document).ready(function () {
                 $('#enca_embarque').html('<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>');
             },
             success: function () {
-                $('#enca_embarque').load('data/getEncaEmbarque.php?cliente=' + $('#clientes').val());
+                $('#enca_embarque').load('../data/getEncaEmbarque.php?cliente=' + $('#clientes').val());
             }
         });
     });
@@ -195,7 +195,7 @@ $(document).ready(function () {
         document.getElementById('add_pallet_deta').removeAttribute('disabled');
         document.getElementById('save_enca_despacho').setAttribute('disabled', '');
         $.ajax({
-            url: 'data/getDetaDespacho.php?nro_desp=' + $('#nro_despacho').val(),
+            url: '../data/getDetaDespacho.php?nro_desp=' + $('#nro_despacho').val(),
             dataType: 'json',
             type: 'GET',
             success: function (data) {
@@ -220,7 +220,7 @@ $(document).ready(function () {
             }
         })
         $.ajax({
-            url: 'data/getEncaDespa.php?nro_desp=' + $('#nro_despacho').val(),
+            url: '../data/getEncaDespa.php?nro_desp=' + $('#nro_despacho').val(),
             dataType: 'json',
             type: 'GET',
             success: function (data) {
@@ -261,7 +261,7 @@ $(document).ready(function () {
         var id = e.which;
         if (id == '13') {
             $.ajax({
-                url: 'data/getEncaPallet.php?folio=' + folio + ';' + cliente,
+                url: '../data/getEncaPallet.php?folio=' + folio + ';' + cliente,
                 dataType: 'json',
                 type: 'GET',
                 success: function (data) {
@@ -290,7 +290,7 @@ $(document).ready(function () {
                         document.getElementById('cajas').setAttribute('disabled', '');
                         $('#etiqueta').val(data.etiq_codigo);
                         document.getElementById('etiqueta').setAttribute('disabled', '');
-                        $('#deta_pallet').load('data/getDetaPallet.php?folio=' + folio + ';' + cliente);
+                        $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + folio + ';' + cliente);
                     }
                 }
             });
@@ -314,13 +314,13 @@ $(document).ready(function () {
         for (var i = 0; i < selects.length; i++) {
             selects[i].removeAttribute('disabled');
             if (selects[i].id == 'clientes') {
-                $('#' + selects[i].id).load('includes/clientes.php');
+                $('#' + selects[i].id).load('../includes/clientes.php');
             } else if (selects[i].id == 'planta') {
-                $('#' + selects[i].id).load('includes/plantas.php');
+                $('#' + selects[i].id).load('../includes/plantas.php');
             } else if (selects[i].id == 'tipo_mov') {
-                $('#' + selects[i].id).load('includes/tipo_mov.php');
+                $('#' + selects[i].id).load('../includes/tipo_mov.php');
             } else if (selects[i].id == 'consig') {
-                $('#' + selects[i].id).load('includes/consignatarios.php');
+                $('#' + selects[i].id).load('../includes/consignatarios.php');
             }
         }
         $('#deta_despa').html('');
@@ -352,7 +352,7 @@ $(document).ready(function () {
             datos[selects[i].id] = selects[i].value;
         }
         $.ajax({
-            url: 'model/save.php?type=enca',
+            url: '../model/save.php?type=enca',
             type: 'POST',
             data: {
                 data_enca: datos
@@ -400,7 +400,7 @@ function eliminarPallet(id) {
     $('#tot_cajas').val($('#totCajas').val());
     $('#' + id).remove();
     $.ajax({
-        url: 'model/erase.php',
+        url: '../model/erase.php',
         type: 'POST',
         data: {
             nro_despacho: $('#nro_despacho').val(),
@@ -413,7 +413,7 @@ function eliminarPallet(id) {
 }
 function editarPallet(id) {
     $.ajax({
-        url: 'data/getEncaPallet.php?type=edit&folio=' + id + ';' + $('#clientes').val(),
+        url: '../data/getEncaPallet.php?type=edit&folio=' + id + ';' + $('#clientes').val(),
         dataType: 'json',
         type: 'GET',
         success: function (data) {
@@ -444,13 +444,13 @@ function editarPallet(id) {
             $('#t2_pallet').val(temp2);
             $('#termografo').val($('#termo' + id).text());
             $('#marca_termografo option[value=' + $('#termoMarca' + id).html() + ']').prop({ selected: true });
-            $('#deta_pallet').load('data/getDetaPallet.php?folio=' + id + ';' + $('#clientes').val());
+            $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + id + ';' + $('#clientes').val());
         }
     })
 }
 function loadEmbarque(id) {
     $.ajax({
-        url: 'data/getEncaEmbarque.php?data=' + id + ';' + $('#clientes').val(),
+        url: '../data/getEncaEmbarque.php?data=' + id + ';' + $('#clientes').val(),
         dataType: 'json',
         type: 'GET',
         success: function (data) {
@@ -471,7 +471,7 @@ function loadEmbarque(id) {
 }
 function loadDespacho(id) {
     $.ajax({
-        url: 'data/getDetaDespacho.php?nro_desp=' + id,
+        url: '../data/getDetaDespacho.php?nro_desp=' + id,
         dataType: 'json',
         type: 'GET',
         success: function (data) {
@@ -496,7 +496,7 @@ function loadDespacho(id) {
         }
     })
     $.ajax({
-        url: 'data/getEncaDespa.php?nro_desp=' + id,
+        url: '../data/getEncaDespa.php?nro_desp=' + id,
         dataType: 'json',
         type: 'GET',
         success: function (data) {

@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Despachos</title>
+    <title>Login</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta
@@ -72,7 +72,7 @@
         unset($_SESSION['statusLogin']);
         ?>
         <form action="model/validate.php" method="post">
-            <h1 class="h3 mb-3 fw-normal">Sistema de Despachos</h1>
+            <h1 class="h3 mb-3 fw-normal">Iniciar Sesión</h1>
             <div class="form-floating mb-3">
                 <input
                     type="text"
