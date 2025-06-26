@@ -176,8 +176,6 @@ $(document).ready(function () {
                 $('#enca_despa').load('../data/getEncaDespa.php?cliente=' + $('#clientes').val());
                 //$('#save_enca_despacho').hide();
                 //$('#update_enca_despacho').show();
-                document.getElementById('add_pallet_deta').removeAttribute('disabled');
-
             }
         });
     });
@@ -192,13 +190,23 @@ $(document).ready(function () {
         });
     });
     $('#get_despacho').on('click', function () {
-        document.getElementById('add_pallet_deta').removeAttribute('disabled');
-        document.getElementById('save_enca_despacho').setAttribute('disabled', '');
+        if ($('#nro_despacho').val() == '' || $('#nro_despacho').val() == null) {
+            alert('Por favor, ingrese un número de despacho válido.');
+            return;
+        }
         $.ajax({
             url: '../data/getDetaDespacho.php?nro_desp=' + $('#nro_despacho').val(),
             dataType: 'json',
             type: 'GET',
             success: function (data) {
+                if (data.error) {
+                    alert(data.error);
+                    $('#nro_despacho').val('');
+                    return;
+                } else {
+                    document.getElementById('add_pallet_deta').removeAttribute('disabled');
+                    document.getElementById('save_enca_despacho').setAttribute('disabled', '');
+                }
                 $('#deta_despa').html('');
                 $.each(data, function (indexInArray, valueOfElement) {
                     $('#deta_despa').append('<tr id="' + indexInArray + '">' +
@@ -330,14 +338,24 @@ $(document).ready(function () {
         $('#tot_cajas').val(0);
     });
     $('#save_enca_despacho').on('click', function () {
-        document.getElementById('add_pallet_deta').removeAttribute('disabled');
-        document.getElementById('nro_despacho').setAttribute('disabled', '');
-        document.getElementById('save_enca_despacho').setAttribute('disabled', '');
         const encabezado = document.querySelector('#encabezado_despacho');
         var inputs = encabezado.getElementsByTagName('input');
         var selects = encabezado.getElementsByTagName('select');
         console.log(inputs);
         console.log(selects);
+        for (var i = 1; i < inputs.length; i++) {
+            inputs[i].setAttribute('disabled', '');
+            if (inputs[i].type != 'checkbox' || inputs[i].type != 'date') {
+                if (inputs[i].value == null || inputs[i].value == '') {
+                    alert('Por favor, complete todos los campos obligatorios.');
+                    inputs[i].removeAttribute('disabled');
+                    return;
+                }
+            }
+        }
+        document.getElementById('add_pallet_deta').removeAttribute('disabled');
+        document.getElementById('nro_despacho').setAttribute('disabled', '');
+        document.getElementById('save_enca_despacho').setAttribute('disabled', '');
         var datos = {}
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].setAttribute('disabled', '');
@@ -470,6 +488,7 @@ function loadEmbarque(id) {
     })
 }
 function loadDespacho(id) {
+    document.getElementById('add_pallet_deta').removeAttribute('disabled');
     $.ajax({
         url: '../data/getDetaDespacho.php?nro_desp=' + id,
         dataType: 'json',

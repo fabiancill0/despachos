@@ -36,4 +36,7 @@ foreach ($row_edit as $key => $value) {
     $row_edit[$key]['paen_tipopa'] = $deta_pallet['paen_tipopa'] == 1 ? 'COMPLETO' : 'PUCHO';
     $row_edit[$key]['stat_codigo'] = $functions->getNombreStatus($connection, $deta_pallet['stat_codigo']);
 }
+if ($row_edit == []) {
+    $row_edit = ['error' => 'No se encontraron datos para el despacho solicitado.'];
+}
 echo json_encode($row_edit);

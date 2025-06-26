@@ -18,8 +18,8 @@ if ($_SESSION['login_active'] == 1) {
         <meta
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <link rel="icon" href="../img/web/favicon.ico" sizes="32x32">
-        <link rel="apple-touch-icon" href="../img/web/apple-touch-icon.png" type="image/png">
+        <link rel="icon" href="../img/icons/favicon.ico" sizes="32x32">
+        <link rel="apple-touch-icon" href="../img/icons/apple-touch-icon.png" type="image/png">
         <!-- Bootstrap CSS v5.2.1 -->
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
@@ -311,7 +311,7 @@ if ($_SESSION['login_active'] == 1) {
                                             <label class="col-form-label" for="dus">DUS</label>
                                         </div>
                                         <div class="col-7">
-                                            <input type="number" class="form-control form-control-sm" id="dus">
+                                            <input type="text" class="form-control form-control-sm" id="dus">
                                         </div>
                                     </div>
                                 </div>

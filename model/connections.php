@@ -2,7 +2,7 @@
 
 class Connections
 {
-  private $dbServ = "ProdServFtgo_2024_test";
+  private $dbServ = "ProdServFtgo_2024_pruebas";
   private $dbRK = "ProdFrutango_2024";
   private $dbEst = "EstFrutango";
   private $dbAppBase = "AppBase";
