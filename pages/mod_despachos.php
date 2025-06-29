@@ -34,6 +34,8 @@ if ($_SESSION['login_active'] == 1) {
         <link rel="stylesheet" href="https://cdn.datatables.net/2.3.0/css/dataTables.dataTables.css">
         <script src="https://kit.fontawesome.com/34afac4ad4.js" crossorigin="anonymous"></script>
         <script src="../js/main.js?<?= md5(time()) ?>"></script>
+        <script src="../js/quagga.js?<?= md5(time()) ?>"></script>
+        <script src="../js/file_input.js?<?= md5(time()) ?>"></script>
         <style>
             .table-container {
                 max-height: 150px;
@@ -460,7 +462,47 @@ if ($_SESSION['login_active'] == 1) {
                                             <div class="col-8 pe-0">
                                                 <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control form-control-sm" id="folio">
                                             </div>
-                                            <div class="col-4">
+                                            <div class="col-2">
+                                                <div class="controls">
+                                                    <input class="btn btn-primary" type="file" accept="image/*" capture="camera" />
+                                                    <fieldset style="display:none" class="reader-config-group">
+                                                        <label>
+                                                            <span>Barcode-Type</span>
+                                                            <select name="decoder_readers">
+                                                                <option value="code_128" selected="selected">Code 128</option>
+                                                            </select>
+                                                        </label>
+                                                        <label>
+                                                            <span>Resolution (long side)</span>
+                                                            <select name="input-stream_size">
+                                                                <option selected="selected" value="1280">1280px</option>
+                                                            </select>
+                                                        </label>
+                                                        <label>
+                                                            <span>Patch-Size</span>
+                                                            <select name="locator_patch-size">
+                                                                <option selected="selected" value="x-large">x-large</option>
+                                                            </select>
+                                                        </label>
+                                                        <label>
+                                                            <span>Half-Sample</span>
+                                                            <input type="checkbox" name="locator_half-sample" />
+                                                        </label>
+                                                        <label>
+                                                            <span>Single Channel</span>
+                                                            <input type="checkbox" name="input-stream_single-channel" />
+                                                        </label>
+                                                        <label>
+                                                            <span>Workers</span>
+                                                            <select name="numOfWorkers">
+                                                                <option selected="selected" value="1">1</option>
+                                                            </select>
+                                                        </label>
+                                                    </fieldset>
+                                                </div>
+                                            </div>
+                                            <div class="col-2">
+
                                                 <button type="button" id="check_pallet" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-square-check"></i></button>
                                             </div>
                                         </div>
