@@ -459,51 +459,51 @@ if ($_SESSION['login_active'] == 1) {
                                     </div>
                                     <div class="col-8">
                                         <div class="row">
-                                            <div class="col-8 pe-0">
+                                            <div class="col-6 pe-0">
                                                 <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control form-control-sm" id="folio">
                                             </div>
-                                            <div class="col-2">
-                                                <div class="controls">
-                                                    <input class="btn btn-primary" type="file" accept="image/*" capture="camera" />
-                                                    <fieldset style="display:none" class="reader-config-group">
-                                                        <label>
-                                                            <span>Barcode-Type</span>
-                                                            <select name="decoder_readers">
-                                                                <option value="code_128" selected="selected">Code 128</option>
-                                                            </select>
-                                                        </label>
-                                                        <label>
-                                                            <span>Resolution (long side)</span>
-                                                            <select name="input-stream_size">
-                                                                <option selected="selected" value="1280">1280px</option>
-                                                            </select>
-                                                        </label>
-                                                        <label>
-                                                            <span>Patch-Size</span>
-                                                            <select name="locator_patch-size">
-                                                                <option selected="selected" value="x-large">x-large</option>
-                                                            </select>
-                                                        </label>
-                                                        <label>
-                                                            <span>Half-Sample</span>
-                                                            <input type="checkbox" name="locator_half-sample" />
-                                                        </label>
-                                                        <label>
-                                                            <span>Single Channel</span>
-                                                            <input type="checkbox" name="input-stream_single-channel" />
-                                                        </label>
-                                                        <label>
-                                                            <span>Workers</span>
-                                                            <select name="numOfWorkers">
-                                                                <option selected="selected" value="1">1</option>
-                                                            </select>
-                                                        </label>
-                                                    </fieldset>
-                                                </div>
+                                            <div class="col-3">
+                                                <input id="folio_input" type="file" accept="image/*" capture="camera" style="clip: rect(0 0 0 0); clip-path: inset(50%);  height: 1px;  overflow: hidden;  position: absolute;white-space: nowrap;width: 1px;">
+                                                <label for="folio_input" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-camera"></i></label>
                                             </div>
-                                            <div class="col-2">
-
+                                            <div class="col-3">
                                                 <button type="button" id="check_pallet" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-square-check"></i></button>
+                                            </div>
+                                            <div class="controls" style="display:none">
+                                                <fieldset class="reader-config-group">
+                                                    <label>
+                                                        <span>Barcode-Type</span>
+                                                        <select name="decoder_readers">
+                                                            <option value="code_128" selected="selected">Code 128</option>
+                                                        </select>
+                                                    </label>
+                                                    <label>
+                                                        <span>Resolution (long side)</span>
+                                                        <select name="input-stream_size">
+                                                            <option selected="selected" value="1280">1280px</option>
+                                                        </select>
+                                                    </label>
+                                                    <label>
+                                                        <span>Patch-Size</span>
+                                                        <select name="locator_patch-size">
+                                                            <option selected="selected" value="x-large">x-large</option>
+                                                        </select>
+                                                    </label>
+                                                    <label>
+                                                        <span>Half-Sample</span>
+                                                        <input type="checkbox" name="locator_half-sample" />
+                                                    </label>
+                                                    <label>
+                                                        <span>Single Channel</span>
+                                                        <input type="checkbox" name="input-stream_single-channel" />
+                                                    </label>
+                                                    <label>
+                                                        <span>Workers</span>
+                                                        <select name="numOfWorkers">
+                                                            <option selected="selected" value="1">1</option>
+                                                        </select>
+                                                    </label>
+                                                </fieldset>
                                             </div>
                                         </div>
                                     </div>

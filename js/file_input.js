@@ -6,14 +6,14 @@ $(function () {
         attachListeners: function () {
             var self = this;
 
-            $(".controls input[type=file]").on("change", function (e) {
+            $("input[type=file]").on("change", function (e) {
                 if (e.target.files && e.target.files.length) {
                     App.decode(URL.createObjectURL(e.target.files[0]));
                 }
             });
 
             $(".controls button").on("click", function (e) {
-                var input = document.querySelector(".controls input[type=file]");
+                var input = document.querySelector("input[type=file]");
                 if (input.files && input.files.length) {
                     App.decode(URL.createObjectURL(input.files[0]));
                 }
@@ -48,7 +48,7 @@ $(function () {
             });
         },
         detachListeners: function () {
-            $(".controls input[type=file]").off("change");
+            $("input[type=file]").off("change");
             $(".controls .reader-config-group").off("change", "input, select");
             $(".controls button").off("click");
         },
