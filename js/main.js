@@ -313,7 +313,11 @@ $(document).ready(function () {
         document.getElementById('save_enca_despacho').removeAttribute('disabled');
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].removeAttribute('disabled');
-            if (inputs[i].type == 'date' || inputs[i].type == 'time') {
+            if (inputs[i].type == 'date') {
+                inputs[i].value = new Date().toISOString().split('T')[0];
+            } else if (inputs[i].type == 'time') {
+                inputs[i].value = new Date().toTimeString().split(' ')[0].substring(0, 5);
+            } else if (inputs[i].type == 'checkbox') {
             } else {
                 inputs[i].value = '';
             }
@@ -345,11 +349,15 @@ $(document).ready(function () {
         console.log(selects);
         for (var i = 1; i < inputs.length; i++) {
             inputs[i].setAttribute('disabled', '');
-            if (inputs[i].type != 'checkbox' || inputs[i].type != 'date') {
-                if (inputs[i].value == null || inputs[i].value == '') {
-                    alert('Por favor, complete todos los campos obligatorios.');
-                    inputs[i].removeAttribute('disabled');
-                    return;
+            if (inputs[i].id != 'guia' || inputs[i].id != 'sps') {
+            } else {
+                if (inputs[i].type != 'checkbox' || inputs[i].type != 'date') {
+                    if (inputs[i].value == null || inputs[i].value == '') {
+                        alert('Por favor, complete todos los campos obligatorios.');
+                        inputs[i].removeAttribute('disabled');
+                        return;
+                    }
+
                 }
             }
         }
@@ -488,6 +496,7 @@ function loadEmbarque(id) {
     })
 }
 function loadDespacho(id) {
+    document.getElementById('save_enca_despacho').setAttribute('disabled', '');
     document.getElementById('add_pallet_deta').removeAttribute('disabled');
     $.ajax({
         url: '../data/getDetaDespacho.php?nro_desp=' + id,

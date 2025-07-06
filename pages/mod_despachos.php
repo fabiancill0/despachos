@@ -291,7 +291,7 @@ if ($_SESSION['login_active'] == 1) {
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-5">
+                        <!--<div class="col-5">
                             <div class="row align-items-center" style="display:none">
                                 <div class="col-5">
                                     <label class="col-form-label" for="reserva">Reserva</label>
@@ -304,7 +304,7 @@ if ($_SESSION['login_active'] == 1) {
                                 </div>
 
                             </div>
-                        </div>
+                        </div>-->
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-6">
@@ -323,7 +323,7 @@ if ($_SESSION['login_active'] == 1) {
                                             <label class="col-form-label" for="sps">SPS</label>
                                         </div>
                                         <div class="col-7">
-                                            <input type="number" class="form-control form-control-sm" id="sps">
+                                            <input type="text" class="form-control form-control-sm" id="sps">
                                         </div>
                                     </div>
                                 </div>
