@@ -167,22 +167,22 @@ class Functions
     $query = "SELECT embq_codigo, nave_codigo, reci_codigo, embq_nomnav, embq_descar, embq_numdus FROM DBA.embarqueprod WHERE clie_codigo = $cliente AND embq_codigo = '$embarque'";
     return $query;
   }
-  function getDetaPalletDespacho($folio, $cliente)
+  function getDetaPalletDespacho($folio)
   {
     $query = "SELECT enca.clie_codigo, enca.paen_numero,deta.pafr_varrot,enca.emba_codigo,enca.etiq_codigo,deta.pafr_calrot,enca.paen_ccajas,enca.paen_tipopa,enca.stat_codigo,enca.espe_codigo
-              FROM dba.palletencab AS enca join DBA.palletfruta as deta on enca.paen_numero = deta.paen_numero and enca.clie_codigo = deta.clie_codigo where enca.paen_numero = $folio AND enca.clie_codigo = $cliente
+              FROM dba.palletencab AS enca join DBA.palletfruta as deta on enca.paen_numero = deta.paen_numero and enca.clie_codigo = deta.clie_codigo where enca.paen_numero = $folio
               group by enca.clie_codigo, enca.paen_numero,deta.pafr_varrot,deta.pafr_calrot,enca.paen_tipopa,enca.stat_codigo,enca.emba_codigo,enca.paen_ccajas,enca.etiq_codigo,enca.espe_codigo";
     return $query;
   }
-  function getDetaPallet($folio, $cliente)
+  function getDetaPallet($folio)
   {
     $query = "SELECT emba_codigo,vari_codigo,pafr_varrot,pafr_calibr,pafr_calrot,prod_codigo,pafr_prdrot,pafr_copack,pafr_fecemb,PAFR_HUERT1,PAFR_CUART1,sum(pafr_ccajas) as pafr_ccajas 
-    FROM DBA.palletfruta WHERE paen_numero = $folio AND clie_codigo = '$cliente' group by emba_codigo,vari_codigo,pafr_varrot,pafr_calibr,pafr_calrot,prod_codigo,pafr_prdrot,pafr_copack,pafr_fecemb,PAFR_HUERT1,PAFR_CUART1";
+    FROM DBA.palletfruta WHERE paen_numero = $folio group by emba_codigo,vari_codigo,pafr_varrot,pafr_calibr,pafr_calrot,prod_codigo,pafr_prdrot,pafr_copack,pafr_fecemb,PAFR_HUERT1,PAFR_CUART1";
     return $query;
   }
-  function getEncaPallet($folio, $cliente)
+  function getEncaPallet($folio)
   {
-    $query = "SELECT clie_codigo,paen_tipopa,vari_codigo,cate_codigo,stat_codigo,emba_codigo,cond_codigo,paen_ccajas,etiq_codigo,espe_codigo,paen_estado FROM dba.palletencab WHERE paen_numero = $folio AND clie_codigo = $cliente";
+    $query = "SELECT clie_codigo,paen_tipopa,vari_codigo,cate_codigo,stat_codigo,emba_codigo,cond_codigo,paen_ccajas,etiq_codigo,espe_codigo,paen_estado FROM dba.palletencab WHERE paen_numero = $folio";
     return $query;
   }
   function getEncaEmbarqueByCliente($cliente)

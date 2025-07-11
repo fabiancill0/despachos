@@ -13,7 +13,6 @@ $(document).ready(function () {
 
     })
     $('#add_pallet').on('click', function () {
-        var cliente = parseInt($('#folio').val().substring(0, 3));
         var folio = parseInt($('#folio').val().substring(3));
         if ($('#' + folio).length) {
             alert('Pallet ya existe!');
@@ -29,7 +28,7 @@ $(document).ready(function () {
             var termo = $('#termografo').val();
             var termoMarca = $('#marca_termografo').val();
             $.ajax({
-                url: '../data/getDetaPalletDesp.php?folio=' + folio + ';' + cliente,
+                url: '../data/getDetaPalletDesp.php?folio=' + folio,
                 dataType: 'json',
                 type: 'GET',
                 success: function (data) {
@@ -60,7 +59,7 @@ $(document).ready(function () {
                 url: '../model/save.php?type=pallet',
                 type: 'POST',
                 data: {
-                    cliente: cliente,
+                    cliente: $('#clientes').val(),
                     planta: $('#planta').val(),
                     palletList: folio + ';' + temp + ';' + termo + ';' + termoMarca,
                     totCajas: $('#totCajas').val(),
@@ -134,10 +133,9 @@ $(document).ready(function () {
         alert('Datos modificados!');
     });
     $('#check_pallet').on('click', function () {
-        var cliente = parseInt($('#folio').val().substring(0, 3));
         var folio = parseInt($('#folio').val().substring(3));
         $.ajax({
-            url: '../data/getEncaPallet.php?folio=' + folio + ';' + cliente,
+            url: '../data/getEncaPallet.php?folio=' + folio,
             dataType: 'json',
             type: 'GET',
             success: function (data) {
@@ -162,7 +160,7 @@ $(document).ready(function () {
                     document.getElementById('cajas').setAttribute('disabled', '');
                     $('#etiqueta').val(data.etiq_codigo);
                     document.getElementById('etiqueta').setAttribute('disabled', '');
-                    $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + folio + ';' + cliente);
+                    $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + folio);
                 }
             }
         });
@@ -264,12 +262,11 @@ $(document).ready(function () {
         })
     });
     $('#folio').on('keypress', function (e) {
-        var cliente = parseInt($('#folio').val().substring(0, 3));
         var folio = parseInt($('#folio').val().substring(3));
         var id = e.which;
         if (id == '13') {
             $.ajax({
-                url: '../data/getEncaPallet.php?folio=' + folio + ';' + cliente,
+                url: '../data/getEncaPallet.php?folio=' + folio,
                 dataType: 'json',
                 type: 'GET',
                 success: function (data) {
@@ -298,7 +295,7 @@ $(document).ready(function () {
                         document.getElementById('cajas').setAttribute('disabled', '');
                         $('#etiqueta').val(data.etiq_codigo);
                         document.getElementById('etiqueta').setAttribute('disabled', '');
-                        $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + folio + ';' + cliente);
+                        $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + folio);
                     }
                 }
             });
@@ -439,7 +436,7 @@ function eliminarPallet(id) {
 }
 function editarPallet(id) {
     $.ajax({
-        url: '../data/getEncaPallet.php?type=edit&folio=' + id + ';' + $('#clientes').val(),
+        url: '../data/getEncaPallet.php?type=edit&folio=' + id,
         dataType: 'json',
         type: 'GET',
         success: function (data) {
@@ -470,7 +467,7 @@ function editarPallet(id) {
             $('#t2_pallet').val(temp2);
             $('#termografo').val($('#termo' + id).text());
             $('#marca_termografo option[value=' + $('#termoMarca' + id).html() + ']').prop({ selected: true });
-            $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + id + ';' + $('#clientes').val());
+            $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + id);
         }
     })
 }
