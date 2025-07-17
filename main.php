@@ -52,6 +52,14 @@ if ($_SESSION['login_active'] == 1) {
                 </div>
                 <div class="col-6">
                     <div class="card">
+                        <div class="card-header">Traspaso Comercial</div>
+                        <div class="card-body">
+                            <a href="pages/mod_traspaso_com.php"><button type="button" class="btn btn-primary btn-lg"><i class="fa-solid fa-layer-group"></i></button></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card">
                         <div class="card-header">Próximamente</div>
                         <div class="card-body">
                             <button type="button" class="btn btn-primary btn-lg" disabled><i class="fa-solid fa-clipboard-question"></i></button>
