@@ -33,6 +33,24 @@ if (isset($_GET['type'])) {
         $query_enca_update = "UPDATE dba.despafrigoen SET defe_cantar = ?, defe_cancaj = ?, defe_canpal = ?, defe_fecact = ?, defe_horact = ? WHERE defe_numero = ?";
         $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
         $result = odbc_execute($stmt_enca_update, [$nro_pallet, $_POST['totCajas'], $nro_pallet, date('Y-m-d'), date('H:i:s'), $_POST['nro_despacho']]);
+    } else if ($_GET['type'] == 'pallet_gran') {
+        $query_deta = "INSERT INTO dba.despafrigode
+        (plde_codigo, defe_numero, clie_codigo, paen_numero, defe_ladoes, defe_filaes, tran_fechat)
+         VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt_deta = odbc_prepare($connnect, $query_deta);
+        $nro_pallet = $_POST['globalCounter'];
+        $folio = $_POST['palletList'];
+        if ($nro_pallet % 2 == 0) {
+            $lado = 2;
+        } else {
+            $lado = 1;
+        }
+        odbc_execute($stmt_deta, [$_POST['planta'], $_POST['nro_despacho'], $_POST['cliente'], $folio, $lado, $nro_pallet, date('Y-m-d H:i:s')]);
+
+        $query_enca_update = "UPDATE dba.despafrigoen SET defe_cantar = ?, defe_cancaj = ?, defe_canpal = ?, defe_fecact = ?, defe_horact = ? WHERE defe_numero = ?";
+        $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
+        $result = odbc_execute($stmt_enca_update, [$nro_pallet, $_POST['totCajas'], $nro_pallet, date('Y-m-d'), date('H:i:s'), $_POST['nro_despacho']]);
     } else if ($_GET['type'] == 'edit_pallet') {
         $query_deta = "UPDATE dba.despafrigode SET 
         defe_termog = ?, defe_tempe1 = ?, defe_tempe2 = ?, tran_fechat = ?, tema_codigo = ?
@@ -45,6 +63,13 @@ if (isset($_GET['type'])) {
         $termo = $_POST['termo'] == '' ? null : $_POST['termo'];
         $termoMarca = $_POST['marca_termo'] == 0 ? null : $_POST['marca_termo'];
         odbc_execute($stmt_deta, [$termo, $temp1, $temp2, date('Y-m-d H:i:s'), $termoMarca, $_POST['planta'], $_POST['nro_despacho'], $_POST['cliente'], $_POST['folio']]);
+    } else if ($_GET['type'] == 'edit_pallet_gran') {
+        $query_deta = "UPDATE dba.despafrigode SET 
+         tran_fechat = ?
+         WHERE plde_codigo = ? AND defe_numero = ? AND clie_codigo = ? AND paen_numero = ?";
+
+        $stmt_deta = odbc_prepare($connnect, $query_deta);
+        odbc_execute($stmt_deta, [date('Y-m-d H:i:s'), $_POST['planta'], $_POST['nro_despacho'], $_POST['cliente'], $_POST['folio']]);
     } else if ($_GET['type'] == 'enca') {
         $data = $_POST['data_enca'];
 
@@ -70,6 +95,33 @@ if (isset($_GET['type'])) {
             $data['if_termografo'],
             $data['patente'],
             date('Y-m-d H:i:s')
+        ]);
+        echo json_encode($nuevo);
+    } else if ($_GET['type'] == 'enca_granel') {
+        $data = $_POST['data_enca'];
+
+        $query_enca_tran = "INSERT INTO dba.despafrigoen (defe_numero, defe_fecdes, defe_horade, defe_tiposa, defe_guides, plde_codigo, clie_codigo, 
+        tran_fechat, defe_patent, defe_fecdig, tica_codigo, tran_codigo, clpr_rut, defe_chofer, defe_pataco) VALUES 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt_enca = odbc_prepare($connnect, $query_enca_tran);
+        $nuevo = $ultimo['defe_numero'] + 1;
+        $result = odbc_execute($stmt_enca, [
+            $nuevo,
+            $data['fecha_des'],
+            $data['hora_des'],
+            $data['tipo_mov'],
+            $data['guia'],
+            $data['planta'],
+            $data['clientes'],
+            date('Y-m-d H:i:s'),
+            $data['patente'],
+            date('Y-m-d H:i:s'),
+            $data['tipo_camion'],
+            $data['trans'],
+            $data['comprador'],
+            $data['chofer'],
+            $data['acoplado'],
         ]);
         echo json_encode($nuevo);
     } else if ($_GET['type'] == 'update_enca') {

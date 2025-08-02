@@ -42,7 +42,7 @@ if ($_SESSION['login_active'] == 1) {
         </nav>
         <div class="container text-center">
             <div class="row">
-                <div class="col-6">
+                <div class="col-6 mb-3">
                     <div class="card">
                         <div class="card-header">Despachos</div>
                         <div class="card-body">
@@ -50,15 +50,23 @@ if ($_SESSION['login_active'] == 1) {
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-6 mb-3">
                     <div class="card">
-                        <div class="card-header">Traspaso Comercial</div>
+                        <div class="card-header">Traspaso Comercial (en construcción)</div>
                         <div class="card-body">
-                            <a href="pages/mod_traspaso_com.php"><button type="button" class="btn btn-primary btn-lg"><i class="fa-solid fa-layer-group"></i></button></a>
+                            <!--<a href="pages/mod_traspaso_com.php">--><button type="button" class="btn btn-primary btn-lg" disabled><i class="fa-solid fa-triangle-exclamation"></i></button><!--</a>-->
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                <div class="col-6 mb-3">
+                    <div class="card">
+                        <div class="card-header">Despacho Venta Nacional</div>
+                        <div class="card-body">
+                            <a href="pages/mod_venta_ter.php"><button type="button" class="btn btn-primary btn-lg"><i class="fa-solid fa-cart-shopping"></i></button></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
                     <div class="card">
                         <div class="card-header">Próximamente</div>
                         <div class="card-body">
