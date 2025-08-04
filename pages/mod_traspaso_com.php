@@ -90,169 +90,117 @@ if ($_SESSION['login_active'] == 1) {
                             <button class="btn btn-danger" type="submit" value="0" name="out"><i class="fa-solid fa-right-from-bracket"></i></button>
                         </form>
                     </div>
-
                 </div>
             </div>
         </nav>
         <div class="container-fluid">
             <input type="number" style="display:none" id="globalCounter" value="0">
             <input type="number" style="display:none" id="totCajas" value="0">
-            <div id="encabezado_despacho">
+            <div id="encabezado_despacho" class="mb-5">
                 <div class="mb-0">
-                    <div class="row align-items-center">
-                        <div class="col-3">
-                            <label class="col-form-label" for="clientes">Cliente</label>
+                    <div class="row">
+                        <div class="col-6 pe-0">
+                            <div class="form-floating">
+                                <select class="form-select" id="clientes">
+                                    <?php
+                                    $functions->getClientesCod($cone->connectToServ());
+                                    ?>
+                                </select>
+                                <label for="clientes">Cliente</label>
+                            </div>
                         </div>
-                        <div class="col-9">
-                            <select class="form-select form-select-sm" id="clientes">
-                                <?php
-                                $functions->getClientesCod($cone->connectToServ());
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-0">
-                    <div class="row align-items-center">
-                        <div class="col-3">
-                            <label class="col-form-label" for="planta">Planta</label>
-                        </div>
-                        <div class="col-9">
-                            <select class="form-select form-select-sm" id="planta">
-                                <?php
-                                $functions->getPlantaDesp($cone->connectToServ());
-                                ?>
-                            </select>
+                        <div class="col-6 ps-0">
+                            <div class="form-floating">
+                                <select class="form-select" id="planta">
+                                    <?php
+                                    $functions->getPlantaDesp($cone->connectToServ());
+                                    ?>
+                                </select>
+                                <label for="planta">Planta</label>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-12">
-                            <div class="row align-items-center">
-                                <div class="col-3">
-                                    <label class="col-form-label" for="nro_despacho">Nro.Des.</label>
+                        <div class="col-6 pe-0">
+                            <div class="input-group">
+                                <div class="form-floating">
+                                    <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="8" class="form-control" id="nro_despacho">
+                                    <label for="nro_despacho">Nro Despacho</label>
                                 </div>
-                                <div class="col-9">
-                                    <div class="row">
-                                        <div class="col-10 pe-0">
-                                            <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="8" class="form-control form-control-sm" id="nro_despacho">
-                                        </div>
-                                        <div class="col-2 ps-0">
-                                            <button type="button" id="get_despacho" class="btn btn-success btn-sm"><i class="fa-solid fa-square-check"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <button type="button" id="get_despacho" class="btn btn-success"><i class="fa-solid fa-square-check"></i></button>
+                            </div>
+                        </div>
+                        <div class="col-6 ps-0">
+                            <div class="form-floating">
+                                <select class="form-select" id="especie">
+                                    <?php
+                                    $functions->getEspeciesCod($cone->connectToServ());
+                                    ?>
+                                </select>
+                                <label for="especie">Especie</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="mb-0">
-                    <div class="col-12">
-                        <div class="row align-items-center">
-                            <div class="col-3">
-                                <label class="col-form-label" for="obs">Observ.</label>
-                            </div>
-                            <div class="col-9">
-                                <input type="text" class="form-control form-control-sm" id="obs">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-0">
-                    <div class="col-12">
-                        <div class="row align-items-center">
-                            <div class="col-3">
-                                <label class="col-form-label" for="motivo">Motivo</label>
-                            </div>
-                            <div class="col-9">
-                                <select class="form-select form-select-sm" id="motivo" disabled>
+                    <div class="row">
+                        <div class="col-6 pe-0">
+                            <div class="form-floating">
+                                <select class="form-select" id="motivo" disabled>
                                     <option value="36;2" selected>TRASPASO A FRUTA COMERCIAL</option>
                                 </select>
+                                <label for="motivo">Motivo</label>
+                            </div>
+                        </div>
+                        <div class="col-6 ps-0">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="obs">
+                                <label for="obs">Observ.</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-6">
-                            <div class="row align-items-center">
-                                <div class="col-5">
-                                    <label class="col-form-label" for="fecha_des">Fecha</label>
-                                </div>
-                                <div class="col-7">
-                                    <input type="date" value="<?= date('Y-m-d') ?>" class="form-control form-control-sm" id="fecha_des">
-                                </div>
+                        <div class="col-6 pe-0">
+                            <div class="form-floating">
+                                <input type="date" value="<?= date('Y-m-d') ?>" class="form-control" id="fecha_des">
+                                <label for="fecha_des">Fecha</label>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="row align-items-center">
-                                <div class="col-5">
-                                    <label class="col-form-label" for="hora_des">Hora</label>
-                                </div>
-                                <div class="col-7">
-                                    <input type="time" value="<?= date('H:i') ?>" class="form-control form-control-sm" id="hora_des">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mb-0">
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="row align-items-center">
-                                <div class="col-5">
-                                    <label class="col-form-label" for="guia">Guía</label>
-                                </div>
-                                <div class="col-7">
-                                    <input type="text" class="form-control form-control-sm" id="guia">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-6">
-                            <div class="row align-items-center">
-                                <div class="col-5">
-                                    <label class="col-form-label" for="especie">Especie</label>
-                                </div>
-                                <div class="col-7">
-                                    <select class="form-select form-select-sm" id="especie">
-                                        <?php
-                                        $functions->getEspeciesCod($cone->connectToServ());
-                                        ?>
-                                    </select>
-                                </div>
+                        <div class="col-6 ps-0">
+                            <div class="form-floating">
+                                <input type="time" value="<?= date('H:i') ?>" class="form-control" id="hora_des">
+                                <label for="hora_des">Hora</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-6">
-                            <div class="row align-items-center">
-                                <div class="col-5">
-                                    <label class="col-form-label" for="tot_bultos">Bultos</label>
+                        <div class="col-6 pe-0">
+                            <div class="form-floating">
+                                <input type="text" class="form-control " id="guia">
+                                <label for="guia">Guía</label>
+                            </div>
+                        </div>
+                        <div class="col-6 ps-0">
+                            <div class="input-group input-group-sm">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="tot_bultos" value="0">
+                                    <label for="tot_bultos">Bultos</label>
                                 </div>
-                                <div class="col-7">
-                                    <input type="number" class="form-control form-control-sm" id="tot_bultos" value="0">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="tot_kilos" value="0">
+                                    <label for="tot_kilos">Kilos</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="row align-items-center">
-                                <div class="col-5">
-                                    <label class="col-form-label" for="tot_kilos">Kilos</label>
-                                </div>
-                                <div class="col-7">
-                                    <input type="number" class="form-control form-control-sm" id="tot_kilos" value="0">
-                                </div>
-                            </div>
-                        </div>
-
-
                     </div>
                 </div>
+
                 <div class="mb-0">
                     <div class="row">
                         <div class="col-12">
@@ -289,7 +237,7 @@ if ($_SESSION['login_active'] == 1) {
                     <i class="fa-solid fa-file"></i>
                 </button>
                 <span class="col-1"></span>
-                <button type="button" class="btn btn-success btn-lg col-2" data-bs-toggle="modal" data-bs-target="#exampleModal" disabled id="add_pallet_deta">
+                <button type="button" class="btn btn-success btn-lg col-2" data-bs-toggle="modal" data-bs-target="#exampleModal" id="add_pallet_deta">
                     <i class="fa-solid fa-square-plus"></i>
                 </button>
                 <span class="col-1"></span>
@@ -341,117 +289,83 @@ if ($_SESSION['login_active'] == 1) {
                         </div>
                         <div class="container-fluid" id="detalle_pallet">
                             <div class="mb-0">
-                                <div class="row align-items-center">
-                                    <div class="col-4">
-                                        <label class="col-form-label" for="folio">Tarja</label>
+                                <div class="input-group">
+                                    <button type="button" id="check_pallet" class="btn btn-success"><i class="fa-solid fa-square-check"></i></button>
+                                    <div class="form-floating">
+                                        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control" id="folio">
+                                        <label for="folio">Tarja</label>
                                     </div>
-                                    <div class="col-8">
-                                        <div class="row">
-                                            <div class="col-6 pe-0">
-                                                <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control form-control-sm" id="folio">
-                                            </div>
-                                            <div class="col-3">
-                                                <input id="folio_input" type="file" accept="image/*" capture="camera" style="clip: rect(0 0 0 0); clip-path: inset(50%);  height: 1px;  overflow: hidden;  position: absolute;white-space: nowrap;width: 1px;">
-                                                <label for="folio_input" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-camera"></i></label>
-                                            </div>
-                                            <div class="col-3">
-                                                <button type="button" id="check_pallet" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-square-check"></i></button>
-                                            </div>
-                                            <div class="controls" style="display:none">
-                                                <fieldset class="reader-config-group">
-                                                    <label>
-                                                        <span>Barcode-Type</span>
-                                                        <select name="decoder_readers">
-                                                            <option value="code_128" selected="selected">Code 128</option>
-                                                        </select>
-                                                    </label>
-                                                    <label>
-                                                        <span>Resolution (long side)</span>
-                                                        <select name="input-stream_size">
-                                                            <option selected="selected" value="1280">1280px</option>
-                                                        </select>
-                                                    </label>
-                                                    <label>
-                                                        <span>Patch-Size</span>
-                                                        <select name="locator_patch-size">
-                                                            <option selected="selected" value="x-large">x-large</option>
-                                                        </select>
-                                                    </label>
-                                                    <label>
-                                                        <span>Half-Sample</span>
-                                                        <input type="checkbox" name="locator_half-sample" />
-                                                    </label>
-                                                    <label>
-                                                        <span>Single Channel</span>
-                                                        <input type="checkbox" name="input-stream_single-channel" />
-                                                    </label>
-                                                    <label>
-                                                        <span>Workers</span>
-                                                        <select name="numOfWorkers">
-                                                            <option selected="selected" value="1">1</option>
-                                                        </select>
-                                                    </label>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <button type="button" id="folio_input_btn" class="btn btn-warning"><i class="fa-solid fa-camera"></i></button>
+                                </div>
+                                <input id="folio_input" type="file" accept="image/*" capture="camera" style="clip: rect(0 0 0 0); clip-path: inset(50%);  height: 1px;  overflow: hidden;  position: absolute;white-space: nowrap;width: 1px;">
+                                <div class="controls" style="display:none">
+                                    <fieldset class="reader-config-group">
+                                        <label>
+                                            <span>Barcode-Type</span>
+                                            <select name="decoder_readers">
+                                                <option value="code_128" selected="selected">Code 128</option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            <span>Resolution (long side)</span>
+                                            <select name="input-stream_size">
+                                                <option selected="selected" value="1280">1280px</option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            <span>Patch-Size</span>
+                                            <select name="locator_patch-size">
+                                                <option selected="selected" value="x-large">x-large</option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            <span>Half-Sample</span>
+                                            <input type="checkbox" name="locator_half-sample" />
+                                        </label>
+                                        <label>
+                                            <span>Single Channel</span>
+                                            <input type="checkbox" name="input-stream_single-channel" />
+                                        </label>
+                                        <label>
+                                            <span>Workers</span>
+                                            <select name="numOfWorkers">
+                                                <option selected="selected" value="1">1</option>
+                                            </select>
+                                        </label>
+                                    </fieldset>
                                 </div>
                             </div>
                             <div class="mb-0">
-                                <div class="row align-items-center">
-                                    <div class="col-4">
-                                        <label class="col-form-label" for="tar_lote">Nro Lote</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control form-control-sm" id="tar_lote">
-                                    </div>
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="tar_prod">
+                                    <label for="tar_prod">Productor</label>
                                 </div>
                             </div>
                             <div class="mb-0">
-                                <div class="row align-items-center">
-                                    <div class="col-4">
-                                        <label class="col-form-label" for="tar_vari">Variedad</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_vari">
+                                        <label for="tar_vari">Variedad</label>
                                     </div>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control form-control-sm" id="tar_vari">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-0">
-                                <div class="row align-items-center">
-                                    <div class="col-4">
-                                        <label class="col-form-label" for="tar_prod">Productor</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control form-control-sm" id="tar_prod">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-0">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="row align-items-center">
-                                            <div class="col-5">
-                                                <label class="col-form-label" for="tar_canti">Cantidad</label>
-                                            </div>
-                                            <div class="col-7">
-                                                <input type="text" class="form-control form-control-sm" id="tar_canti">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row align-items-center">
-                                            <div class="col-5">
-                                                <label class="col-form-label" for="tar_kilos">Kilos</label>
-                                            </div>
-                                            <div class="col-7">
-                                                <input type="text" class="form-control form-control-sm" id="tar_kilos">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_lote">
+                                        <label for="tar_lote">Nro Lote</label>
 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-0">
+                                <div class="input-group input-group-sm">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_canti">
+                                        <label for="tar_canti">Cantidad</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_kilos">
+                                        <label for="tar_kilos">Kilos</label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="mb-0 table-container">
                                 <table class="table table-sm table-striped text-center">
                                     <thead>
@@ -474,17 +388,15 @@ if ($_SESSION['login_active'] == 1) {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"></script>
+                <script
+                    src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+                    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+                    crossorigin="anonymous"></script>
 
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"></script>
+                <script
+                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+                    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+                    crossorigin="anonymous"></script>
     </body>
 
     </html>

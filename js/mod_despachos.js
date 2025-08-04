@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    $('#folio_input_btn').on('click', function () {
+        document.getElementById('folio_input').click();
+    })
     $('#if_termografo').change(function () {
         if (this.checked) {
             document.getElementById('termografo').removeAttribute('disabled');
@@ -41,7 +44,7 @@ $(document).ready(function () {
                             '</td><td>' + valueOfElement.emba_codigo +
                             '</td><td>' + valueOfElement.etiq_codigo +
                             '</td><td>' + valueOfElement.pafr_calrot +
-                            '</td><td id="cajas' + valueOfElement.paen_numero + '">' + valueOfElement.paen_ccajas +
+                            '</td><td><input id="cajas' + valueOfElement.paen_numero + '" style="display:none" value="' + valueOfElement.paen_ccajas + '">' + valueOfElement.paen_ccajas +
                             '</td><td id="temp' + valueOfElement.paen_numero + '">' + temp +
                             '</td><td>' + valueOfElement.paen_tipopa +
                             '</td><td>' + valueOfElement.stat_codigo +
@@ -49,12 +52,12 @@ $(document).ready(function () {
                             '</td><td style="display:none" id="termoMarca' + valueOfElement.paen_numero + '">' + termoMarca +
                             '</td></tr>');
                     });
-
+                    $('#totCajas').val(parseInt($('#totCajas').val()) + parseInt($('#cajas' + folio).val()));
+                    $('#globalCounter').val(parseInt($('#globalCounter').val()) + 1);
+                    $('#tot_cajas').val($('#totCajas').val());
                 }
             });
-            $('#totCajas').val(parseInt($('#totCajas').val()) + parseInt($('#cajas').val()));
-            $('#globalCounter').val(parseInt($('#globalCounter').val()) + 1);
-            $('#tot_cajas').val($('#totCajas').val());
+
             $.ajax({
                 url: '../model/save.php?type=pallet',
                 type: 'POST',
@@ -111,7 +114,7 @@ $(document).ready(function () {
                                 '</td><td>' + valueOfElement.emba_codigo +
                                 '</td><td>' + valueOfElement.etiq_codigo +
                                 '</td><td>' + valueOfElement.pafr_calrot +
-                                '</td><td>' + valueOfElement.paen_ccajas +
+                                '</td><td><input id="cajas' + valueOfElement.paen_numero + '" style="display:none" value="' + valueOfElement.paen_ccajas + '">' + valueOfElement.paen_ccajas +
                                 '</td><td id="temp' + indexInArray + '">' + valueOfElement.defe_tempe1 + '/' + valueOfElement.defe_tempe2 +
                                 '</td><td>' + valueOfElement.paen_tipopa +
                                 '</td><td>' + valueOfElement.stat_codigo +
@@ -215,7 +218,7 @@ $(document).ready(function () {
                         '</td><td>' + valueOfElement.emba_codigo +
                         '</td><td>' + valueOfElement.etiq_codigo +
                         '</td><td>' + valueOfElement.pafr_calrot +
-                        '</td><td>' + valueOfElement.paen_ccajas +
+                        '</td><td><input id="cajas' + valueOfElement.paen_numero + '" style="display:none" value="' + valueOfElement.paen_ccajas + '">' + valueOfElement.paen_ccajas +
                         '</td><td id="temp' + indexInArray + '">' + valueOfElement.defe_tempe1 + '/' + valueOfElement.defe_tempe2 +
                         '</td><td>' + valueOfElement.paen_tipopa +
                         '</td><td>' + valueOfElement.stat_codigo +
@@ -311,7 +314,8 @@ $(document).ready(function () {
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].removeAttribute('disabled');
             if (inputs[i].type == 'date') {
-                inputs[i].value = new Date().toISOString().split('T')[0];
+                var date = new Date().toLocaleString('es-CL').split(',')[0].split('-')[2] + '-' + new Date().toLocaleString('es-CL').split(',')[0].split('-')[1] + '-' + new Date().toLocaleString('es-CL').split(',')[0].split('-')[0];
+                inputs[i].value = date;
             } else if (inputs[i].type == 'time') {
                 inputs[i].value = new Date().toTimeString().split(' ')[0].substring(0, 5);
             } else if (inputs[i].type == 'checkbox') {
@@ -336,6 +340,7 @@ $(document).ready(function () {
         //$('#save_enca_despacho').show();
         //$('#update_enca_despacho').hide();
         $('#globalCounter').val(0);
+        $('#totCajas').val(0);
         $('#tot_cajas').val(0);
     });
     $('#save_enca_despacho').on('click', function () {
@@ -346,7 +351,7 @@ $(document).ready(function () {
         console.log(selects);
         for (var i = 1; i < inputs.length; i++) {
             inputs[i].setAttribute('disabled', '');
-            if (inputs[i].id != 'guia' || inputs[i].id != 'sps') {
+            if (inputs[i].id == 'guia' || inputs[i].id == 'sps') {
             } else {
                 if (inputs[i].type != 'checkbox' || inputs[i].type != 'date') {
                     if (inputs[i].value == null || inputs[i].value == '') {
@@ -418,7 +423,7 @@ $(document).ready(function () {
     });*/
 });
 function eliminarPallet(id) {
-    $('#totCajas').val(parseInt($('#totCajas').val()) - parseInt($('#cajas' + id).html()));
+    $('#totCajas').val(parseInt($('#totCajas').val()) - parseInt($('#cajas' + id).val()));
     $('#globalCounter').val(parseInt($('#globalCounter').val()) - 1);
     $('#tot_cajas').val($('#totCajas').val());
     $('#' + id).remove();
@@ -510,7 +515,7 @@ function loadDespacho(id) {
                     '</td><td>' + valueOfElement.emba_codigo +
                     '</td><td>' + valueOfElement.etiq_codigo +
                     '</td><td>' + valueOfElement.pafr_calrot +
-                    '</td><td>' + valueOfElement.paen_ccajas +
+                    '</td><td><input id="cajas' + valueOfElement.paen_numero + '" style="display:none" value="' + valueOfElement.paen_ccajas + '">' + valueOfElement.paen_ccajas +
                     '</td><td id="temp' + indexInArray + '">' + valueOfElement.defe_tempe1 + '/' + valueOfElement.defe_tempe2 +
                     '</td><td>' + valueOfElement.paen_tipopa +
                     '</td><td>' + valueOfElement.stat_codigo +

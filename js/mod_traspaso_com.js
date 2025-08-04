@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    $('#folio_input_btn').on('click', function () {
+        document.getElementById('folio_input').click();
+    })
     $('#add_pallet_deta').on('click', function () {
         document.getElementById('folio').removeAttribute('disabled');
         document.getElementById('add_pallet').removeAttribute('disabled');

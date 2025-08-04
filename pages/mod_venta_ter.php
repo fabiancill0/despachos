@@ -100,7 +100,7 @@ if ($_SESSION['login_active'] == 1) {
             <div id="encabezado_despacho" class="mb-5">
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 pe-0">
                             <div class="form-floating">
                                 <select class="form-select" id="clientes">
                                     <?php
@@ -110,7 +110,7 @@ if ($_SESSION['login_active'] == 1) {
                                 <label for="clientes">Cliente</label>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 ps-0">
                             <div class="form-floating">
                                 <select class="form-select" id="planta">
                                     <?php
@@ -124,7 +124,7 @@ if ($_SESSION['login_active'] == 1) {
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 pe-0">
                             <div class="input-group input-group-sm">
                                 <div class="form-floating">
                                     <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="8" class="form-control" id="nro_despacho">
@@ -133,7 +133,7 @@ if ($_SESSION['login_active'] == 1) {
                                 <button type="button" id="get_despacho" class="btn btn-success"><i class="fa-solid fa-square-check"></i></button>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 ps-0">
                             <div class="input-group input-group-sm">
                                 <div class="form-floating">
                                     <input type="number" class="form-control" id="tot_tarjas" value="0">
@@ -149,13 +149,13 @@ if ($_SESSION['login_active'] == 1) {
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 pe-0">
                             <div class="form-floating">
                                 <input type="date" value="<?= date('Y-m-d') ?>" class="form-control" id="fecha_des">
                                 <label for="fecha_des">Fecha</label>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 ps-0">
                             <div class="form-floating">
                                 <input type="time" value="<?= date('H:i') ?>" class="form-control" id="hora_des">
                                 <label for="hora_des">Hora</label>
@@ -165,7 +165,7 @@ if ($_SESSION['login_active'] == 1) {
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 pe-0">
                             <div class="form-floating">
                                 <select class="form-select" id="comprador">
                                     <?php
@@ -175,7 +175,7 @@ if ($_SESSION['login_active'] == 1) {
                                 <label for="comprador">Comprador</label>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 ps-0">
                             <div class="form-floating">
                                 <select class="form-select" id="trans">
                                     <?php
@@ -189,7 +189,7 @@ if ($_SESSION['login_active'] == 1) {
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 pe-0">
                             <div class="form-floating">
                                 <select class="form-select" id="tipo_mov" disabled>
                                     <option value="16">Despacho Venta Nacional</option>
@@ -197,7 +197,7 @@ if ($_SESSION['login_active'] == 1) {
                                 <label for="tipo_mov">Tipo Mov</label>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 ps-0">
                             <div class="form-floating">
                                 <select class="form-select" id="tipo_camion">
                                     <?php
@@ -211,7 +211,7 @@ if ($_SESSION['login_active'] == 1) {
                 </div>
                 <div class="mb-0">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 pe-0">
                             <div class="input-group input-group-sm">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" id="chofer">
@@ -224,7 +224,7 @@ if ($_SESSION['login_active'] == 1) {
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 ps-0">
                             <div class="input-group input-group-sm">
                                 <div class="form-floating">
                                     <input type="text" class="form-control" id="patente">
@@ -325,130 +325,90 @@ if ($_SESSION['login_active'] == 1) {
                         </div>
                         <div class="container-fluid" id="detalle_pallet">
                             <div class="mb-0">
-                                <div class="row align-items-center">
-                                    <div class="col-4">
-                                        <label class="col-form-label" for="folio">Folio</label>
+                                <div class="input-group">
+                                    <button type="button" id="check_pallet" class="btn btn-success"><i class="fa-solid fa-square-check"></i></button>
+                                    <div class="form-floating">
+                                        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control" id="folio">
+                                        <label for="folio">Folio</label>
                                     </div>
-                                    <div class="col-8">
-                                        <div class="row">
-                                            <div class="col-6 pe-0">
-                                                <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" class="form-control form-control-sm" id="folio">
-                                            </div>
-                                            <div class="col-3">
-                                                <input id="folio_input" type="file" accept="image/*" capture="camera" style="clip: rect(0 0 0 0); clip-path: inset(50%);  height: 1px;  overflow: hidden;  position: absolute;white-space: nowrap;width: 1px;">
-                                                <label for="folio_input" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-camera"></i></label>
-                                            </div>
-                                            <div class="col-3">
-                                                <button type="button" id="check_pallet" class="btn btn-success btn-sm col-12"><i class="fa-solid fa-square-check"></i></button>
-                                            </div>
-                                            <div class="controls" style="display:none">
-                                                <fieldset class="reader-config-group">
-                                                    <label>
-                                                        <span>Barcode-Type</span>
-                                                        <select name="decoder_readers">
-                                                            <option value="code_128" selected="selected">Code 128</option>
-                                                        </select>
-                                                    </label>
-                                                    <label>
-                                                        <span>Resolution (long side)</span>
-                                                        <select name="input-stream_size">
-                                                            <option selected="selected" value="1280">1280px</option>
-                                                        </select>
-                                                    </label>
-                                                    <label>
-                                                        <span>Patch-Size</span>
-                                                        <select name="locator_patch-size">
-                                                            <option selected="selected" value="x-large">x-large</option>
-                                                        </select>
-                                                    </label>
-                                                    <label>
-                                                        <span>Half-Sample</span>
-                                                        <input type="checkbox" name="locator_half-sample" />
-                                                    </label>
-                                                    <label>
-                                                        <span>Single Channel</span>
-                                                        <input type="checkbox" name="input-stream_single-channel" />
-                                                    </label>
-                                                    <label>
-                                                        <span>Workers</span>
-                                                        <select name="numOfWorkers">
-                                                            <option selected="selected" value="1">1</option>
-                                                        </select>
-                                                    </label>
-                                                </fieldset>
-                                            </div>
-                                        </div>
+                                    <button type="button" id="folio_input_btn" class="btn btn-warning"><i class="fa-solid fa-camera"></i></button>
+                                </div>
+                                <input id="folio_input" type="file" accept="image/*" capture="camera" style="clip: rect(0 0 0 0); clip-path: inset(50%);  height: 1px;  overflow: hidden;  position: absolute;white-space: nowrap;width: 1px;">
+                                <div class="controls" style="display:none">
+                                    <fieldset class="reader-config-group">
+                                        <label>
+                                            <span>Barcode-Type</span>
+                                            <select name="decoder_readers">
+                                                <option value="code_128" selected="selected">Code 128</option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            <span>Resolution (long side)</span>
+                                            <select name="input-stream_size">
+                                                <option selected="selected" value="1280">1280px</option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            <span>Patch-Size</span>
+                                            <select name="locator_patch-size">
+                                                <option selected="selected" value="x-large">x-large</option>
+                                            </select>
+                                        </label>
+                                        <label>
+                                            <span>Half-Sample</span>
+                                            <input type="checkbox" name="locator_half-sample" />
+                                        </label>
+                                        <label>
+                                            <span>Single Channel</span>
+                                            <input type="checkbox" name="input-stream_single-channel" />
+                                        </label>
+                                        <label>
+                                            <span>Workers</span>
+                                            <select name="numOfWorkers">
+                                                <option selected="selected" value="1">1</option>
+                                            </select>
+                                        </label>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="mb-0">
+                                <div class="input-group input-group-sm">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tipo">
+                                        <label for="tipo">Tipo</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="variedad">
+                                        <label for="variedad">Variedad</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-0">
-                                <div class="row align-items-center">
-                                    <div class="col-4">
-                                        <label class="col-form-label" for="tipo">Tipo</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="embalaje">
+                                        <label for="embalaje">Emb</label>
                                     </div>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control form-control-sm" id="tipo">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-0">
-                                <div class="row align-items-center">
-                                    <div class="col-4">
-                                        <label class="col-form-label" for="variedad">Variedad</label>
-                                    </div>
-                                    <div class="col-8">
-                                        <input type="text" class="form-control form-control-sm" id="variedad">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="categoria">
+                                        <label for="categoria">Cat</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="mb-0">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="row align-items-center">
-                                            <div class="col-5">
-                                                <label class="col-form-label" for="embalaje">Emb</label>
-                                            </div>
-                                            <div class="col-7">
-                                                <input type="text" class="form-control form-control-sm" id="embalaje">
-                                            </div>
-                                        </div>
+                                <div class="input-group input-group-sm">
+                                    <div class="form-floating">
+                                        <input type="number" class="form-control" id="cajas">
+                                        <label for="cajas">Cajas</label>
                                     </div>
-                                    <div class="col-6">
-                                        <div class="row align-items-center">
-                                            <div class="col-5">
-                                                <label class="col-form-label" for="categoria">Cat</label>
-                                            </div>
-                                            <div class="col-7">
-                                                <input type="text" class="form-control form-control-sm" id="categoria">
-                                            </div>
-                                        </div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="etiqueta">
+                                        <label for="etiqueta">Etiqueta</label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-0">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <div class="row align-items-center">
-                                            <div class="col-5">
-                                                <label class="col-form-label" for="cajas">Cajas</label>
-                                            </div>
-                                            <div class="col-7">
-                                                <input type="number" class="form-control form-control-sm" id="cajas">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row align-items-center">
-                                            <div class="col-5">
-                                                <label class="col-form-label" for="etiqueta">Etiqueta</label>
-                                            </div>
-                                            <div class="col-7">
-                                                <input type="text" class="form-control form-control-sm" id="etiqueta">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
+
                             <div class="mb-0 table-container">
                                 <table class="table table-sm table-striped text-center">
                                     <thead>
