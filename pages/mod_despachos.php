@@ -225,7 +225,7 @@ if ($_SESSION['login_active'] == 1) {
                         <div class="col-6 pe-0">
                             <div class="input-group input-group-sm">
                                 <div class="form-floating">
-                                    <input type="text" class="form-control" id="tot_cajas">
+                                    <input type="text" value="0" class="form-control" id="tot_cajas">
                                     <label for="tot_cajas">Cajas</label>
                                 </div>
 
