@@ -51,6 +51,20 @@ if (isset($_GET['type'])) {
         $query_enca_update = "UPDATE dba.despafrigoen SET defe_cantar = ?, defe_cancaj = ?, defe_canpal = ?, defe_fecact = ?, defe_horact = ? WHERE defe_numero = ?";
         $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
         $result = odbc_execute($stmt_enca_update, [$nro_pallet, $_POST['totCajas'], $nro_pallet, date('Y-m-d'), date('H:i:s'), $_POST['nro_despacho']]);
+    } else if ($_GET['type'] == 'tarja') {
+        $query_deta = "INSERT INTO dba.spro_movtofrutagrandeta_tarjas
+        (plde_codigo, tpmv_codigo, mfge_numero, clie_codigo, mfgd_secuen, fgmb_nrotar, fgmb_canbul, fgmb_kilbru)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt_deta = odbc_prepare($connnect, $query_deta);
+        $nro_pallet = $_POST['totBultos'];
+        $folio = $_POST['palletList'];
+        odbc_execute($stmt_deta, [$_POST['planta'], 36, $_POST['nro_despacho'], $_POST['cliente'], $nro_pallet, $folio, $_POST['bultos'], $_POST['kilos_bru']]);
+
+        $query_enca_update = "UPDATE dba.spro_movtofrutagranenca SET mfge_tpneto = ?, mfge_totbul = ?
+         WHERE mfge_numero = ? and clie_codigo = ? and plde_codigo = ? and tpmv_codigo = 36";
+        $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
+        $result = odbc_execute($stmt_enca_update, [$_POST['totKilos'], $_POST['totBultos'], $_POST['nro_despacho'], $_POST['cliente'], $_POST['planta']]);
     } else if ($_GET['type'] == 'edit_pallet') {
         $query_deta = "UPDATE dba.despafrigode SET 
         defe_termog = ?, defe_tempe1 = ?, defe_tempe2 = ?, tran_fechat = ?, tema_codigo = ?
@@ -122,6 +136,30 @@ if (isset($_GET['type'])) {
             $data['comprador'],
             $data['chofer'],
             $data['acoplado'],
+        ]);
+        echo json_encode($nuevo);
+    } else if ($_GET['type'] == 'enca_traspaso') {
+        $data = $_POST['data_enca'];
+        $ultimoTraspaso = odbc_fetch_array(odbc_exec($connnect, $functions->getUltimoTraspaso()));
+        $query_enca_tran = "INSERT INTO dba.spro_movtofrutagranenca (clie_codigo, plde_codigo, tpmv_codigo, mfge_numero, espe_codigo, mfge_fecmov, mfge_estmov,
+        mfge_guisii, mfge_observ, mfge_tpneto, mfge_totbul, refg_horaen) VALUES 
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt_enca = odbc_prepare($connnect, $query_enca_tran);
+        $nuevo = $ultimoTraspaso['mfge_numero'] + 1;
+        $result = odbc_execute($stmt_enca, [
+            $data['clientes'],
+            $data['planta'],
+            36,
+            $nuevo,
+            $data['especie'],
+            $data['fecha_des'],
+            1,
+            $data['guia'],
+            $data['obs'],
+            $data['tot_kilos'],
+            $data['tot_bultos'],
+            $data['hora_des']
         ]);
         echo json_encode($nuevo);
     } else if ($_GET['type'] == 'update_enca') {

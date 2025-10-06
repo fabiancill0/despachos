@@ -19,47 +19,42 @@ $(document).ready(function () {
             $('#deta_pallet').html('');
             return;
         } else {
-            var temp = $('#t1_pallet').val() + '/' + $('#t2_pallet').val();
-            var termo = $('#termografo').val();
-            var termoMarca = $('#marca_termografo').val();
             $.ajax({
-                url: '../data/getDetaPalletDesp.php?folio=' + folio,
+                url: '../data/getDetaTarjaDesp.php?cliente=' + $('#clientes').val() + '&tarja=' + folio,
                 dataType: 'json',
                 type: 'GET',
                 success: function (data) {
                     $.each(data, function (indexInArray, valueOfElement) {
-                        $('#deta_despa').append('<tr id="' + valueOfElement.paen_numero + '">' +
-                            '<td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarPallet(' + valueOfElement.paen_numero + ')"><i class="fa-solid fa-trash"></i></button>' +
-                            '<td><button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editarPallet(' + valueOfElement.paen_numero + ')"><i class="fa-solid fa-pen-to-square"></i></button>' +
-                            '</td><td>' + valueOfElement.paen_numero +
-                            '</td><td>' + valueOfElement.pafr_varrot +
-                            '</td><td>' + valueOfElement.emba_codigo +
-                            '</td><td>' + valueOfElement.etiq_codigo +
-                            '</td><td>' + valueOfElement.pafr_calrot +
-                            '</td><td id="cajas' + valueOfElement.paen_numero + '">' + valueOfElement.paen_ccajas +
-                            '</td><td id="temp' + valueOfElement.paen_numero + '">' + temp +
-                            '</td><td>' + valueOfElement.paen_tipopa +
-                            '</td><td>' + valueOfElement.stat_codigo +
-                            '</td><td id="termo' + valueOfElement.paen_numero + '">' + termo +
-                            '</td><td style="display:none" id="termoMarca' + valueOfElement.paen_numero + '">' + termoMarca +
-                            '</td></tr>');
+                        $('#deta_despa').append('<tr id="' + valueOfElement.fgmb_nrotar + '">' +
+                            '<td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarPallet(' + valueOfElement.fgmb_nrotar + ')"><i class="fa-solid fa-trash"></i></button>' +
+                            '<td><button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editarPallet(' + valueOfElement.fgmb_nrotar + ')"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '</td><td>' + valueOfElement.lote_codigo +
+                            '</td><td>' + valueOfElement.fgmb_nrotar +
+                            '</td><td>' + valueOfElement.bultos +
+                            '</td><td id="kil_net' + valueOfElement.fgmb_nrotar + '">' + valueOfElement.kilos +
+                            '</td><td>' + valueOfElement.prod_codigo +
+                            '</td><td>' + valueOfElement.bins_numero +
+                            '</td></tr><input  id="bultos' + valueOfElement.fgmb_nrotar + '" type="hidden" value="' + valueOfElement.bultos + '"><input  id="kil_bru' + valueOfElement.fgmb_nrotar + '" type="hidden" value="' + valueOfElement.mfgp_pesore + '">');
                     });
 
                 }
             });
-            $('#totCajas').val(parseInt($('#totCajas').val()) + parseInt($('#cajas').val()));
-            $('#globalCounter').val(parseInt($('#globalCounter').val()) + 1);
-            $('#tot_cajas').val($('#totCajas').val());
+            $('#totBultos').val(parseInt($('#totBultos').val()) + parseInt($('#tar_canti').val()));
+            $('#totKilos').val(parseInt($('#totKilos').val()) + parseInt($('#tar_kilos').val()));
+            $('#tot_bultos').val($('#totBultos').val());
+            $('#tot_kilos').val($('#totKilos').val());
             $.ajax({
-                url: '../model/save.php?type=pallet',
+                url: '../model/save.php?type=tarja',
                 type: 'POST',
                 data: {
                     cliente: $('#clientes').val(),
                     planta: $('#planta').val(),
-                    palletList: folio + ';' + temp + ';' + termo + ';' + termoMarca,
-                    totCajas: $('#totCajas').val(),
-                    nro_despacho: $('#nro_despacho').val(),
-                    globalCounter: $('#globalCounter').val()
+                    palletList: folio,
+                    kilos_bru: $('#kil_bru' + folio).val(),
+                    bultos: $('#bultos' + folio).val(),
+                    totBultos: $('#totBultos').val(),
+                    totKilos: $('#totKilos').val(),
+                    nro_despacho: $('#nro_despacho').val()
                 },
                 success: function (data) {
                     console.log(data);
@@ -74,10 +69,7 @@ $(document).ready(function () {
             alert('Pallet agregado a despacho!');
         }
     });
-    $('#edit_pallet').on('click', function () {
-        var temp = $('#t1_pallet').val() + '/' + $('#t2_pallet').val();
-        var termo = $('#termografo').val();
-        var marca_termo = $('#marca_termografo').val();
+    /*$('#edit_pallet').on('click', function () {
         $.ajax({
             url: '../model/save.php?type=edit_pallet',
             type: 'POST',
@@ -85,9 +77,6 @@ $(document).ready(function () {
                 cliente: $('#clientes').val(),
                 planta: $('#planta').val(),
                 folio: $('#folio').val(),
-                temp: temp,
-                termo: termo,
-                marca_termo: marca_termo,
                 nro_despacho: $('#nro_despacho').val(),
             },
             success: function () {
@@ -107,11 +96,8 @@ $(document).ready(function () {
                                 '</td><td>' + valueOfElement.etiq_codigo +
                                 '</td><td>' + valueOfElement.pafr_calrot +
                                 '</td><td>' + valueOfElement.paen_ccajas +
-                                '</td><td id="temp' + indexInArray + '">' + valueOfElement.defe_tempe1 + '/' + valueOfElement.defe_tempe2 +
                                 '</td><td>' + valueOfElement.paen_tipopa +
                                 '</td><td>' + valueOfElement.stat_codigo +
-                                '</td><td id="termo' + indexInArray + '">' + valueOfElement.defe_termog +
-                                '</td><td style="display:none" id="termoMarca' + indexInArray + '">' + valueOfElement.tema_codigo +
                                 '</td></tr>');
                         });
                     }
@@ -125,7 +111,7 @@ $(document).ready(function () {
         }
         $('#deta_pallet').html('');
         alert('Datos modificados!');
-    });
+    });*/
     $('#folio').on('keypress', function (e) {
         var folio = parseInt($('#folio').val().substring(3));
         var id = e.which;
@@ -202,7 +188,7 @@ $(document).ready(function () {
             return;
         }
         $.ajax({
-            url: '../data/getDetaDespacho.php?nro_desp=' + $('#nro_despacho').val(),
+            url: '../data/getDetaTraspasoCom.php?nro_desp=' + $('#nro_despacho').val(),
             dataType: 'json',
             type: 'GET',
             success: function (data) {
@@ -219,23 +205,20 @@ $(document).ready(function () {
                     $('#deta_despa').append('<tr id="' + indexInArray + '">' +
                         '<td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarPallet(' + indexInArray + ')"><i class="fa-solid fa-trash"></i></button>' +
                         '<td><button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editarPallet(' + indexInArray + ')"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                        '</td><td>' + valueOfElement.plde_codigo +
+                        '</td><td>' + valueOfElement.lote_espcod +
+                        '</td><td>' + valueOfElement.lote_codigo +
                         '</td><td>' + indexInArray +
-                        '</td><td>' + valueOfElement.pafr_varrot +
-                        '</td><td>' + valueOfElement.emba_codigo +
-                        '</td><td>' + valueOfElement.etiq_codigo +
-                        '</td><td>' + valueOfElement.pafr_calrot +
-                        '</td><td>' + valueOfElement.paen_ccajas +
-                        '</td><td id="temp' + indexInArray + '">' + valueOfElement.defe_tempe1 + '/' + valueOfElement.defe_tempe2 +
-                        '</td><td>' + valueOfElement.paen_tipopa +
-                        '</td><td>' + valueOfElement.stat_codigo +
-                        '</td><td id="termo' + indexInArray + '">' + valueOfElement.defe_termog +
-                        '</td><td style="display:none" id="termoMarca' + indexInArray + '">' + valueOfElement.tema_codigo +
+                        '</td><td>' + valueOfElement.fgmb_canbul +
+                        '</td><td>' + valueOfElement.kilos +
+                        '</td><td>' + valueOfElement.prod_codigo +
                         '</td></tr>');
                 });
             }
+
         })
         $.ajax({
-            url: '../data/getEncaDespa.php?nro_desp=' + $('#nro_despacho').val(),
+            url: '../data/getEncaTraspasoCom.php?nro_desp=' + $('#nro_despacho').val(),
             dataType: 'json',
             type: 'GET',
             success: function (data) {
@@ -250,16 +233,16 @@ $(document).ready(function () {
                 }
                 $('#clientes option[value=' + data.clie_codigo + ']').prop({ selected: true });
                 $('#planta option[value=' + data.plde_codigo + ']').prop({ selected: true });
-                $('#nro_despacho').val(data.defe_numero);
-                $('#obs').val(data.defe_numero);
-                $('#especie').val(data.defe_numero);
-                $('#fecha_des').val(data.defe_fecdes);
-                $('#hora_des').val(data.defe_horade);
-                $('#guia').val(data.defe_guides);
-                $('#tot_bultos').val(data.defe_cancaj);
-                $('#tot_kilos').val(data.defe_cancaj);
-                $('#totCajas').val(data.defe_cancaj);
-                $('#globalCounter').val(data.defe_cantar);
+                $('#nro_despacho').val(data.mfge_numero);
+                $('#obs').val(data.mfge_observ);
+                $('#especie option[value=' + data.espe_codigo + ']').prop({ selected: true });
+                $('#fecha_des').val(data.mfge_fecmov);
+                $('#hora_des').val(data.refg_horasa);
+                $('#guia').val(data.mfge_guisii);
+                $('#tot_bultos').val(data.mfge_totbul);
+                $('#tot_kilos').val(data.mfge_tpneto);
+                $('#totBultos').val(data.mfge_totbul);
+                $('#totKilos').val(data.mfge_tpneto);
             }
         })
     });
@@ -298,8 +281,8 @@ $(document).ready(function () {
         //$('#update_enca_despacho').hide();
         $('#tot_bultos').val(0);
         $('#tot_kilos').val(0);
-        $('#globalCounter').val(0);
-        $('#tot_cajas').val(0);
+        $('#totKilos').val(0);
+        $('#totBultos').val(0);
     });
     $('#save_enca_despacho').on('click', function () {
         const encabezado = document.querySelector('#encabezado_despacho');
@@ -307,38 +290,21 @@ $(document).ready(function () {
         var selects = encabezado.getElementsByTagName('select');
         console.log(inputs);
         console.log(selects);
-        for (var i = 1; i < inputs.length; i++) {
-            inputs[i].setAttribute('disabled', '');
-            if (inputs[i].id != 'guia' || inputs[i].id != 'obs') {
-            } else {
-                if (inputs[i].type != 'date') {
-                    if (inputs[i].value == null || inputs[i].value == '') {
-                        alert('Por favor, complete todos los campos obligatorios.');
-                        inputs[i].removeAttribute('disabled');
-                        return;
-                    }
-
-                }
-            }
-        }
         document.getElementById('add_pallet_deta').removeAttribute('disabled');
         document.getElementById('nro_despacho').setAttribute('disabled', '');
         document.getElementById('save_enca_despacho').setAttribute('disabled', '');
         var datos = {}
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].setAttribute('disabled', '');
-            if (inputs[i].type == 'checkbox') {
-                datos[inputs[i].id] = inputs[i].checked ? 1 : 0;
-            } else {
-                datos[inputs[i].id] = inputs[i].value;
-            }
+            datos[inputs[i].id] = inputs[i].value;
+
         }
         for (var i = 0; i < selects.length; i++) {
             selects[i].setAttribute('disabled', '');
             datos[selects[i].id] = selects[i].value;
         }
-        /*$.ajax({
-            url: '../model/save.php?type=enca',
+        $.ajax({
+            url: '../model/save.php?type=enca_traspaso',
             type: 'POST',
             data: {
                 data_enca: datos
@@ -347,7 +313,7 @@ $(document).ready(function () {
                 $('#nro_despacho').val(parseInt(data));
                 console.log(data);
             }
-        });*/
+        });
     });
     /*$('#update_enca_despacho').on('click', function () {
         const encabezado = document.querySelector('#encabezado_despacho');
@@ -381,18 +347,22 @@ $(document).ready(function () {
     });*/
 });
 function eliminarPallet(id) {
-    $('#totCajas').val(parseInt($('#totCajas').val()) - parseInt($('#cajas' + id).html()));
-    $('#globalCounter').val(parseInt($('#globalCounter').val()) - 1);
-    $('#tot_cajas').val($('#totCajas').val());
+    $('#totBultos').val(parseInt($('#totBultos').val()) - parseInt($('#bultos' + id).html()));
+    $('#tot_bultos').val($('#totBultos').val());
+    $('#totKilos').val(parseInt($('#totKilos').val()) - parseInt($('#kil_net' + id).html()));
+    $('#tot_kilos').val($('#totKilos').val());
     $('#' + id).remove();
     $.ajax({
         url: '../model/erase.php',
         type: 'POST',
         data: {
+            type: 'tarja',
+            cliente: $('#clientes').val(),
+            planta: $('#planta').val(),
             nro_despacho: $('#nro_despacho').val(),
             folio: id,
-            totCajas: $('#totCajas').val(),
-            globalCounter: $('#globalCounter').val()
+            totBultos: $('#totBultos').val(),
+            totKilos: $('#totKilos').val(),
         }
     });
     alert('Pallet eliminado!');
@@ -483,8 +453,8 @@ function loadTraspaso(id) {
             $('#guia').val(data.mfge_guisii);
             $('#tot_bultos').val(data.mfge_totbul);
             $('#tot_kilos').val(data.mfge_tpneto);
-            //$('#totCajas').val(data.defe_cancaj);
-            //$('#globalCounter').val(data.defe_cantar);
+            $('#totBultos').val(data.mfge_totbul);
+            $('#totKilos').val(data.mfge_tpneto);
         }
     })
 }

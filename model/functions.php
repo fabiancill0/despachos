@@ -309,13 +309,13 @@ FROM DBA.despafrigoen WHERE defe_numero = $despacho";
   function getEncaTraspasoByCliente($cliente)
   {
     $query = "SELECT clie_codigo, plde_codigo, mfge_numero, espe_codigo, mfge_fecmov, mfge_observ, mfge_tpneto, mfge_totbul, refg_horasa
-FROM DBA.spro_movtofrutagranenca WHERE clie_codigo = $cliente AND tpmv_codigo = 23 ORDER BY mfge_numero DESC";
+FROM DBA.spro_movtofrutagranenca WHERE clie_codigo = $cliente AND tpmv_codigo = 36 ORDER BY mfge_numero DESC";
     return $query;
   }
   function getEncaTraspasoByNumero($mov)
   {
     $query = "SELECT clie_codigo, plde_codigo, mfge_numero, espe_codigo, mfge_fecmov, mfge_observ, mfge_tpneto, mfge_totbul, refg_horasa, mfge_guisii
-FROM DBA.spro_movtofrutagranenca WHERE mfge_numero = $mov AND tpmv_codigo = 23";
+FROM DBA.spro_movtofrutagranenca WHERE mfge_numero = $mov AND tpmv_codigo = 36";
     return $query;
   }
   function getDetaTraspaso($cliente, $id)
@@ -324,16 +324,16 @@ FROM DBA.spro_movtofrutagranenca WHERE mfge_numero = $mov AND tpmv_codigo = 23";
 FROM DBA.spro_movtofrutagrandeta_tarjas as deta_tarjas join dba.spro_movtofrutagranpesa as pesa on deta_tarjas.fgmb_nrotar = pesa.fgmb_nrotar 
 join dba.spro_lotesfrutagranel as prod on pesa.lote_codigo = prod.lote_codigo and pesa.lote_espcod = prod.lote_espcod
 join (SELECT enva.enva_pesone, bin.bins_numero from dba.spro_bins as bin join dba.envases as enva on bin.enva_tipoen = enva.enva_tipoen 
-and bin.enva_codigo = enva.enva_codigo where bin.clie_codigo = $cliente) as bins on bins.bins_numero = pesa.bins_numero where deta_tarjas.mfge_numero = $id and deta_tarjas.tpmv_codigo = 23 group by
+and bin.enva_codigo = enva.enva_codigo where bin.clie_codigo = $cliente) as bins on bins.bins_numero = pesa.bins_numero where deta_tarjas.mfge_numero = $id and deta_tarjas.tpmv_codigo = 36 group by
 deta_tarjas.plde_codigo, deta_tarjas.fgmb_nrotar, deta_tarjas.fgmb_canbul, pesa.lote_espcod, pesa.lote_codigo, prod.prod_codigo";
     return $query;
   }
   function getEncaTarja($cliente, $folio)
   {
-    $query = "SELECT lote_deta.lote_codigo, lote_deta.vari_codigo, lote_deta.lote_espcod, lote_deta.prod_codigo, sum(pesa.mfgp_canbul) as bultos, sum(pesa.mfgp_pesore - bins.enva_pesone) as kilos FROM dba.spro_lotesfrutagranel as lote_deta 
+    $query = "SELECT lote_deta.lote_codigo, lote_deta.vari_codigo, lote_deta.lote_espcod, lote_deta.prod_codigo, sum(pesa.mfgp_canbul) as bultos, sum(pesa.mfgp_pesore - bins.enva_pesone) as kilos, pesa.mfgp_pesore, pesa.fgmb_nrotar, pesa.bins_numero FROM dba.spro_lotesfrutagranel as lote_deta 
 join dba.spro_movtofrutagranpesa as pesa on lote_deta.lote_codigo = pesa.lote_codigo and lote_deta.lote_espcod = pesa.lote_espcod join (SELECT enva.enva_pesone, bin.bins_numero from dba.spro_bins as bin join dba.envases as enva on bin.enva_tipoen = enva.enva_tipoen 
 and bin.enva_codigo = enva.enva_codigo where bin.clie_codigo = $cliente) as bins on bins.bins_numero = pesa.bins_numero where pesa.fgmb_nrotar = $folio
-group by lote_deta.lote_espcod, lote_deta.lote_codigo, lote_deta.vari_codigo, lote_deta.prod_codigo";
+group by lote_deta.lote_espcod, lote_deta.lote_codigo, lote_deta.vari_codigo, lote_deta.prod_codigo,pesa.mfgp_pesore, pesa.fgmb_nrotar, pesa.bins_numero";
     return $query;
   }
   function getUltimoTraspaso()

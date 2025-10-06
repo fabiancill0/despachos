@@ -94,8 +94,8 @@ if ($_SESSION['login_active'] == 1) {
             </div>
         </nav>
         <div class="container-fluid">
-            <input type="number" style="display:none" id="globalCounter" value="0">
-            <input type="number" style="display:none" id="totCajas" value="0">
+            <input type="number" style="display:none" id="totKilos" value="0">
+            <input type="number" style="display:none" id="totBultos" value="0">
             <div id="encabezado_despacho" class="mb-5">
                 <div class="mb-0">
                     <div class="row">
@@ -182,7 +182,7 @@ if ($_SESSION['login_active'] == 1) {
                     <div class="row">
                         <div class="col-6 pe-0">
                             <div class="form-floating">
-                                <input type="text" class="form-control " id="guia">
+                                <input type="number" class="form-control" id="guia">
                                 <label for="guia">Guía</label>
                             </div>
                         </div>
@@ -210,13 +210,12 @@ if ($_SESSION['login_active'] == 1) {
                                         <tr>
                                             <th></th>
                                             <th></th>
-                                            <th>Planta</th>
-                                            <th>Especie</th>
                                             <th>Lote</th>
                                             <th>Tarja</th>
                                             <th>Bultos</th>
                                             <th>Kilos Netos</th>
                                             <th>Cod Prod</th>
+                                            <th>Cod Envase</th>
                                         </tr>
                                     </thead>
                                     <tbody id="deta_despa">
@@ -237,7 +236,7 @@ if ($_SESSION['login_active'] == 1) {
                     <i class="fa-solid fa-file"></i>
                 </button>
                 <span class="col-1"></span>
-                <button type="button" class="btn btn-success btn-lg col-2" data-bs-toggle="modal" data-bs-target="#exampleModal" id="add_pallet_deta">
+                <button type="button" class="btn btn-success btn-lg col-2" disabled data-bs-toggle="modal" data-bs-target="#exampleModal" id="add_pallet_deta">
                     <i class="fa-solid fa-square-plus"></i>
                 </button>
                 <span class="col-1"></span>
