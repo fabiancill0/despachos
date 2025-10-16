@@ -15,7 +15,11 @@ if (isset($_GET['type'])) {
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt_deta = odbc_prepare($connnect, $query_deta);
-        $nro_pallet = $_POST['globalCounter'];
+        $nro_pallet = $_POST['tot_pallets'];
+        $planta = $_POST['planta'];
+        $cliente = $_POST['cliente'];
+        $despacho = $_POST['nro_despacho'];
+        $cajas = $_POST['tot_cajas'];
         $data = explode(';', $_POST['palletList']);
         $folio = $data[0];
         $temp = explode('/', $data[1]);
@@ -28,29 +32,38 @@ if (isset($_GET['type'])) {
         } else {
             $lado = 1;
         }
-        odbc_execute($stmt_deta, [$_POST['planta'], $_POST['nro_despacho'], $_POST['cliente'], $folio, $termo, $temp1, $temp2, $lado, $nro_pallet, date('Y-m-d H:i:s'), $termoMarca]);
-
+        $result = odbc_execute($stmt_deta, [$planta, $despacho, $cliente, $folio, $termo, $temp1, $temp2, $lado, $nro_pallet, date('Y-m-d H:i:s'), $termoMarca]);
         $query_enca_update = "UPDATE dba.despafrigoen SET defe_cantar = ?, defe_cancaj = ?, defe_canpal = ?, defe_fecact = ?, defe_horact = ? WHERE defe_numero = ?";
         $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
-        $result = odbc_execute($stmt_enca_update, [$nro_pallet, $_POST['totCajas'], $nro_pallet, date('Y-m-d'), date('H:i:s'), $_POST['nro_despacho']]);
+        $result_update = odbc_execute($stmt_enca_update, [$nro_pallet, $cajas, $nro_pallet, date('Y-m-d'), date('H:i:s'), $despacho]);
+        if ($result && $result_update) {
+            echo json_encode(['status' => 'success', 'message' => 'Pallet agregado correctamente.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al agregar el pallet.']);
+        }
     } else if ($_GET['type'] == 'pallet_gran') {
         $query_deta = "INSERT INTO dba.despafrigode
         (plde_codigo, defe_numero, clie_codigo, paen_numero, defe_ladoes, defe_filaes, tran_fechat)
          VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt_deta = odbc_prepare($connnect, $query_deta);
-        $nro_pallet = $_POST['globalCounter'];
+        $nro_pallet = $_POST['tot_pallets'];
         $folio = $_POST['palletList'];
         if ($nro_pallet % 2 == 0) {
             $lado = 2;
         } else {
             $lado = 1;
         }
-        odbc_execute($stmt_deta, [$_POST['planta'], $_POST['nro_despacho'], $_POST['cliente'], $folio, $lado, $nro_pallet, date('Y-m-d H:i:s')]);
+        $result = odbc_execute($stmt_deta, [$_POST['planta'], $_POST['nro_despacho'], $_POST['cliente'], $folio, $lado, $nro_pallet, date('Y-m-d H:i:s')]);
 
         $query_enca_update = "UPDATE dba.despafrigoen SET defe_cantar = ?, defe_cancaj = ?, defe_canpal = ?, defe_fecact = ?, defe_horact = ? WHERE defe_numero = ?";
         $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
-        $result = odbc_execute($stmt_enca_update, [$nro_pallet, $_POST['totCajas'], $nro_pallet, date('Y-m-d'), date('H:i:s'), $_POST['nro_despacho']]);
+        $result_update = odbc_execute($stmt_enca_update, [$nro_pallet, $_POST['tot_cajas'], $nro_pallet, date('Y-m-d'), date('H:i:s'), $_POST['nro_despacho']]);
+        if ($result && $result_update) {
+            echo json_encode(['status' => 'success', 'message' => 'Pallet agregado correctamente.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al agregar el pallet.']);
+        }
     } else if ($_GET['type'] == 'tarja') {
         $query_deta = "INSERT INTO dba.spro_movtofrutagrandeta_tarjas
         (plde_codigo, tpmv_codigo, mfge_numero, clie_codigo, mfgd_secuen, fgmb_nrotar, fgmb_canbul, fgmb_kilbru)
@@ -110,7 +123,11 @@ if (isset($_GET['type'])) {
             $data['patente'],
             date('Y-m-d H:i:s')
         ]);
-        echo json_encode($nuevo);
+        if ($result) {
+            echo json_encode(['status' => 'success', 'message' => 'Encabezado de despacho creado correctamente.', 'nro_despacho' => $nuevo]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al crear el encabezado de despacho.']);
+        }
     } else if ($_GET['type'] == 'enca_granel') {
         $data = $_POST['data_enca'];
 
@@ -137,7 +154,11 @@ if (isset($_GET['type'])) {
             $data['chofer'],
             $data['acoplado'],
         ]);
-        echo json_encode($nuevo);
+        if ($result) {
+            echo json_encode(['status' => 'success', 'message' => 'Encabezado de despacho creado correctamente.', 'nro_despacho' => $nuevo]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al crear el encabezado de despacho.']);
+        }
     } else if ($_GET['type'] == 'enca_traspaso') {
         $data = $_POST['data_enca'];
         $ultimoTraspaso = odbc_fetch_array(odbc_exec($connnect, $functions->getUltimoTraspaso()));
@@ -194,3 +215,4 @@ if (isset($_GET['type'])) {
         ]);
     }
 }
+odbc_close($connnect);

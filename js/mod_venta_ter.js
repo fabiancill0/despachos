@@ -1,3 +1,5 @@
+var tot_cajas = 0;
+var tot_pallets = 0;
 $(document).ready(function () {
     $('#folio_input_btn').on('click', function () {
         document.getElementById('folio_input').click();
@@ -38,25 +40,34 @@ $(document).ready(function () {
                             '</td><td>' + valueOfElement.paen_tipopa +
                             '</td></tr>');
                     });
-                    $('#totCajas').val(parseInt($('#totCajas').val()) + parseInt($('#cajas' + folio).val()));
-                    $('#globalCounter').val(parseInt($('#globalCounter').val()) + 1);
-                    $('#tot_cajas').val($('#totCajas').val());
-                    $('#tot_tarjas').val($('#globalCounter').val());
-                }
-            });
-            $.ajax({
-                url: '../model/save.php?type=pallet_gran',
-                type: 'POST',
-                data: {
-                    cliente: $('#clientes').val(),
-                    planta: $('#planta').val(),
-                    palletList: folio,
-                    totCajas: $('#totCajas').val(),
-                    nro_despacho: $('#nro_despacho').val(),
-                    globalCounter: $('#globalCounter').val()
-                },
-                success: function (data) {
-                    console.log(data);
+                    tot_cajas += parseInt($('#cajas' + folio).val());
+                    tot_pallets += 1;
+                    $('#tot_cajas').val(tot_cajas);
+                    $('#tot_tarjas').val(tot_pallets);
+                    console.log(tot_cajas);
+                    console.log(tot_pallets);
+                    $.ajax({
+                        url: '../model/save.php?type=pallet_gran',
+                        dataType: 'json',
+                        type: 'POST',
+                        data: {
+                            cliente: $('#clientes').val(),
+                            planta: $('#planta').val(),
+                            palletList: folio,
+                            tot_cajas: tot_cajas,
+                            nro_despacho: $('#nro_despacho').val(),
+                            tot_pallets: tot_pallets
+                        },
+                        success: function (data) {
+                            if (data.status === 'success') {
+                                alert(data.message);
+                                console.log(data.message);
+                            } else {
+                                alert(data.message);
+                                console.log(data.message);
+                            }
+                        }
+                    });
                 }
             });
             const pallet_inputs = document.querySelector('#detalle_pallet');
@@ -65,7 +76,6 @@ $(document).ready(function () {
                 inputs[i].value = '';
             }
             $('#deta_pallet').html('');
-            alert('Pallet agregado a despacho!');
         }
     });
     $('#edit_pallet').on('click', function () {
@@ -181,7 +191,7 @@ $(document).ready(function () {
                         '</td><td>' + valueOfElement.cate_codigo +
                         '</td><td>' + valueOfElement.etiq_codigo +
                         '</td><td>' + valueOfElement.pafr_calrot +
-                        '</td><td><input id="cajas' + valueOfElement.paen_numero + '" style="display:none" value="' + valueOfElement.paen_ccajas + '">' + valueOfElement.paen_ccajas +
+                        '</td><td><input id="cajas' + indexInArray + '" style="display:none" value="' + valueOfElement.paen_ccajas + '">' + valueOfElement.paen_ccajas +
                         '</td><td>' + valueOfElement.paen_tipopa +
                         '</td></tr>');
                 });
@@ -215,9 +225,11 @@ $(document).ready(function () {
                 $('#tipo_mov option[value=' + data.defe_tiposa + ']').prop({ selected: true })
                 $('#guia').val(data.defe_guides);
                 $('#tot_cajas').val(data.defe_cancaj);
-                $('#totCajas').val(data.defe_cancaj);
-                $('#globalCounter').val(data.defe_cantar);
                 $('#tot_tarjas').val(data.defe_cantar);
+                tot_cajas = parseInt(data.defe_cancaj);
+                tot_pallets = parseInt(data.defe_cantar);
+                console.log(tot_cajas);
+                console.log(tot_pallets);
             }
         })
     });
@@ -232,10 +244,6 @@ $(document).ready(function () {
                 success: function (data) {
                     if (data.error) {
                         alert(data.error);
-                        $('#folio').val('');
-                        return;
-                    } else if (data.paen_estado != 1) {
-                        alert('Pallet ya despachado!');
                         $('#folio').val('');
                         return;
                     } else {
@@ -295,10 +303,12 @@ $(document).ready(function () {
         $('#deta_despa').html('');
         //$('#save_enca_despacho').show();
         //$('#update_enca_despacho').hide();
-        $('#globalCounter').val(0);
-        $('#totCajas').val(0);
+        tot_cajas = 0;
+        tot_pallets = 0;
         $('#tot_cajas').val(0);
         $('#tot_tarjas').val(0);
+        console.log(tot_cajas);
+        console.log(tot_pallets);
     });
     $('#save_enca_despacho').on('click', function () {
         const encabezado = document.querySelector('#encabezado_despacho');
@@ -308,14 +318,11 @@ $(document).ready(function () {
         console.log(selects);
         for (var i = 1; i < inputs.length; i++) {
             inputs[i].setAttribute('disabled', '');
-            if (inputs[i].id == 'guia' || inputs[i].id == 'acoplado') {
-            } else {
-                if (inputs[i].type != 'time' || inputs[i].type != 'date') {
-                    if (inputs[i].value == null || inputs[i].value == '') {
-                        alert('Por favor, complete todos los campos obligatorios.');
-                        inputs[i].removeAttribute('disabled');
-                        return;
-                    }
+            if (inputs[i].id == 'chofer' || inputs[i].id == 'patente') {
+                if (inputs[i].value == '') {
+                    inputs[i].removeAttribute('disabled');
+                    alert('Por favor, complete todos los campos obligatorios.');
+                    return;
 
                 }
             }
@@ -339,11 +346,17 @@ $(document).ready(function () {
         $.ajax({
             url: '../model/save.php?type=enca_granel',
             type: 'POST',
+            dataType: 'json',
             data: {
                 data_enca: datos
             },
             success: function (data) {
-                $('#nro_despacho').val(parseInt(data));
+                if (data.status === 'success') {
+                    $('#nro_despacho').val(parseInt(data.nro_despacho));
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
                 console.log(data);
             }
         });
@@ -380,22 +393,32 @@ $(document).ready(function () {
     });*/
 });
 function eliminarPallet(id) {
-    $('#totCajas').val(parseInt($('#totCajas').val()) - parseInt($('#cajas' + id).val()));
-    $('#globalCounter').val(parseInt($('#globalCounter').val()) - 1);
+    tot_cajas -= parseInt($('#cajas' + id).val());
+    tot_pallets -= 1;
+    console.log(tot_cajas);
+    console.log(tot_pallets);
     $('#tot_cajas').val($('#totCajas').val());
     $('#tot_tarjas').val($('#globalCounter').val());
     $('#' + id).remove();
     $.ajax({
         url: '../model/erase.php',
         type: 'POST',
+        dataType: 'json',
         data: {
+            type: 'pallet',
             nro_despacho: $('#nro_despacho').val(),
             folio: id,
-            totCajas: $('#totCajas').val(),
-            globalCounter: $('#globalCounter').val()
+            tot_cajas: tot_cajas,
+            tot_pallets: tot_pallets
+        },
+        success: function (data) {
+            if (data.status === 'success') {
+                alert(data.message);
+            } else {
+                alert(data.message);
+            }
         }
     });
-    alert('Pallet eliminado!');
 }
 function editarPallet(id) {
     $.ajax({
@@ -442,7 +465,7 @@ function loadDespacho(id) {
                     '</td><td>' + valueOfElement.cate_codigo +
                     '</td><td>' + valueOfElement.etiq_codigo +
                     '</td><td>' + valueOfElement.pafr_calrot +
-                    '</td><td><input id="cajas' + valueOfElement.paen_numero + '" style="display:none" value="' + valueOfElement.paen_ccajas + '">' + valueOfElement.paen_ccajas +
+                    '</td><td><input id="cajas' + indexInArray + '" style="display:none" value="' + valueOfElement.paen_ccajas + '">' + valueOfElement.paen_ccajas +
                     '</td><td>' + valueOfElement.paen_tipopa +
                     '</td></tr>');
             });
@@ -476,9 +499,11 @@ function loadDespacho(id) {
             $('#tipo_mov option[value=' + data.defe_tiposa + ']').prop({ selected: true })
             $('#guia').val(data.defe_guides);
             $('#tot_cajas').val(data.defe_cancaj);
-            $('#totCajas').val(data.defe_cancaj);
-            $('#globalCounter').val(data.defe_cantar);
             $('#tot_tarjas').val(data.defe_cantar);
+            tot_cajas = parseInt(data.defe_cancaj);
+            tot_pallets = parseInt(data.defe_cantar);
+            console.log(tot_cajas);
+            console.log(tot_pallets);
         }
     })
 }

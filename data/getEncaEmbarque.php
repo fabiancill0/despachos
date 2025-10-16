@@ -3,8 +3,9 @@ include '../model/connections.php';
 include '../model/functions.php';
 $conection = new Connections();
 $functions = new Functions();
+$connection = $conection->connectToServ();
 if (isset($_GET['cliente'])) {
-    $connection = $conection->connectToServ();
+
     $despachos = $functions->getEncaEmbarqueByCliente($_GET['cliente']);
     $data = odbc_exec($connection, $despachos);
     while ($row = odbc_fetch_array($data)) {
@@ -29,7 +30,6 @@ if (isset($_GET['cliente'])) {
     $data = explode(';', $_GET['data']);
     $embarque = $data[0];
     $cliente = $data[1];
-    $connection = $conection->connectToServ();
     $enca_embarque = $functions->getEncaEmbarqueByCod($embarque, $cliente);
     $data_embarque = odbc_exec($connection, $enca_embarque);
     $row = odbc_fetch_array($data_embarque);
@@ -45,4 +45,5 @@ if (isset($_GET['cliente'])) {
     ];
     echo json_encode($row_edit);
 }
+odbc_close($connection);
 ?>

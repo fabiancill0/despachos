@@ -24,3 +24,4 @@ if ($row_edit == []) {
     $row_edit = ['error' => 'No se encontraron datos para el despacho solicitado.'];
 }
 echo json_encode($row_edit);
+odbc_close($connection);

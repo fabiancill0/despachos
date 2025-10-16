@@ -46,5 +46,5 @@ if (isset($_GET['type'])) {
 <?php }
 }
 
-
+odbc_close($conexion);
 ?>

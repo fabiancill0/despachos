@@ -4,8 +4,8 @@ include '../model/functions.php';
 
 $conection = new Connections();
 $functions = new Functions();
+$connection = $conection->connectToServ();
 if (isset($_GET['cliente'])) {
-    $connection = $conection->connectToServ();
     if (isset($_GET['type'])) {
         $despachos = $functions->getEncaDespachoByClienteGranel($_GET['cliente']);
         $data = odbc_exec($connection, $despachos);
@@ -47,7 +47,6 @@ if (isset($_GET['cliente'])) {
 } else if (isset($_GET['nro_desp'])) {
     if (isset($_GET['type'])) {
         $despacho = $_GET['nro_desp'];
-        $connection = $conection->connectToServ();
         $enca_despacho = $functions->getEncaDespachoByNumeroGranel($despacho);
         $data_despacho = odbc_exec($connection, $enca_despacho);
         $row = odbc_fetch_array($data_despacho);
@@ -70,7 +69,6 @@ if (isset($_GET['cliente'])) {
         ];
     } else {
         $despacho = $_GET['nro_desp'];
-        $connection = $conection->connectToServ();
         $enca_despacho = $functions->getEncaDespachoByNumero($despacho);
         $data_despacho = odbc_exec($connection, $enca_despacho);
         $row = odbc_fetch_array($data_despacho);
@@ -100,3 +98,4 @@ if (isset($_GET['cliente'])) {
 
     echo json_encode($row_edit);
 }
+odbc_close($connection);

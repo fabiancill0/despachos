@@ -95,8 +95,6 @@ if ($_SESSION['login_active'] == 1) {
             </div>
         </nav>
         <div class="container-fluid">
-            <input type="number" style="display:none" id="globalCounter" value="0">
-            <input type="number" style="display:none" id="totCajas" value="0">
             <div id="encabezado_despacho" class="mb-5">
                 <div class="mb-0">
                     <div class="row">
@@ -197,7 +195,7 @@ if ($_SESSION['login_active'] == 1) {
                                 <div class="input-group-text">
                                     <input class="form-check-input mt-0" type="checkbox" id="if_termografo" checked>
                                 </div>
-                                <input type="text" class="form-control" value="Termógrafo" disabled>
+                                <input type="text" class="form-control" value="Termógrafo" disabled id="label_termo">
                             </div>
                         </div>
                     </div>

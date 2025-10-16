@@ -59,6 +59,7 @@ if (isset($_GET['type'])) {
     }
     echo json_encode($row_edit);
 } else {
+    $queryEnca = $functions->getEncaPallet($folio);
     $result = odbc_exec($conexion, $queryEnca);
     $row = odbc_fetch_array($result);
     if ($row === false) {

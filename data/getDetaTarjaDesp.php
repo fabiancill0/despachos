@@ -24,3 +24,4 @@ $row_edit[] = [
 
 
 echo json_encode($row_edit);
+odbc_close($conexion);

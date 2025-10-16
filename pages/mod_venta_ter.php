@@ -95,8 +95,6 @@ if ($_SESSION['login_active'] == 1) {
             </div>
         </nav>
         <div class="container-fluid">
-            <input type="number" style="display:none" id="globalCounter" value="0">
-            <input type="number" style="display:none" id="totCajas" value="0">
             <div id="encabezado_despacho" class="mb-5">
                 <div class="mb-0">
                     <div class="row">

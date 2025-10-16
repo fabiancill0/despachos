@@ -73,3 +73,4 @@ if (isset($_GET['type'])) {
 }
 
 echo json_encode($row_edit);
+odbc_close($connection);

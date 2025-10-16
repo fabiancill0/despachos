@@ -197,148 +197,122 @@ class Functions
   }
   function getInstructivo($cliente)
   {
-    $query = "SELECT embq_codigo FROM DBA.embarqueprod WHERE clie_codigo = $cliente ORDER BY embq_fzarpe DESC";
+    $query = "CALL dba.Movil_instuctivo($cliente)";
     return $query;
   }
   function getUltimoDespacho()
   {
-    $query = "SELECT TOP 1 defe_numero FROM DBA.despafrigoen ORDER BY defe_numero DESC";
+    $query = "SELECT dba.Movil_UltimoDespacho() as defe_numero";
     return $query;
   }
   function getEncaEmbarque($cliente)
   {
-    $query = "SELECT embq_bookin, embq_codigo, clie_codigo, reci_codigo, embq_fitosa, embq_nomnav, embq_ptoori, embq_descar, embc_codigo, nave_codigo FROM DBA.embarqueprod WHERE clie_codigo = $cliente";
+    $query = "CALL dba.Movil_EncaEmbarque($cliente)";
     return $query;
   }
   function getEncaEmbarqueByCod($embarque, $cliente)
   {
-    $query = "SELECT embq_codigo, nave_codigo, reci_codigo, embq_nomnav, embq_descar, embq_numdus FROM DBA.embarqueprod WHERE clie_codigo = $cliente AND embq_codigo = '$embarque'";
+    $query = "CALL dba.Movil_EncaEmbarqueByCod('$embarque', $cliente)";
     return $query;
   }
   function getDetaPalletDespacho($folio)
   {
-    $query = "SELECT enca.clie_codigo, enca.paen_numero,deta.pafr_varrot,enca.emba_codigo,enca.etiq_codigo,deta.pafr_calrot,enca.paen_ccajas,enca.paen_tipopa,enca.stat_codigo,enca.espe_codigo
-              FROM dba.palletencab AS enca join DBA.palletfruta as deta on enca.paen_numero = deta.paen_numero and enca.clie_codigo = deta.clie_codigo where enca.paen_numero = $folio
-              group by enca.clie_codigo, enca.paen_numero,deta.pafr_varrot,deta.pafr_calrot,enca.paen_tipopa,enca.stat_codigo,enca.emba_codigo,enca.paen_ccajas,enca.etiq_codigo,enca.espe_codigo";
+    $query = "CALL dba.Movil_DetaPalletDespacho($folio)";
     return $query;
   }
   function getDetaPalletDespachoGranel($folio)
   {
-    $query = "SELECT enca.clie_codigo, enca.cate_codigo, enca.paen_numero,deta.pafr_varrot,deta.emba_codigo,enca.etiq_codigo,deta.pafr_calrot,enca.paen_ccajas,enca.paen_tipopa,enca.espe_codigo
-              FROM dba.spro_palletencab AS enca join DBA.spro_palletfruta as deta on enca.paen_numero = deta.paen_numero and enca.clie_codigo = deta.clie_codigo where enca.paen_numero = $folio
-              group by enca.clie_codigo,enca.cate_codigo, enca.paen_numero,deta.pafr_varrot,deta.pafr_calrot,enca.paen_tipopa,deta.emba_codigo,enca.paen_ccajas,enca.etiq_codigo,enca.espe_codigo";
+    $query = "CALL dba.Movil_DetaPalletDespachoGranel($folio)";
     return $query;
   }
   function getDetaPallet($folio)
   {
-    $query = "SELECT emba_codigo,vari_codigo,pafr_varrot,pafr_calibr,pafr_calrot,prod_codigo,pafr_prdrot,pafr_copack,pafr_fecemb,PAFR_HUERT1,PAFR_CUART1,sum(pafr_ccajas) as pafr_ccajas 
-    FROM DBA.palletfruta WHERE paen_numero = $folio group by emba_codigo,vari_codigo,pafr_varrot,pafr_calibr,pafr_calrot,prod_codigo,pafr_prdrot,pafr_copack,pafr_fecemb,PAFR_HUERT1,PAFR_CUART1";
+    $query = "CALL dba.Movil_DetallePallet($folio)";
     return $query;
   }
   function getDetaPalletGranel($folio)
   {
-    $query = "SELECT emba_codigo,cate_codigo,vari_codigo,vari_codrot,pafr_calibr,pafr_calrot,prod_codigo,prod_codrot,pafr_copack,pafr_fecemb,pafr_huert1,pafr_cuart1,sum(pafr_ccajas) as pafr_ccajas 
-    FROM DBA.spro_palletfruta WHERE paen_numero = $folio group by emba_codigo,cate_codigo,vari_codigo,vari_codrot,pafr_calibr,pafr_calrot,prod_codigo,prod_codrot,pafr_copack,pafr_fecemb,pafr_huert1,pafr_cuart1";
+    $query = "CALL dba.Movil_DetaPalletGranel($folio)";
     return $query;
   }
   function getEncaPallet($folio)
   {
-    $query = "SELECT clie_codigo,paen_tipopa,vari_codigo,cate_codigo,stat_codigo,emba_codigo,cond_codigo,paen_ccajas,etiq_codigo,espe_codigo,paen_estado FROM dba.palletencab WHERE paen_numero = $folio";
+    $query = "CALL dba.Movil_EncaPallet($folio)";
     return $query;
   }
   function getEncaPalletGranel($folio)
   {
-    $query = "SELECT enca.clie_codigo,enca.paen_tipopa,enca.vari_codigo,enca.cate_codigo,deta.emba_codigo,enca.paen_ccajas,enca.etiq_codigo,enca.espe_codigo,enca.paen_estado FROM dba.spro_palletencab AS enca 
-join DBA.spro_palletfruta as deta on enca.paen_numero = deta.paen_numero WHERE enca.paen_numero = $folio
-group by enca.clie_codigo,enca.paen_tipopa,enca.vari_codigo,enca.cate_codigo,deta.emba_codigo,enca.paen_ccajas,enca.etiq_codigo,enca.espe_codigo,enca.paen_estado";
+    $query = "CALL dba.Movil_EncaPalletGranel($folio)";
     return $query;
   }
   function getEncaEmbarqueByCliente($cliente)
   {
-    $query = "SELECT embq_codigo, reci_codigo, oper_codigo, embq_nomnav, embq_fzarpe, embc_codigo, embq_ptoori, dest_codigo, embq_descar, embq_tipova FROM DBA.embarqueprod WHERE clie_codigo = $cliente
-    GROUP BY embq_codigo, reci_codigo, oper_codigo, embq_nomnav, embq_fzarpe, embc_codigo, embq_ptoori, dest_codigo, embq_descar, embq_tipova ORDER BY embq_codigo DESC";
+    $query = "CALL dba.Movil_EncaEmbarqueByCliente($cliente)";
     return $query;
   }
   function getEncaDespachoAux($instructivo)
   {
-    $query = "SELECT embq_codigo, defe_guides FROM DBA.despafrigoen WHERE embq_codigo = '$instructivo'";
+    $query = "CALL dba.Movil_EncaDespachoAux($instructivo)";
     return $query;
   }
   function getEncaDespacho($instructivo, $guia)
   {
-    $query = "SELECT defe_fecdes, defe_cantar, defe_numero, plde_codigo, defe_especi, defe_nrcont, defe_guides, defe_cancaj, defe_patent, defe_pataco, defe_chofer, defe_nrosps, defe_chfrut, defe_celcho, defe_setpoi, defe_ventil, YEAR(defe_fecfab) AS defe_fecfab, defe_selcon, defe_taraco, defe_traser, tica_codigo, defe_tiposa, defe_plasag FROM DBA.despafrigoen WHERE embq_codigo = '$instructivo' AND defe_guides = $guia";
+    $query = "CALL dba.Movil_EncaDespacho($instructivo, $guia)";
     return $query;
   }
   function getEncaDespachoByCliente($cliente)
   {
-    $query = "SELECT enca.defe_numero, enca.defe_fecdes, emba.reci_codigo, enca.defe_tiposa, enca.puer_codigo, enca.defe_plades, enca.defe_guides, enca.embq_codigo
-FROM DBA.despafrigoen as enca JOIN dba.embarqueprod as emba on enca.embq_codigo = emba.embq_codigo WHERE enca.clie_codigo = $cliente ORDER BY defe_numero DESC";
+    $query = "CALL dba.Movil_EncaDespachoByCliente($cliente)";
     return $query;
   }
   function getEncaDespachoByClienteGranel($cliente)
   {
-    $query = "SELECT defe_numero, defe_fecdes,  defe_tiposa, tran_codigo, clpr_rut, defe_plades, defe_guides
-FROM DBA.despafrigoen WHERE clie_codigo = $cliente and defe_tiposa = 16 ORDER BY defe_numero DESC";
+    $query = "CALL dba.Movil_EncaDespachoByClienteGranel($cliente)";
     return $query;
   }
   function getEncaDespachoByNumero($despacho)
   {
-    $query = "SELECT enca.defe_ctlter, enca.defe_cantar, enca.defe_numdus, emba.nave_codigo, emba.embq_nomnav, enca.plde_codigo, enca.defe_nrosps,enca.defe_patent, enca.defe_cancaj,
-    enca.clie_codigo,enca.defe_numero, enca.defe_fecdes, enca.defe_horade, emba.reci_codigo, enca.defe_tiposa, enca.puer_codigo,
-    enca.defe_guides, enca.embq_codigo
-FROM DBA.despafrigoen as enca JOIN dba.embarqueprod as emba on enca.embq_codigo = emba.embq_codigo WHERE enca.defe_numero = $despacho";
+    $query = "CALL dba.Movil_EncaDespachoByNumero($despacho)";
     return $query;
   }
   function getEncaDespachoByNumeroGranel($despacho)
   {
-    $query = "SELECT defe_cantar, plde_codigo, defe_patent, defe_cancaj, tran_codigo, clpr_rut, tica_codigo,defe_chofer,defe_pataco,
-    clie_codigo,defe_numero, defe_fecdes, defe_horade, defe_tiposa, defe_guides
-FROM DBA.despafrigoen WHERE defe_numero = $despacho";
+    $query = "CALL dba.Movil_EncaDespachoByNumeroGranel($despacho)";
     return $query;
   }
   function getDetaDespacho($id)
   {
-    $query = "SELECT clie_codigo, paen_numero, defe_tempe1, defe_tempe2, defe_ladoes, defe_termog, tema_codigo FROM DBA.despafrigode WHERE defe_numero = $id ORDER BY defe_ladoes, defe_filaes";
+    $query = "CALL dba.Movil_DetaDespacho($id)";
     return $query;
   }
   function getDetaDespachoGranel($id)
   {
-    $query = "SELECT clie_codigo, paen_numero, defe_ladoes FROM DBA.despafrigode WHERE defe_numero = $id ORDER BY defe_ladoes, defe_filaes";
+    $query = "CALL dba.Movil_DetaDespachoGranel($id)";
     return $query;
   }
   function getEncaTraspasoByCliente($cliente)
   {
-    $query = "SELECT clie_codigo, plde_codigo, mfge_numero, espe_codigo, mfge_fecmov, mfge_observ, mfge_tpneto, mfge_totbul, refg_horasa
-FROM DBA.spro_movtofrutagranenca WHERE clie_codigo = $cliente AND tpmv_codigo = 36 ORDER BY mfge_numero DESC";
+    $query = "CALL dba.Movil_EncaTraspasoByCliente($cliente)";
     return $query;
   }
   function getEncaTraspasoByNumero($mov)
   {
-    $query = "SELECT clie_codigo, plde_codigo, mfge_numero, espe_codigo, mfge_fecmov, mfge_observ, mfge_tpneto, mfge_totbul, refg_horasa, mfge_guisii
-FROM DBA.spro_movtofrutagranenca WHERE mfge_numero = $mov AND tpmv_codigo = 36";
+    $query = "CALL dba.Movil_EncaTraspasoByNumero($mov)";
     return $query;
   }
   function getDetaTraspaso($cliente, $id)
   {
-    $query = "SELECT deta_tarjas.plde_codigo, deta_tarjas.fgmb_nrotar, deta_tarjas.fgmb_canbul, pesa.lote_espcod, pesa.lote_codigo, sum(pesa.mfgp_pesore - bins.enva_pesone) as kilos, prod.prod_codigo
-FROM DBA.spro_movtofrutagrandeta_tarjas as deta_tarjas join dba.spro_movtofrutagranpesa as pesa on deta_tarjas.fgmb_nrotar = pesa.fgmb_nrotar 
-join dba.spro_lotesfrutagranel as prod on pesa.lote_codigo = prod.lote_codigo and pesa.lote_espcod = prod.lote_espcod
-join (SELECT enva.enva_pesone, bin.bins_numero from dba.spro_bins as bin join dba.envases as enva on bin.enva_tipoen = enva.enva_tipoen 
-and bin.enva_codigo = enva.enva_codigo where bin.clie_codigo = $cliente) as bins on bins.bins_numero = pesa.bins_numero where deta_tarjas.mfge_numero = $id and deta_tarjas.tpmv_codigo = 36 group by
-deta_tarjas.plde_codigo, deta_tarjas.fgmb_nrotar, deta_tarjas.fgmb_canbul, pesa.lote_espcod, pesa.lote_codigo, prod.prod_codigo";
+    $query = "CALL dba.Movil_DetaTraspaso($cliente, $id)";
     return $query;
   }
   function getEncaTarja($cliente, $folio)
   {
-    $query = "SELECT lote_deta.lote_codigo, lote_deta.vari_codigo, lote_deta.lote_espcod, lote_deta.prod_codigo, sum(pesa.mfgp_canbul) as bultos, sum(pesa.mfgp_pesore - bins.enva_pesone) as kilos, pesa.mfgp_pesore, pesa.fgmb_nrotar, pesa.bins_numero FROM dba.spro_lotesfrutagranel as lote_deta 
-join dba.spro_movtofrutagranpesa as pesa on lote_deta.lote_codigo = pesa.lote_codigo and lote_deta.lote_espcod = pesa.lote_espcod join (SELECT enva.enva_pesone, bin.bins_numero from dba.spro_bins as bin join dba.envases as enva on bin.enva_tipoen = enva.enva_tipoen 
-and bin.enva_codigo = enva.enva_codigo where bin.clie_codigo = $cliente) as bins on bins.bins_numero = pesa.bins_numero where pesa.fgmb_nrotar = $folio
-group by lote_deta.lote_espcod, lote_deta.lote_codigo, lote_deta.vari_codigo, lote_deta.prod_codigo,pesa.mfgp_pesore, pesa.fgmb_nrotar, pesa.bins_numero";
+    $query = "CALL dba.Movil_EncaTarja($cliente, $folio)";
     return $query;
   }
   function getUltimoTraspaso()
   {
-    $query = "SELECT TOP 1 mfge_numero FROM DBA.spro_movtofrutagranenca WHERE tpmv_codigo = 36 ORDER BY mfge_numero DESC";
+    $query = "SELECT dba.Movil_UltimoTraspaso() as mfge_numero";
     return $query;
   }
   function getNombrePlanta($conex, $codigo)
