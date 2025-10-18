@@ -5,18 +5,19 @@ include '../model/functions.php';
 $functions = new Functions();
 $conn = new Connections();
 $folio = $_GET['folio'];
-$cliente = $_GET['cliente'];
 $conexion = $conn->connectToServ();
-$queryEnca = $functions->getEncaTarja($cliente, $folio);
+$queryEnca = $functions->getEncaTarja($folio);
 $result = odbc_exec($conexion, $queryEnca);
 $row = odbc_fetch_array($result);
 if (isset($_GET['type'])) {
     $row_edit = [
+        'plde_codigo' => $functions->getNombrePlanta($conexion, $row['lote_pltcod']),
         'vari_codigo' => $functions->getNombreVariedad($conexion, $row['vari_codigo'], $row['lote_espcod']),
         'lote_codigo' => $row['lote_espcod'],
         'prod_codigo' => $functions->getNombreProductor($conexion, $row['prod_codigo']),
-        'bultos' => $row['bultos'],
-        'kilos' => number_format($row['kilos'], 2, '.', '')
+        'bultos' => number_format($row['bultos'], 0),
+        'csg' => $functions->getCSG($conexion, $row['prod_codigo'], $row['csg']),
+        'sdp' => $functions->getSDP($conexion, $row['prod_codigo'], $row['csg'], $row['sdp']),
     ];
     echo json_encode($row_edit);
 } else {
@@ -24,11 +25,13 @@ if (isset($_GET['type'])) {
         echo json_encode(['error' => 'Tarja no existe o el cliente es incorrecto!']);
     } else {
         $row_edit = [
+            'plde_codigo' => $functions->getNombrePlanta($conexion, $row['lote_pltcod']),
             'vari_codigo' => $functions->getNombreVariedad($conexion, $row['vari_codigo'], $row['lote_espcod']),
             'lote_codigo' => $row['lote_codigo'],
             'prod_codigo' => $functions->getNombreProductor($conexion, $row['prod_codigo']),
             'bultos' => number_format($row['bultos'], 0),
-            'kilos' => number_format($row['kilos'], 2, ',', '.')
+            'csg' => $functions->getCSG($conexion, $row['prod_codigo'], $row['csg']),
+            'sdp' => $functions->getSDP($conexion, $row['prod_codigo'], $row['csg'], $row['sdp']),
         ];
         echo json_encode($row_edit);
     }

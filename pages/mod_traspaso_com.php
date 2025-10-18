@@ -94,8 +94,6 @@ if ($_SESSION['login_active'] == 1) {
             </div>
         </nav>
         <div class="container-fluid">
-            <input type="number" style="display:none" id="totKilos" value="0">
-            <input type="number" style="display:none" id="totBultos" value="0">
             <div id="encabezado_despacho" class="mb-5">
                 <div class="mb-0">
                     <div class="row">
@@ -192,10 +190,6 @@ if ($_SESSION['login_active'] == 1) {
                                     <input type="number" class="form-control" id="tot_bultos" value="0">
                                     <label for="tot_bultos">Bultos</label>
                                 </div>
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" id="tot_kilos" value="0">
-                                    <label for="tot_kilos">Kilos</label>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -210,12 +204,13 @@ if ($_SESSION['login_active'] == 1) {
                                         <tr>
                                             <th></th>
                                             <th></th>
+                                            <th>Planta</th>
+                                            <th>Especie</th>
                                             <th>Lote</th>
-                                            <th>Tarja</th>
+                                            <th>N° Tarja</th>
                                             <th>Bultos</th>
-                                            <th>Kilos Netos</th>
                                             <th>Cod Prod</th>
-                                            <th>Cod Envase</th>
+                                            <th>Cod Bin</th>
                                         </tr>
                                     </thead>
                                     <tbody id="deta_despa">
@@ -265,7 +260,6 @@ if ($_SESSION['login_active'] == 1) {
                                             <th>Fecha Despacho</th>
                                             <th>Especie</th>
                                             <th>Código Planta</th>
-                                            <th>Kilos</th>
                                             <th>Bultos</th>
                                         </tr>
                                     </thead>
@@ -335,9 +329,31 @@ if ($_SESSION['login_active'] == 1) {
                                 </div>
                             </div>
                             <div class="mb-0">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="tar_prod">
-                                    <label for="tar_prod">Productor</label>
+                                <div class="input-group input-group-sm">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_planta">
+                                        <label for="tar_planta">Planta</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_prod">
+                                        <label for="tar_prod">Productor</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-0">
+                                <div class="input-group input-group-sm">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_lote">
+                                        <label for="tar_lote">Nro Lote</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_csg">
+                                        <label for="tar_csg">CSG</label>
+                                    </div>
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" id="tar_sdp">
+                                        <label for="tar_sdp">SDP</label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="mb-0">
@@ -347,42 +363,10 @@ if ($_SESSION['login_active'] == 1) {
                                         <label for="tar_vari">Variedad</label>
                                     </div>
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="tar_lote">
-                                        <label for="tar_lote">Nro Lote</label>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-0">
-                                <div class="input-group input-group-sm">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="tar_canti">
+                                        <input type="number" class="form-control" id="tar_canti">
                                         <label for="tar_canti">Cantidad</label>
                                     </div>
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" id="tar_kilos">
-                                        <label for="tar_kilos">Kilos</label>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="mb-0 table-container">
-                                <table class="table table-sm table-striped text-center">
-                                    <thead>
-                                        <tr>
-                                            <th>Embalaje</th>
-                                            <th>Variedad</th>
-                                            <th>Calibre</th>
-                                            <th>Productor</th>
-                                            <th>Packing</th>
-                                            <th>Fecha</th>
-                                            <th>Predio</th>
-                                            <th>Cuartel</th>
-                                            <th>Cajas</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="deta_pallet">
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
                     </div>

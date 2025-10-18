@@ -1,3 +1,4 @@
+var tot_bultos = 0;
 $(document).ready(function () {
     $('#folio_input_btn').on('click', function () {
         document.getElementById('folio_input').click();
@@ -20,7 +21,7 @@ $(document).ready(function () {
             return;
         } else {
             $.ajax({
-                url: '../data/getDetaTarjaDesp.php?cliente=' + $('#clientes').val() + '&tarja=' + folio,
+                url: '../data/getDetaTarjaDesp.php?tarja=' + folio,
                 dataType: 'json',
                 type: 'GET',
                 success: function (data) {
@@ -28,45 +29,50 @@ $(document).ready(function () {
                         $('#deta_despa').append('<tr id="' + valueOfElement.fgmb_nrotar + '">' +
                             '<td><button type="button" class="btn btn-danger btn-sm" onclick="eliminarPallet(' + valueOfElement.fgmb_nrotar + ')"><i class="fa-solid fa-trash"></i></button>' +
                             '<td><button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="editarPallet(' + valueOfElement.fgmb_nrotar + ')"><i class="fa-solid fa-pen-to-square"></i></button>' +
+                            '</td><td>' + valueOfElement.plde_codigo +
+                            '</td><td>' + valueOfElement.espe_codigo +
                             '</td><td>' + valueOfElement.lote_codigo +
                             '</td><td>' + valueOfElement.fgmb_nrotar +
-                            '</td><td>' + valueOfElement.bultos +
-                            '</td><td id="kil_net' + valueOfElement.fgmb_nrotar + '">' + valueOfElement.kilos +
+                            '</td><td><input id="bultos' + valueOfElement.fgmb_nrotar + '" style="display: none" value="' + valueOfElement.bultos + '">' + valueOfElement.bultos +
                             '</td><td>' + valueOfElement.prod_codigo +
                             '</td><td>' + valueOfElement.bins_numero +
-                            '</td></tr><input  id="bultos' + valueOfElement.fgmb_nrotar + '" type="hidden" value="' + valueOfElement.bultos + '"><input  id="kil_bru' + valueOfElement.fgmb_nrotar + '" type="hidden" value="' + valueOfElement.mfgp_pesore + '">');
+                            '</td></tr><input id="info' + valueOfElement.fgmb_nrotar + '" type="hidden" value="' + valueOfElement.lote_pltcod + ';' + valueOfElement.lote_espcod + ';' + valueOfElement.lote_codigo + '">');
                     });
+                    tot_bultos += parseInt($('#bultos' + folio).val());
+                    $('#tot_bultos').val(tot_bultos);
+                    console.log(tot_bultos);
+                    $.ajax({
+                        url: '../model/save.php?type=tarja',
+                        type: 'POST',
+                        dataType: 'json',
+                        data: {
+                            cliente: $('#clientes').val(),
+                            planta: $('#planta').val(),
+                            palletList: folio,
+                            info: $('#info' + folio).val(),
+                            bultos: $('#bultos' + folio).val(),
+                            totBultos: tot_bultos,
+                            nro_despacho: $('#nro_despacho').val()
+                        },
+                        success: function (data) {
+                            if (data.status === 'success') {
+                                alert(data.message);
+                                console.log(data.message);
+                            } else {
+                                alert(data.message);
+                                console.log(data.message);
+                            }
+                        }
+                    });
+                }
+            });
 
-                }
-            });
-            $('#totBultos').val(parseInt($('#totBultos').val()) + parseInt($('#tar_canti').val()));
-            $('#totKilos').val(parseInt($('#totKilos').val()) + parseInt($('#tar_kilos').val()));
-            $('#tot_bultos').val($('#totBultos').val());
-            $('#tot_kilos').val($('#totKilos').val());
-            $.ajax({
-                url: '../model/save.php?type=tarja',
-                type: 'POST',
-                data: {
-                    cliente: $('#clientes').val(),
-                    planta: $('#planta').val(),
-                    palletList: folio,
-                    kilos_bru: $('#kil_bru' + folio).val(),
-                    bultos: $('#bultos' + folio).val(),
-                    totBultos: $('#totBultos').val(),
-                    totKilos: $('#totKilos').val(),
-                    nro_despacho: $('#nro_despacho').val()
-                },
-                success: function (data) {
-                    console.log(data);
-                }
-            });
             const pallet_inputs = document.querySelector('#detalle_pallet');
             var inputs = pallet_inputs.getElementsByTagName('input');
             for (var i = 0; i < inputs.length; i++) {
                 inputs[i].value = '';
             }
             $('#deta_pallet').html('');
-            alert('Pallet agregado a despacho!');
         }
     });
     /*$('#edit_pallet').on('click', function () {
@@ -117,7 +123,7 @@ $(document).ready(function () {
         var id = e.which;
         if (id == '13') {
             $.ajax({
-                url: '../data/getEncaTarja.php?folio=' + folio + '&cliente=' + $('#clientes').val(),
+                url: '../data/getEncaTarja.php?folio=' + folio,
                 dataType: 'json',
                 type: 'GET',
                 success: function (data) {
@@ -126,6 +132,8 @@ $(document).ready(function () {
                         $('#folio').val('');
                         return;
                     } else {
+                        $('#tar_planta').val(data.plde_codigo);
+                        document.getElementById('tar_planta').setAttribute('disabled', '');
                         $('#tar_lote').val(data.lote_codigo);
                         document.getElementById('tar_lote').setAttribute('disabled', '');
                         $('#tar_vari').val(data.vari_codigo);
@@ -134,9 +142,10 @@ $(document).ready(function () {
                         document.getElementById('tar_prod').setAttribute('disabled', '');
                         $('#tar_canti').val(data.bultos);
                         document.getElementById('tar_canti').setAttribute('disabled', '');
-                        $('#tar_kilos').val(data.kilos);
-                        document.getElementById('tar_kilos').setAttribute('disabled', '');
-                        //$('#deta_pallet').load('../data/getDetaPallet.php?folio=' + folio);
+                        $('#tar_csg').val(data.csg);
+                        document.getElementById('tar_csg').setAttribute('disabled', '');
+                        $('#tar_sdp').val(data.sdp);
+                        document.getElementById('tar_sdp').setAttribute('disabled', '');
                     }
                 }
             });
@@ -146,7 +155,7 @@ $(document).ready(function () {
     $('#check_pallet').on('click', function () {
         var folio = parseInt($('#folio').val().substring(3));
         $.ajax({
-            url: '../data/getEncaTarja.php?folio=' + folio + '&cliente=' + $('#clientes').val(),
+            url: '../data/getEncaTarja.php?folio=' + folio,
             dataType: 'json',
             type: 'GET',
             success: function (data) {
@@ -155,6 +164,8 @@ $(document).ready(function () {
                     $('#folio').val('');
                     return;
                 } else {
+                    $('#tar_planta').val(data.plde_codigo);
+                    document.getElementById('tar_planta').setAttribute('disabled', '');
                     $('#tar_lote').val(data.lote_codigo);
                     document.getElementById('tar_lote').setAttribute('disabled', '');
                     $('#tar_vari').val(data.vari_codigo);
@@ -163,9 +174,10 @@ $(document).ready(function () {
                     document.getElementById('tar_prod').setAttribute('disabled', '');
                     $('#tar_canti').val(data.bultos);
                     document.getElementById('tar_canti').setAttribute('disabled', '');
-                    $('#tar_kilos').val(data.kilos);
-                    document.getElementById('tar_kilos').setAttribute('disabled', '');
-                    //$('#deta_pallet').load('../data/getDetaPallet.php?folio=' + folio);
+                    $('#tar_csg').val(data.csg);
+                    document.getElementById('tar_csg').setAttribute('disabled', '');
+                    $('#tar_sdp').val(data.sdp);
+                    document.getElementById('tar_sdp').setAttribute('disabled', '');
                 }
             }
         });
@@ -209,9 +221,9 @@ $(document).ready(function () {
                         '</td><td>' + valueOfElement.lote_espcod +
                         '</td><td>' + valueOfElement.lote_codigo +
                         '</td><td>' + indexInArray +
-                        '</td><td>' + valueOfElement.fgmb_canbul +
-                        '</td><td>' + valueOfElement.kilos +
+                        '</td><td><input id="bultos' + indexInArray + '" style="display: none" value="' + valueOfElement.fgmb_canbul + '">' + valueOfElement.fgmb_canbul +
                         '</td><td>' + valueOfElement.prod_codigo +
+                        '</td><td>' + valueOfElement.bins_numero +
                         '</td></tr>');
                 });
             }
@@ -240,9 +252,8 @@ $(document).ready(function () {
                 $('#hora_des').val(data.refg_horasa);
                 $('#guia').val(data.mfge_guisii);
                 $('#tot_bultos').val(data.mfge_totbul);
-                $('#tot_kilos').val(data.mfge_tpneto);
-                $('#totBultos').val(data.mfge_totbul);
-                $('#totKilos').val(data.mfge_tpneto);
+                tot_bultos = data.mfge_totbul;
+                console.log(tot_bultos);
             }
         })
     });
@@ -280,9 +291,7 @@ $(document).ready(function () {
         //$('#save_enca_despacho').show();
         //$('#update_enca_despacho').hide();
         $('#tot_bultos').val(0);
-        $('#tot_kilos').val(0);
-        $('#totKilos').val(0);
-        $('#totBultos').val(0);
+        tot_bultos = 0;
     });
     $('#save_enca_despacho').on('click', function () {
         const encabezado = document.querySelector('#encabezado_despacho');
@@ -297,7 +306,6 @@ $(document).ready(function () {
         for (var i = 0; i < inputs.length; i++) {
             inputs[i].setAttribute('disabled', '');
             datos[inputs[i].id] = inputs[i].value;
-
         }
         for (var i = 0; i < selects.length; i++) {
             selects[i].setAttribute('disabled', '');
@@ -306,11 +314,17 @@ $(document).ready(function () {
         $.ajax({
             url: '../model/save.php?type=enca_traspaso',
             type: 'POST',
+            dataType: 'json',
             data: {
                 data_enca: datos
             },
             success: function (data) {
-                $('#nro_despacho').val(parseInt(data));
+                if (data.status === 'success') {
+                    $('#nro_despacho').val(parseInt(data.nro_despacho));
+                    alert(data.message);
+                } else {
+                    alert(data.message);
+                }
                 console.log(data);
             }
         });
@@ -347,27 +361,31 @@ $(document).ready(function () {
     });*/
 });
 function eliminarPallet(id) {
-    $('#totBultos').val(parseInt($('#totBultos').val()) - parseInt($('#bultos' + id).html()));
-    $('#tot_bultos').val($('#totBultos').val());
-    $('#totKilos').val(parseInt($('#totKilos').val()) - parseInt($('#kil_net' + id).html()));
-    $('#tot_kilos').val($('#totKilos').val());
+    tot_bultos -= parseInt($('#bultos' + id).val());
+    $('#tot_bultos').val(tot_bultos);
     $('#' + id).remove();
     $.ajax({
         url: '../model/erase.php',
         type: 'POST',
+        dataType: 'json',
         data: {
             type: 'tarja',
             cliente: $('#clientes').val(),
             planta: $('#planta').val(),
             nro_despacho: $('#nro_despacho').val(),
             folio: id,
-            totBultos: $('#totBultos').val(),
-            totKilos: $('#totKilos').val(),
+            totBultos: tot_bultos
+        },
+        success: function (data) {
+            if (data.status === 'success') {
+                alert(data.message);
+            } else {
+                alert(data.message);
+            }
         }
     });
-    alert('Pallet eliminado!');
 }
-function editarPallet(id) {
+/*function editarPallet(id) {
     $.ajax({
         url: '../data/getEncaPallet.php?type=edit&folio=' + id,
         dataType: 'json',
@@ -403,12 +421,12 @@ function editarPallet(id) {
             $('#deta_pallet').load('../data/getDetaPallet.php?folio=' + id);
         }
     })
-}
+}*/
 function loadTraspaso(id) {
     document.getElementById('save_enca_despacho').setAttribute('disabled', '');
     document.getElementById('add_pallet_deta').removeAttribute('disabled');
     $.ajax({
-        url: '../data/getDetaTraspasoCom.php?nro_desp=' + id + '&cliente=' + $('#clientes').val(),
+        url: '../data/getDetaTraspasoCom.php?nro_desp=' + id,
         dataType: 'json',
         type: 'GET',
         success: function (data) {
@@ -421,9 +439,9 @@ function loadTraspaso(id) {
                     '</td><td>' + valueOfElement.lote_espcod +
                     '</td><td>' + valueOfElement.lote_codigo +
                     '</td><td>' + indexInArray +
-                    '</td><td>' + valueOfElement.fgmb_canbul +
-                    '</td><td>' + valueOfElement.kilos +
+                    '</td><td><input id="bultos' + indexInArray + '" style="display: none" value="' + valueOfElement.fgmb_canbul + '">' + valueOfElement.fgmb_canbul +
                     '</td><td>' + valueOfElement.prod_codigo +
+                    '</td><td>' + valueOfElement.bins_numero +
                     '</td></tr>');
             });
         }
@@ -452,9 +470,8 @@ function loadTraspaso(id) {
             $('#hora_des').val(data.refg_horasa);
             $('#guia').val(data.mfge_guisii);
             $('#tot_bultos').val(data.mfge_totbul);
-            $('#tot_kilos').val(data.mfge_tpneto);
-            $('#totBultos').val(data.mfge_totbul);
-            $('#totKilos').val(data.mfge_tpneto);
+            tot_bultos = data.mfge_totbul;
+            console.log(tot_bultos);
         }
     })
 }

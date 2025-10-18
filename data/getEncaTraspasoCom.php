@@ -17,7 +17,6 @@ if (isset($_GET['cliente'])) {
             <td><?= date("d/m/Y", strtotime($row['mfge_fecmov'])); ?></td>
             <td><?= $functions->getNombreEspecie($connection, $row['espe_codigo']); ?></td>
             <td><?= $row['plde_codigo']; ?></td>
-            <td><?= number_format($row['mfge_tpneto'], 2, ',', '.'); ?></td>
             <td><?= $row['mfge_totbul']; ?></td>
         </tr>
 <?php

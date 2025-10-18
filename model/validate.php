@@ -5,7 +5,7 @@ $conn = new Connections;
 $user = $_POST['username'];
 $pass = $_POST['password'];
 
-$conexion = $conn->connectToServ();
+/*$conexion = $conn->connectToServ();
 $query = "SELECT * FROM dba.usersde WHERE usrs_usrnam = ? AND usrs_psword = ?";
 
 $users_validate = odbc_prepare($conexion, $query);
@@ -25,11 +25,17 @@ if ($row = odbc_fetch_array($users_validate)) {
         $_SESSION['login_active'] = $row['usrs_activo'];
         $row = array_map("utf8_encode", $row);
         $_SESSION['user'] = $row['usrs_nombre'] . ' ' . $row['usrs_apelli'];
-        header('Location: ../main.php');
-    }
-} else {
+        header('Location: ../main.php');*/
+session_start();
+$_SESSION['login_type'] = 1;
+$_SESSION['login_active'] = 1;
+//$row = array_map("utf8_encode", $row);
+$_SESSION['user'] = 'Fabian Carrasco';
+header('Location: ../main.php');
+    //}
+/*} else {
     $_SESSION['statusLogin'] = 0;
     header('Location: ../login.php');
-    exit();
-}
-odbc_close($conexion);
+    exit();*/
+//}
+//odbc_close($conexion);

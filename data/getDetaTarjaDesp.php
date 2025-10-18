@@ -6,20 +6,21 @@ $functions = new Functions();
 $conn = new Connections();
 
 $folio = $_GET['tarja'];
-$cliente = $_GET['cliente'];
 $conexion = $conn->connectToServ();
-$queryEnca = $functions->getEncaTarja($cliente, $folio);
+$queryEnca = $functions->getEncaTarja($folio);
 $result = odbc_exec($conexion, $queryEnca);
 $row_edit = [];
 $row = odbc_fetch_array($result);
 $row_edit[] = [
     'fgmb_nrotar' => $row['fgmb_nrotar'],
-    'bultos' => intval($row['bultos']),
-    'kilos' => str_replace('.', ',', $row['kilos']),
-    'mfgp_pesore' => str_replace('.', ',', $row['mfgp_pesore']),
+    'bultos' => number_format($row['bultos'], 0),
     'lote_codigo' => $row['lote_codigo'],
     'prod_codigo' => $row['prod_codigo'],
-    'bins_numero' => $row['bins_numero']
+    'bins_numero' => $row['bins_numero'],
+    'lote_pltcod' => $row['lote_pltcod'],
+    'lote_espcod' => $row['lote_espcod'],
+    'plde_codigo' => $row['lote_pltcod'] . ' - ' . $functions->getNombrePlanta($conexion, $row['lote_pltcod']),
+    'espe_codigo' => $row['lote_espcod'] . ' - ' . $functions->getNombreEspecie($conexion, $row['lote_espcod'])
 ];
 
 

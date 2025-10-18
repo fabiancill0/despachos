@@ -66,18 +66,27 @@ if (isset($_GET['type'])) {
         }
     } else if ($_GET['type'] == 'tarja') {
         $query_deta = "INSERT INTO dba.spro_movtofrutagrandeta_tarjas
-        (plde_codigo, tpmv_codigo, mfge_numero, clie_codigo, mfgd_secuen, fgmb_nrotar, fgmb_canbul, fgmb_kilbru)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        (plde_codigo, tpmv_codigo, mfge_numero, clie_codigo, mfgd_secuen, fgmb_nrotar, fgmb_canbul, lote_pltcod, lote_espcod, lote_codigo)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt_deta = odbc_prepare($connnect, $query_deta);
+        $info = explode(';', $_POST['info']);
+        $lote_pltcod = $info[0];
+        $lote_espcod = $info[1];
+        $lote_codigo = $info[2];
         $nro_pallet = $_POST['totBultos'];
         $folio = $_POST['palletList'];
-        odbc_execute($stmt_deta, [$_POST['planta'], 36, $_POST['nro_despacho'], $_POST['cliente'], $nro_pallet, $folio, $_POST['bultos'], $_POST['kilos_bru']]);
+        $result = odbc_execute($stmt_deta, [$_POST['planta'], 36, $_POST['nro_despacho'], $_POST['cliente'], $nro_pallet, $folio, $_POST['bultos'], $lote_pltcod, $lote_espcod, $lote_codigo]);
 
-        $query_enca_update = "UPDATE dba.spro_movtofrutagranenca SET mfge_tpneto = ?, mfge_totbul = ?
+        $query_enca_update = "UPDATE dba.spro_movtofrutagranenca SET mfge_totbul = ?
          WHERE mfge_numero = ? and clie_codigo = ? and plde_codigo = ? and tpmv_codigo = 36";
         $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
-        $result = odbc_execute($stmt_enca_update, [$_POST['totKilos'], $_POST['totBultos'], $_POST['nro_despacho'], $_POST['cliente'], $_POST['planta']]);
+        $result_update = odbc_execute($stmt_enca_update, [$_POST['totBultos'], $_POST['nro_despacho'], $_POST['cliente'], $_POST['planta']]);
+        if ($result && $result_update) {
+            echo json_encode(['status' => 'success', 'message' => 'Tarja agregada correctamente.']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al agregar la tarja.']);
+        }
     } else if ($_GET['type'] == 'edit_pallet') {
         $query_deta = "UPDATE dba.despafrigode SET 
         defe_termog = ?, defe_tempe1 = ?, defe_tempe2 = ?, tran_fechat = ?, tema_codigo = ?
@@ -163,7 +172,7 @@ if (isset($_GET['type'])) {
         $data = $_POST['data_enca'];
         $ultimoTraspaso = odbc_fetch_array(odbc_exec($connnect, $functions->getUltimoTraspaso()));
         $query_enca_tran = "INSERT INTO dba.spro_movtofrutagranenca (clie_codigo, plde_codigo, tpmv_codigo, mfge_numero, espe_codigo, mfge_fecmov, mfge_estmov,
-        mfge_guisii, mfge_observ, mfge_tpneto, mfge_totbul, refg_horaen) VALUES 
+        mfge_guisii, mfge_observ, mfge_totbul, refg_horasa, mfge_comput) VALUES 
         (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt_enca = odbc_prepare($connnect, $query_enca_tran);
@@ -178,11 +187,15 @@ if (isset($_GET['type'])) {
             1,
             $data['guia'],
             $data['obs'],
-            $data['tot_kilos'],
             $data['tot_bultos'],
-            $data['hora_des']
+            $data['hora_des'],
+            'PDA'
         ]);
-        echo json_encode($nuevo);
+        if ($result) {
+            echo json_encode(['status' => 'success', 'message' => 'Encabezado de movimiento creado correctamente.', 'nro_despacho' => $nuevo]);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al crear el encabezado de movimiento.']);
+        }
     } else if ($_GET['type'] == 'update_enca') {
         $data = $_POST['data_enca'];
 

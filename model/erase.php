@@ -9,17 +9,17 @@ $conn = new Connections();
 $connnect = $conn->connectToServ();
 if (isset($_POST['type'])) {
     if ($_POST['type'] == 'tarja') {
-        $query = "DELETE FROM dba.spro_motvofrutagrandeta_tarjas WHERE mfge_numero = ? AND fgmb_nrotar = ?";
+        $query = "DELETE FROM dba.spro_movtofrutagrandeta_tarjas WHERE mfge_numero = ? AND fgmb_nrotar = ?";
         $stmt = odbc_prepare($connnect, $query);
         $folio = $_POST['folio'];
         $nro_despacho = $_POST['nro_despacho'];
         $cliente = $_POST['cliente'];
         $planta = $_POST['planta'];
         $result = odbc_execute($stmt, [$nro_despacho, $folio]);
-        $query_enca_update = "UPDATE dba.spro_motvofrutagranenca SET mfge_tpneto = ?, mfge_totbul = ? 
+        $query_enca_update = "UPDATE dba.spro_movtofrutagranenca SET mfge_totbul = ? 
         WHERE mfge_numero = ? and clie_codigo = ? AND plde_codigo = ? and tpmv_codigo = 36";
         $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
-        $result_update = odbc_execute($stmt_enca_update, [$_POST['totKilos'], $_POST['totBultos'], $_POST['nro_despacho'], $cliente, $planta]);
+        $result_update = odbc_execute($stmt_enca_update, [$_POST['totBultos'], $_POST['nro_despacho'], $cliente, $planta]);
         if ($result && $result_update) {
             echo json_encode(['status' => 'success', 'message' => 'Tarja eliminada correctamente.']);
         } else {
@@ -34,7 +34,7 @@ if (isset($_POST['type'])) {
         $query_enca_update = "UPDATE dba.despafrigoen SET defe_cantar = ?, defe_cancaj = ?, defe_canpal = ? WHERE defe_numero = ?";
         $stmt_enca_update = odbc_prepare($connnect, $query_enca_update);
         $result_update = odbc_execute($stmt_enca_update, [$_POST['tot_pallets'], $_POST['tot_cajas'], $_POST['tot_pallets'], $_POST['nro_despacho']]);
-        if ($result && $result_update) {
+        if ($result_update) {
             echo json_encode(['status' => 'success', 'message' => 'Pallet eliminado correctamente.']);
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Error al eliminar el pallet.']);

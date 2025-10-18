@@ -5,19 +5,19 @@ include '../model/functions.php';
 $conection = new Connections();
 $functions = new Functions();
 $despacho = $_GET['nro_desp'];
-$cliente = $_GET['cliente'];
 $connection = $conection->connectToServ();
-$query_despacho = $functions->getDetaTraspaso($cliente, $despacho);
+$query_despacho = $functions->getDetaTraspaso($despacho);
 $data_despacho = odbc_exec($connection, $query_despacho);
 $row_edit = [];
 while ($row = odbc_fetch_array($data_despacho)) {
     $row_edit[$row['fgmb_nrotar']] = [
         'plde_codigo' => $row['plde_codigo'] . '-' . $functions->getNombrePlanta($connection, $row['plde_codigo']),
-        'fgmb_canbul' => $row['fgmb_canbul'],
+        'fgmb_canbul' => number_format($row['fgmb_canbul'], 0),
         'lote_espcod' => $row['lote_espcod'] . '-' . $functions->getNombreEspecie($connection, $row['lote_espcod']),
         'lote_codigo' => $row['lote_codigo'],
         'prod_codigo' => $row['prod_codigo'],
-        'kilos' => number_format($row['kilos'], 2, ',', '.')
+        'bins_numero' => $row['bins_numero'],
+        'fgmb_kilbru' => number_format($row['fgmb_kilbru'], 2, ',', '.')
     ];
 }
 if ($row_edit == []) {

@@ -300,14 +300,14 @@ class Functions
     $query = "CALL dba.Movil_EncaTraspasoByNumero($mov)";
     return $query;
   }
-  function getDetaTraspaso($cliente, $id)
+  function getDetaTraspaso($id)
   {
-    $query = "CALL dba.Movil_DetaTraspaso($cliente, $id)";
+    $query = "CALL dba.Movil_DetaTraspaso($id)";
     return $query;
   }
-  function getEncaTarja($cliente, $folio)
+  function getEncaTarja($folio)
   {
-    $query = "CALL dba.Movil_EncaTarja($cliente, $folio)";
+    $query = "CALL dba.Movil_EncaTarja($folio)";
     return $query;
   }
   function getUltimoTraspaso()
